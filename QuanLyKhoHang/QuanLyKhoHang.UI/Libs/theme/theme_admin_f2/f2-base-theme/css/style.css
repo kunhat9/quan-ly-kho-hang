@@ -1,0 +1,360 @@
+﻿/* Sticky footer styles
+        -------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+    padding: 60px 15px 0;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+}
+
+/* GENERAL*/
+#register-form {
+    position: relative;
+    top: -25px;
+    padding-top: 125px;
+    margin-top: 25px;
+}
+/*
+  COLORS
+
+  ORANGE: #ff8209
+  WHITE: #FFFFFF
+  BLACK #000000
+  GRAY: #666666
+*/
+
+.clr-white {
+    color: #FFFFFF !important;
+}
+
+.clr-orange {
+    color: #ff8209 !important;
+}
+
+/* NAVBAR */
+
+.navbar-landing .fixed-top {
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-bottom: 5px solid #ff8209;
+}
+
+.navbar-landing .logo {
+    max-height: 50px;
+    margin: 20px 0;
+}
+
+/* MAIN CONTENT */
+.main-landing {
+    text-align: center;
+    margin-top: 110px;
+    display: flex;
+}
+
+    .main-landing .main-container {
+        align-self: center;
+    }
+
+.title {
+    font-weight: 900;
+    color: #FFFFFF;
+    font-size: 32px;
+}
+
+.subtitle {
+    font-weight: 700;
+    color: #FFFFFF;
+    font-size: 26px;
+}
+
+.description {
+    font-weight: 400;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+.btn-register {
+    background: #ff8209;
+    padding: 15px;
+    border: 3px solid transparent;
+    min-width: 380px;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+    .btn-register:hover {
+        background: #FFFFFF;
+        color: #ff8209;
+        border: 3px solid #ff8209;
+    }
+
+    .btn-register.btn-register-in-form {
+        min-width: 240px;
+        margin: 0 auto;
+    }
+
+.main-landing .btn-primary:not(:disabled):not(.disabled):active,
+.main-landing .btn-primary:not(:disabled):not(.disabled).active,
+.main-landing .show > .btn-primary.dropdown-toggle {
+    background: #ff8209;
+    color: #FFFFFF;
+    border: 3px solid transparent;
+}
+
+/* REGISTER SECTION */
+.main-register {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 5px solid #ff8209;
+    display: flex;
+    padding-bottom: 40px;
+}
+
+    .main-register .title {
+        color: #ff8209;
+        font-weight: 900;
+        font-size: 32px;
+    }
+
+    .main-register .subtitle {
+        color: #666666;
+        font-weight: 700;
+        font-size: 26px;
+        margin-bottom: 40px;
+    }
+
+.container-form {
+    max-width: 940px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+    .container-form .form-row {
+        margin-bottom: 60px;
+    }
+
+    .container-form .form-control {
+        border: 2px solid #ff8209;
+        color: #ff8209;
+        height: 55px !important;
+        max-width: 430px;
+        font-weight: 700;
+    }
+
+    .container-form ::-webkit-input-placeholder {
+        color: #ff8209;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .container-form ::-moz-placeholder {
+        color: #ff8209;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .container-form :-ms-input-placeholder {
+        color: #ff8209;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .container-form ::placeholder {
+        color: #ff8209;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+/* FOOTER */
+.footer-landing {
+    min-height: 100px;
+    background-color: #ff8209;
+}
+
+.paragraph-footer {
+    margin: 20px 0;
+}
+
+/* BACKGROUND IMAGES */
+.bg-rocket {
+    min-height: 768px;
+    width: 100%;
+    background-image: url("../imgs/bg-rocket.1cb34e5dfdcb.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-rocket {
+    min-height: 768px;
+    width: 100%;
+    background-image: url("../imgs/bg-bitcoin.d5b566235c12.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bg-rocket {
+    min-height: 768px;
+    width: 100%;
+    background-image: url("../imgs/bg-bitcoin-left.741dbecfabd5.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* PARAGRAPH MEDIUM */
+.paragraph-normal {
+    font-size: 14px;
+}
+
+/* UNILEVEL PAGE */
+
+.form-with-table {
+    display: flex;
+    flex-direction: row;
+}
+
+    .form-with-table .btn-default {
+        background: #ff8209;
+        color: #FFFFFF;
+        padding: 12px 20px;
+        border: 3px solid transparent;
+        min-width: 120px;
+        font-weight: 900;
+        font-size: 14px;
+    }
+
+        .form-with-table .btn-default:hover {
+            background: #FFFFFF;
+            color: #ff8209;
+            border: 3px solid #ff8209;
+        }
+
+    .form-with-table .form-control {
+        margin: 0 20px;
+    }
+
+    .form-with-table select {
+        min-width: 120px;
+    }
+
+    .form-with-table td {
+        color: #585858;
+    }
+
+/* PLANS PAGE */
+.box-plan {
+    box-shadow: 0px 0px 5px 0px #ff8209;
+}
+
+/* BUTTONS */
+
+.btn-default-f2 {
+    background: #ff8209;
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border: 3px solid transparent;
+    min-width: 120px;
+    font-weight: 900;
+    font-size: 14px;
+}
+
+    .btn-default-f2:disabled {
+        cursor: not-allowed;
+        background-color: #333 !important;
+        border-color: #333 !important;
+        color: #FFF !important;
+        opacity: 0.5;
+    }
+
+    .btn-default-f2.btn-success {
+        background-color: #ff8209;
+        border-color: #ff8209;
+    }
+
+    .btn-default-f2:hover,
+    .btn-default-f2:focus {
+        background: #FFFFFF;
+        color: #ff8209;
+        border: 3px solid #ff8209;
+    }
+
+/* GENERAL */
+.ulogo {
+    display: block;
+}
+
+.ulogo-mobile {
+    display: none;
+}
+
+.sidebar-collapse .ulogo {
+    display: none;
+}
+
+.sidebar-collapse .ulogo-mobile {
+    display: block;
+    padding: 0px 0 13px 10px;
+    max-width: 50px;
+}
+
+.header-clock {
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+}
+
+    .header-clock p {
+        margin-bottom: 0;
+        font-weight: bold;
+    }
+
+.navbar-header-f2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.navbar-custom-menu-f2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.purchase-link {
+    color: #ff8209;
+    text-decoration: underline;
+}
+
+    .purchase-link:hover {
+        color: #000000;
+    }

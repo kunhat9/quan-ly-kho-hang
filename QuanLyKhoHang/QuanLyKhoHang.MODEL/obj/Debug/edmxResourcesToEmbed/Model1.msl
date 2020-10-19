@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DB_STORAGESModelStoreContainer" CdmEntityContainer="QuanLyKhoHangEntities">
+    <EntitySetMapping Name="AppConfigs">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.AppConfig">
+        <MappingFragment StoreEntitySet="AppConfig">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ImageLogin" ColumnName="ImageLogin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Categories">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Categories">
+        <MappingFragment StoreEntitySet="TB_Categories">
+          <ScalarProperty Name="CategoriesId" ColumnName="CategoriesId" />
+          <ScalarProperty Name="CategoriesName" ColumnName="CategoriesName" />
+          <ScalarProperty Name="CategoriesNote" ColumnName="CategoriesNote" />
+          <ScalarProperty Name="CategoriesStatus" ColumnName="CategoriesStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Inventory">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Inventory">
+        <MappingFragment StoreEntitySet="TB_Inventory">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_InventoryDetails">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
+        <MappingFragment StoreEntitySet="TB_InventoryDetails">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="TotalRemaining" ColumnName="TotalRemaining" />
+          <ScalarProperty Name="TotalUsed" ColumnName="TotalUsed" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_OrderDetails">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_OrderDetails">
+        <MappingFragment StoreEntitySet="TB_OrderDetails">
+          <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+          <ScalarProperty Name="DetailNumber" ColumnName="DetailNumber" />
+          <ScalarProperty Name="DetailPrice" ColumnName="DetailPrice" />
+          <ScalarProperty Name="DetailValueDate" ColumnName="DetailValueDate" />
+          <ScalarProperty Name="DetailExpiredDate" ColumnName="DetailExpiredDate" />
+          <ScalarProperty Name="DetailOrderId" ColumnName="DetailOrderId" />
+          <ScalarProperty Name="DetailProductId" ColumnName="DetailProductId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Orders">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Orders">
+        <MappingFragment StoreEntitySet="TB_Orders">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderProviderId" ColumnName="OrderProviderId" />
+          <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Products">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Products">
+        <MappingFragment StoreEntitySet="TB_Products">
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductImage" ColumnName="ProductImage" />
+          <ScalarProperty Name="ProductNote" ColumnName="ProductNote" />
+          <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+          <ScalarProperty Name="ProductProviderId" ColumnName="ProductProviderId" />
+          <ScalarProperty Name="ProductCategoriesId" ColumnName="ProductCategoriesId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Providers">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Providers">
+        <MappingFragment StoreEntitySet="TB_Providers">
+          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+          <ScalarProperty Name="ProviderAddress" ColumnName="ProviderAddress" />
+          <ScalarProperty Name="ProviderPhone" ColumnName="ProviderPhone" />
+          <ScalarProperty Name="ProviderEmail" ColumnName="ProviderEmail" />
+          <ScalarProperty Name="ProviderNote" ColumnName="ProviderNote" />
+          <ScalarProperty Name="ProviderStatus" ColumnName="ProviderStatus" />
+          <ScalarProperty Name="Logo" ColumnName="Logo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_Users">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Users">
+        <MappingFragment StoreEntitySet="TB_Users">
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="UserNote" ColumnName="UserNote" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserDateCreated" ColumnName="UserDateCreated" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

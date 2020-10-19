@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-language" content="vi" />
+    <link rel='canonical' data-cke-saved-href='http://localhost:52401/' href='http://localhost:52401/' />
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <meta name="robots" content="noindex">
+    <noscript>
+        <style amp-boilerplate>
+            body {
+                -webkit-animation: none;
+                -moz-animation: none;
+                -ms-animation: none;
+                animation: none
+            }
+        </style>
+    </noscript>
+    <title>CP Invest - System</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <meta name="robots" content="noindex">
+    <!--  favicon -->
+    <link rel="shortcut icon" href="~/Files/images/system/icon.png">
+    <!-- jQuery -->
+    <script src="~/Libs/theme_admin/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="~/Libs/theme_admin/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Libs/theme_admin/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="~/Libs/theme_admin/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="~/Libs/theme_admin/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="~/Libs/theme_admin/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="~/Libs/theme_admin/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker
+    <link href="~/Libs/theme_admin/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet"> -->
+    <!-- Custom Theme Style -->
+    <link href="~/Libs/theme_admin/build/css/custom.min.css" rel="stylesheet">
+
+
+    <link href="~/Libs/alertify/alertify.core.css" rel="stylesheet" />
+    <link href="~/Libs/alertify/alertify.default.css" rel="stylesheet" />
+
+    <link href="~/Libs/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+    <link href="~/Libs/formvalidation/css/formValidation.min.css" rel="stylesheet" />
+
+    <link href="~/Libs/datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <!-- Switchery -->
+    <link href="~/Libs/theme_admin/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+
+    <link href="~/Libs/theme_admin/Site_Member.css" rel="stylesheet" />
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            @RenderPage("_Navshared_Member.cshtml")
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <h1 hidden>Quản trị hệ thống - Web Design</h1>
+                @RenderBody()
+            </div>
+            <div class="modal" tabindex="-1" role="dialog" id="modal-qltaikhoan">
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    <!--title footer-->
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <!-- Bootstrap -->
+    <script src="~/Libs/theme_admin/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/Libs/theme_admin/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="~/Libs/theme_admin/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="~/Libs/theme_admin/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="~/Libs/theme_admin/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="~/Libs/theme_admin/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="~/Libs/theme_admin/vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="~/Libs/theme_admin/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="~/Libs/theme_admin/vendors/Flot/jquery.flot.js"></script>
+    <script src="~/Libs/theme_admin/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="~/Libs/theme_admin/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="~/Libs/theme_admin/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="~/Libs/theme_admin/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="~/Libs/theme_admin/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="~/Libs/theme_admin/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="~/Libs/theme_admin/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="~/Libs/theme_admin/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="~/Libs/theme_admin/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="~/Libs/theme_admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="~/Libs/theme_admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="~/Libs/theme_admin/vendors/moment/min/moment.min.js"></script>
+    <script src="~/Libs/theme_admin/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="~/Libs/theme_admin/build/js/custom.min.js"></script>
+    <script src="~/Libs/theme_admin/vendors/switchery/dist/switchery.min.js"></script>
+
+    <script src="~/Libs/theme_admin/Site.js"></script>
+
+    <script src="~/Libs/theme_admin/simple.money.format.js"></script>
+
+    <script src="~/Libs/alertify/alertify.min.js"></script>
+
+    <script src="~/Libs/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <script src="~/Libs/formvalidation/js/formValidation.min.js"></script>
+    <script src="~/Libs/formvalidation/js/framework/bootstrap.min.js"></script>
+
+    <script src="~/Libs/datetimepicker/bootstrap-datetimepicker.js"></script>
+    <script src="~/Libs/ckeditor/ckeditor.js"></script>
+    <script src="~/Libs/ckfinder/ckfinder.js"></script>
+
+    <script>
+        function CKEditor(id, lang) {
+            CKEDITOR.replace(id, { language: lang }).on('change', function (e) {
+                if (document.activeElement.nodeName == "IFRAME") {
+                    $('[name=' + id + ']').val(e.editor.getData());
+                    $('#frm-capnhat').formValidation('updateStatus', id, 'NOT_VALIDATED').formValidation('validateField', id);
+                }
+            });
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $("#notifications").load("@Url.Action("List_PartialView", "Notifications", new { area = "Member" })");
+    </script>
+</body>
+</html>

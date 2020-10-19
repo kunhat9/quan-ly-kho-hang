@@ -1,0 +1,11 @@
+﻿table th {
+    text-align: center;
+    vertical-align: top;
+}
+
+.bat-buoc{
+    color:red;
+}
+.nav > li > a:focus, .nav > li > a:hover{
+    background-color:transparent !important;
+}

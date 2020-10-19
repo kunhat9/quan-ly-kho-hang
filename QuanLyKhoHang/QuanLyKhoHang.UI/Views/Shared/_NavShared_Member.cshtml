@@ -1,0 +1,96 @@
+﻿@{
+    UserInfo nd_dv = (UserInfo)Session["User_Member"];
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+
+}
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="@Url.Action("MainPage","Home", new { area = ""})" class="site_title"><i class="fa fa-home"></i> <span>@HETHONGGOPCOPHAN.UI.Resources.Lang.Home</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <!-- menu profile quick info -->
+        <div class="profile clearfix">
+            <div class="profile_pic">
+                <img src="@(!string.IsNullOrEmpty(nd_dv.User.Avatar) ? nd_dv.User.Avatar.Replace("~/","/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.FullName" class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>@HETHONGGOPCOPHAN.UI.Resources.Lang.Wellcome,</span>
+                <h2>@nd_dv.User.FullName</h2>
+            </div>
+        </div>
+        <!-- /menu profile quick info -->
+        <br />
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <ul class="nav side-menu">
+                    @if (nd_dv.User.PermissionID == EnumPermission.MEMBER)
+                    {
+                        <li class="mn-dashboard"><a href="@Url.Action("MainPage","Dashboard", new { area="Member"})"><i class="fa fa-building-o"></i> Dashboard </a></li>
+                        <li class="mn-invests-upgrade"><a href="@Url.Action("Upgrade","Invests", new { area="Member"})"><i class="fa fa-level-up"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.UpgradeHistory</a></li>
+                        <li class="mn-transactions"><a href="@Url.Action("MainPage","Transactions", new { area="Member"})"><i class="fa fa-refresh"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.ProfitHistory</a></li>
+                        <li class="mn-transactions-withdrawal"><a href="@Url.Action("Withdrawal","Transactions", new { area="Member"})"><i class="fa fa-history"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.Withdrawalhistory</a></li>
+                        @*<li class="mn-transactions-withdrawal-bonus"><a href="@Url.Action("Withdrawal_Bonus","Transactions", new { area="Member"})"><i class="fa fa-history"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.WithdrawalBonus</a></li>*@
+                        <li class="mn-transactions-transfer"><a href="@Url.Action("Transfer","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.TranferHistory</a></li>
+                        <li class="mn-notifications"><a href="@Url.Action("MainPage","Notifications", new { area="Member"})"><i class="fa fa-bell"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.Notification</a></li>
+                        <li class="mn-transactions-buycard"><a href="@Url.Action("MainPage","TransactionsBuyCard", new { area="Member"})"><i class="fa fa-file-text-o"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.PaymentPhone</a></li>
+                        <li class="mn-transactions-refund"><a href="@Url.Action("Mainpage_Refund","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.RefundHistory</a></li>
+                        <li class="mn-transactions-refunded"><a href="@Url.Action("Mainpage_Refunded","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.RefundedHistory</a></li>
+                        <li class="mn-transactions-refunded"><a href="@Url.Action("Withdrawal_Coin","TransactionCoin", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.WithdrawalCoinHistory</a></li>
+                    }
+                    else
+                    {
+                        <li class="mn-dashboard"><a href="@Url.Action("MainPage","Dashboard", new { area="Member"})"><i class="fa fa-building-o"></i> Dashboard </a></li>
+                        <li class="mn-transactions-transfer"><a href="@Url.Action("Transfer","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.TranferHistory</a></li>
+                        <li class="mn-transactions-buycard"><a href="@Url.Action("MainPage","TransactionsBuyCard", new { area="Member"})">@HETHONGGOPCOPHAN.UI.Resources.Lang.PaymentPhone</a></li>
+                        <li class="mn-transactions-refund"><a href="@Url.Action("Mainpage_Refund","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.RefundHistory</a></li>
+                        <li class="mn-transactions-refunded"><a href="@Url.Action("Mainpage_Refunded","Transactions", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.RefundedHistory</a></li>
+                        <li class="mn-transactions-refunded"><a href="@Url.Action("Withdrawal_Coin","TransactionCoin", new { area="Member"})"><i class="fa fa-share"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.WithdrawalCoinHistory</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- /sidebar menu -->
+    </div>
+</div>
+<!-- top navigation -->
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="@(!string.IsNullOrEmpty(nd_dv.User.Avatar) ? nd_dv.User.Avatar.Replace("~/","/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.FullName">@nd_dv.User.FullName
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a href="@Url.Action("Info","User", new { area = "Member", id= nd_dv.User.UserID})"> @HETHONGGOPCOPHAN.UI.Resources.Lang.PersonalInfo</a></li>
+                        <li>
+                            <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Change_Password_level1","User",new { area="Member" })', function (e) { $('#modal-qltaikhoan').modal('show'); });"> @HETHONGGOPCOPHAN.UI.Resources.Lang.ChangePass</a>
+                        </li>
+                        <li>
+                            <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Change_Password","User",new { area="Member" })', function (e) { $('#modal-qltaikhoan').modal('show'); });"> @HETHONGGOPCOPHAN.UI.Resources.Lang.ChangePass2</a>
+                        </li>
+                        <li><a href="@Url.Action("Logout","Account", new { area = ""})"><i class="fa fa-sign-out pull-right"></i> @HETHONGGOPCOPHAN.UI.Resources.Lang.Logout</a></li>
+                    </ul>
+                </li>
+                <li role="presentation" class="nav-item dropdown" id="notifications"></li>
+                <li class="flag">
+                    @if (cookie == null || cookie.Value == "en")
+                    {
+                        <a href="@Url.Action("Change", "Dashboard", new { area = "Member", LanguageAbbrevation = "vi"})" class="flag-icon @(cookie == null || cookie.Value =="vi" ? "active":"")"><img src="~/Files/images/system/vietnam.png" width="40" title="Change language" alt=""></a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Change", "Dashboard", new { area = "Member", LanguageAbbrevation = "en"})" class="flag-icon @(cookie != null && cookie.Value =="en" ? "active":"")"><img src="~/Files/images/system/england.png" width="40" title="Change language" alt=""></a>
+                    }
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- /top navigation -->

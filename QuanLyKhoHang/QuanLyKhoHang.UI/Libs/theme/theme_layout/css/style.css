@@ -1,0 +1,85 @@
+/*
+Theme Name: uplibra
+Author:yj
+Version: 8.0
+*/
+
+.yj_page_template .kt-widget19 .kt-widget19__pic {
+    padding: 25px 25px 0;
+}
+
+.yj_page_template .kt-widget19 .kt-widget19__pic .kt-widget19__title {
+    position: relative;
+    color: #42318c;
+    border-bottom: 1px solid #dddddd;
+    padding: 0;
+}
+
+.yj_page_template .kt-widget19 .kt-widget19__pic .kt-widget19__title::after {
+    display: block;
+    content: "";
+    border-bottom: 5px solid;
+    width: 50px;
+    margin-top: 9px;
+    border-radius: 15px;
+    box-shadow: 0 3px 3px rgb(66, 49, 140);
+    background: linear-gradient(#42318c 30%, #42318c 70%);
+}
+
+.kt-widget19__text h2,
+.kt-widget19__text h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+/* 横幅 */
+
+.kt-header__bottom {
+    background-color: #42318c;
+}
+
+div#yj_top_bannar {
+    display: none;
+}
+
+.sliver_load_more_box {
+    text-align: center;
+}
+
+table#payment_queuePayment_queue {
+    min-height: 400px;
+}
+
+
+/* reg */
+
+#yj_login .kt-login__logo img {
+    width: 100%;
+}
+
+
+/* 补偿金 */
+
+#recall_claim {
+    animation: free_download 1s linear alternate infinite;
+    font-size: 22px;
+}
+
+
+/* 内容 */
+
+#yj_post_content {
+    font-size: 1.3rem;
+}
+
+#yj_page_content .aligncenter {
+    text-align: center;
+}
+
+#yj_post_content .has-text-color.has-background,
+#yj_page_content .has-text-color.has-background {
+    padding: 20px;
+    line-height: 34px;
+    word-wrap: break-word;
+}

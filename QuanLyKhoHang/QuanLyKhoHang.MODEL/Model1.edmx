@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_STORAGESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AppConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImageLogin" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Categories">
+          <Key>
+            <PropertyRef Name="CategoriesId" />
+          </Key>
+          <Property Name="CategoriesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoriesName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoriesNote" Type="nvarchar" MaxLength="255" />
+          <Property Name="CategoriesStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Inventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_InventoryDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="Unit" Type="int" />
+          <Property Name="OrderId" Type="int" />
+          <Property Name="Total" Type="int" />
+          <Property Name="TotalRemaining" Type="int" />
+          <Property Name="TotalUsed" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="StatusID" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_OrderDetails">
+          <Key>
+            <PropertyRef Name="DetailId" />
+          </Key>
+          <Property Name="DetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DetailNumber" Type="int" />
+          <Property Name="DetailPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DetailValueDate" Type="date" />
+          <Property Name="DetailExpiredDate" Type="date" />
+          <Property Name="DetailOrderId" Type="int" />
+          <Property Name="DetailProductId" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="OrderType" Type="int" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="OrderProviderId" Type="int" />
+          <Property Name="OrderUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductImage" Type="nvarchar(max)" />
+          <Property Name="ProductNote" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductStatus" Type="int" />
+          <Property Name="ProductProviderId" Type="int" />
+          <Property Name="ProductCategoriesId" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Providers">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProviderName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProviderAddress" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProviderPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProviderEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProviderNote" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProviderStatus" Type="int" />
+          <Property Name="Logo" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="30" />
+          <Property Name="UserFullName" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserDateCreated" Type="datetime" />
+          <Property Name="UserPassword" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserType" Type="int" />
+          <Property Name="UserStatus" Type="int" />
+          <Property Name="UserNote" Type="nvarchar" MaxLength="100" />
+          <Property Name="Avatar" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_DetailOrderId">
+          <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="0..1" />
+          <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="TB_OrderDetails">
+              <PropertyRef Name="DetailOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailProductId">
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="0..1" />
+          <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="TB_OrderDetails">
+              <PropertyRef Name="DetailProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProviderId">
+          <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+          <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Providers">
+              <PropertyRef Name="ProviderId" />
+            </Principal>
+            <Dependent Role="TB_Orders">
+              <PropertyRef Name="OrderProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderUserId">
+          <End Role="TB_Users" Type="Self.TB_Users" Multiplicity="0..1" />
+          <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TB_Orders">
+              <PropertyRef Name="OrderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductCategoriesId">
+          <End Role="TB_Categories" Type="Self.TB_Categories" Multiplicity="0..1" />
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Categories">
+              <PropertyRef Name="CategoriesId" />
+            </Principal>
+            <Dependent Role="TB_Products">
+              <PropertyRef Name="ProductCategoriesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductProviderId">
+          <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Providers">
+              <PropertyRef Name="ProviderId" />
+            </Principal>
+            <Dependent Role="TB_Products">
+              <PropertyRef Name="ProductProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_STORAGESModelStoreContainer">
+          <EntitySet Name="AppConfig" EntityType="Self.AppConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Categories" EntityType="Self.TB_Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Inventory" EntityType="Self.TB_Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_InventoryDetails" EntityType="Self.TB_InventoryDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_OrderDetails" EntityType="Self.TB_OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Orders" EntityType="Self.TB_Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Products" EntityType="Self.TB_Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Providers" EntityType="Self.TB_Providers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Users" EntityType="Self.TB_Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DetailOrderId" Association="Self.FK_DetailOrderId">
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+            <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailProductId" Association="Self.FK_DetailProductId">
+            <End Role="TB_Products" EntitySet="TB_Products" />
+            <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProviderId" Association="Self.FK_OrderProviderId">
+            <End Role="TB_Providers" EntitySet="TB_Providers" />
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderUserId" Association="Self.FK_OrderUserId">
+            <End Role="TB_Users" EntitySet="TB_Users" />
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductCategoriesId" Association="Self.FK_ProductCategoriesId">
+            <End Role="TB_Categories" EntitySet="TB_Categories" />
+            <End Role="TB_Products" EntitySet="TB_Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductProviderId" Association="Self.FK_ProductProviderId">
+            <End Role="TB_Providers" EntitySet="TB_Providers" />
+            <End Role="TB_Products" EntitySet="TB_Products" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_STORAGESModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AppConfig">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImageLogin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_Categories">
+          <Key>
+            <PropertyRef Name="CategoriesId" />
+          </Key>
+          <Property Name="CategoriesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoriesName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriesNote" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CategoriesStatus" Type="Int32" />
+          <NavigationProperty Name="TB_Products" Relationship="Self.FK_ProductCategoriesId" FromRole="TB_Categories" ToRole="TB_Products" />
+        </EntityType>
+        <EntityType Name="TB_Inventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_InventoryDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="Unit" Type="Int32" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="Total" Type="Int32" />
+          <Property Name="TotalRemaining" Type="Int32" />
+          <Property Name="TotalUsed" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TB_OrderDetails">
+          <Key>
+            <PropertyRef Name="DetailId" />
+          </Key>
+          <Property Name="DetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DetailNumber" Type="Int32" />
+          <Property Name="DetailPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DetailValueDate" Type="DateTime" Precision="0" />
+          <Property Name="DetailExpiredDate" Type="DateTime" Precision="0" />
+          <Property Name="DetailOrderId" Type="Int32" />
+          <Property Name="DetailProductId" Type="Int32" />
+          <NavigationProperty Name="TB_Orders" Relationship="Self.FK_DetailOrderId" FromRole="TB_OrderDetails" ToRole="TB_Orders" />
+          <NavigationProperty Name="TB_Products" Relationship="Self.FK_DetailProductId" FromRole="TB_OrderDetails" ToRole="TB_Products" />
+        </EntityType>
+        <EntityType Name="TB_Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OrderType" Type="Int32" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="OrderProviderId" Type="Int32" />
+          <Property Name="OrderUserId" Type="Int32" />
+          <NavigationProperty Name="TB_OrderDetails" Relationship="Self.FK_DetailOrderId" FromRole="TB_Orders" ToRole="TB_OrderDetails" />
+          <NavigationProperty Name="TB_Providers" Relationship="Self.FK_OrderProviderId" FromRole="TB_Orders" ToRole="TB_Providers" />
+          <NavigationProperty Name="TB_Users" Relationship="DB_STORAGESModel.FK_OrderUserId" FromRole="TB_Orders" ToRole="TB_Users" />
+        </EntityType>
+        <EntityType Name="TB_Products">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProductStatus" Type="Int32" />
+          <Property Name="ProductProviderId" Type="Int32" />
+          <Property Name="ProductCategoriesId" Type="Int32" />
+          <NavigationProperty Name="TB_Categories" Relationship="Self.FK_ProductCategoriesId" FromRole="TB_Products" ToRole="TB_Categories" />
+          <NavigationProperty Name="TB_OrderDetails" Relationship="Self.FK_DetailProductId" FromRole="TB_Products" ToRole="TB_OrderDetails" />
+          <NavigationProperty Name="TB_Providers" Relationship="Self.FK_ProductProviderId" FromRole="TB_Products" ToRole="TB_Providers" />
+        </EntityType>
+        <EntityType Name="TB_Providers">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProviderName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderStatus" Type="Int32" />
+          <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TB_Orders" Relationship="Self.FK_OrderProviderId" FromRole="TB_Providers" ToRole="TB_Orders" />
+          <NavigationProperty Name="TB_Products" Relationship="Self.FK_ProductProviderId" FromRole="TB_Providers" ToRole="TB_Products" />
+        </EntityType>
+        <Association Name="FK_ProductCategoriesId">
+          <End Role="TB_Categories" Type="Self.TB_Categories" Multiplicity="0..1" />
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Categories">
+              <PropertyRef Name="CategoriesId" />
+            </Principal>
+            <Dependent Role="TB_Products">
+              <PropertyRef Name="ProductCategoriesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailOrderId">
+          <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="0..1" />
+          <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Orders">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="TB_OrderDetails">
+              <PropertyRef Name="DetailOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetailProductId">
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="0..1" />
+          <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Products">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="TB_OrderDetails">
+              <PropertyRef Name="DetailProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProviderId">
+          <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+          <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Providers">
+              <PropertyRef Name="ProviderId" />
+            </Principal>
+            <Dependent Role="TB_Orders">
+              <PropertyRef Name="OrderProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductProviderId">
+          <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+          <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Providers">
+              <PropertyRef Name="ProviderId" />
+            </Principal>
+            <Dependent Role="TB_Products">
+              <PropertyRef Name="ProductProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanLyKhoHangEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppConfigs" EntityType="Self.AppConfig" />
+          <EntitySet Name="TB_Categories" EntityType="Self.TB_Categories" />
+          <EntitySet Name="TB_Inventory" EntityType="Self.TB_Inventory" />
+          <EntitySet Name="TB_InventoryDetails" EntityType="Self.TB_InventoryDetails" />
+          <EntitySet Name="TB_OrderDetails" EntityType="Self.TB_OrderDetails" />
+          <EntitySet Name="TB_Orders" EntityType="Self.TB_Orders" />
+          <EntitySet Name="TB_Products" EntityType="Self.TB_Products" />
+          <EntitySet Name="TB_Providers" EntityType="Self.TB_Providers" />
+          <AssociationSet Name="FK_ProductCategoriesId" Association="Self.FK_ProductCategoriesId">
+            <End Role="TB_Categories" EntitySet="TB_Categories" />
+            <End Role="TB_Products" EntitySet="TB_Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailOrderId" Association="Self.FK_DetailOrderId">
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+            <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetailProductId" Association="Self.FK_DetailProductId">
+            <End Role="TB_Products" EntitySet="TB_Products" />
+            <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProviderId" Association="Self.FK_OrderProviderId">
+            <End Role="TB_Providers" EntitySet="TB_Providers" />
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductProviderId" Association="Self.FK_ProductProviderId">
+            <End Role="TB_Providers" EntitySet="TB_Providers" />
+            <End Role="TB_Products" EntitySet="TB_Products" />
+          </AssociationSet>
+          <EntitySet Name="TB_Users" EntityType="DB_STORAGESModel.TB_Users" />
+          <AssociationSet Name="FK_OrderUserId" Association="DB_STORAGESModel.FK_OrderUserId">
+            <End Role="TB_Users" EntitySet="TB_Users" />
+            <End Role="TB_Orders" EntitySet="TB_Orders" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TB_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="UserFullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserDateCreated" Type="DateTime" Precision="3" />
+          <Property Name="UserPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="UserStatus" Type="Int32" />
+          <Property Name="UserNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TB_Orders" Relationship="DB_STORAGESModel.FK_OrderUserId" FromRole="TB_Users" ToRole="TB_Orders" />
+        </EntityType>
+        <Association Name="FK_OrderUserId">
+          <End Type="DB_STORAGESModel.TB_Users" Role="TB_Users" Multiplicity="0..1" />
+          <End Type="DB_STORAGESModel.TB_Orders" Role="TB_Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TB_Orders">
+              <PropertyRef Name="OrderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_STORAGESModelStoreContainer" CdmEntityContainer="QuanLyKhoHangEntities">
+          <EntitySetMapping Name="AppConfigs">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.AppConfig">
+              <MappingFragment StoreEntitySet="AppConfig">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ImageLogin" ColumnName="ImageLogin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Categories">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Categories">
+              <MappingFragment StoreEntitySet="TB_Categories">
+                <ScalarProperty Name="CategoriesId" ColumnName="CategoriesId" />
+                <ScalarProperty Name="CategoriesName" ColumnName="CategoriesName" />
+                <ScalarProperty Name="CategoriesNote" ColumnName="CategoriesNote" />
+                <ScalarProperty Name="CategoriesStatus" ColumnName="CategoriesStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Inventory">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Inventory">
+              <MappingFragment StoreEntitySet="TB_Inventory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_InventoryDetails">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
+              <MappingFragment StoreEntitySet="TB_InventoryDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="TotalRemaining" ColumnName="TotalRemaining" />
+                <ScalarProperty Name="TotalUsed" ColumnName="TotalUsed" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_OrderDetails">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_OrderDetails">
+              <MappingFragment StoreEntitySet="TB_OrderDetails">
+                <ScalarProperty Name="DetailId" ColumnName="DetailId" />
+                <ScalarProperty Name="DetailNumber" ColumnName="DetailNumber" />
+                <ScalarProperty Name="DetailPrice" ColumnName="DetailPrice" />
+                <ScalarProperty Name="DetailValueDate" ColumnName="DetailValueDate" />
+                <ScalarProperty Name="DetailExpiredDate" ColumnName="DetailExpiredDate" />
+                <ScalarProperty Name="DetailOrderId" ColumnName="DetailOrderId" />
+                <ScalarProperty Name="DetailProductId" ColumnName="DetailProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Orders">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Orders">
+              <MappingFragment StoreEntitySet="TB_Orders">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderProviderId" ColumnName="OrderProviderId" />
+                <ScalarProperty Name="OrderUserId" ColumnName="OrderUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Products">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Products">
+              <MappingFragment StoreEntitySet="TB_Products">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductImage" ColumnName="ProductImage" />
+                <ScalarProperty Name="ProductNote" ColumnName="ProductNote" />
+                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+                <ScalarProperty Name="ProductProviderId" ColumnName="ProductProviderId" />
+                <ScalarProperty Name="ProductCategoriesId" ColumnName="ProductCategoriesId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Providers">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Providers">
+              <MappingFragment StoreEntitySet="TB_Providers">
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="ProviderAddress" ColumnName="ProviderAddress" />
+                <ScalarProperty Name="ProviderPhone" ColumnName="ProviderPhone" />
+                <ScalarProperty Name="ProviderEmail" ColumnName="ProviderEmail" />
+                <ScalarProperty Name="ProviderNote" ColumnName="ProviderNote" />
+                <ScalarProperty Name="ProviderStatus" ColumnName="ProviderStatus" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Users">
+            <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Users">
+              <MappingFragment StoreEntitySet="TB_Users">
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="UserNote" ColumnName="UserNote" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserDateCreated" ColumnName="UserDateCreated" />
+                <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

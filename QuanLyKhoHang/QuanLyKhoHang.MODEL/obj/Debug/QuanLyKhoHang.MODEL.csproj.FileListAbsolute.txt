@@ -1,0 +1,9 @@
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.dll.config
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.dll
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.pdb
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.dll
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.SqlServer.dll
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.xml
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.SqlServer.xml
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.dll
+E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.pdb

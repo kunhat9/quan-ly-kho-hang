@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="vi" style="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="author" content="Ashekur Rahman">
+    <meta name="description" content="">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title -->
+    <title>Quản Lý Kho Hàng</title>
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/ico" href="~/Files/images/system/favicon.png">
+    <script src="~/Libs/theme/theme/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- Plugin-CSS -->
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/animate.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/normalize.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/style.css">
+    <link rel="stylesheet" href="~/Libs/theme/theme/css/responsive.css">
+    <script src="~/Libs/theme/theme/js/vendor/modernizr-2.8.3.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
+    <link href="~/Libs/theme/new_theme/css/bootstrap.css" rel="stylesheet">
+    <link href="~/Libs/theme/new_theme/css/fontawesome-all.css" rel="stylesheet">
+   
+    <link href="~/Libs/theme/new_theme/css/magnific-popup.css" rel="stylesheet">
+    <link href="~/Libs/theme/new_theme/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.5/css/swiper.min.css">
+    <!-- Favicon  -->
+    <link rel="icon" href="~/Files/logo/logo.png">
+    <link rel="stylesheet" type="text/css" href="~/Libs/formvalidation/css/formValidation.min.css" />
+    <link href="~/Libs/alertify/alertify.core.css" rel="stylesheet" />
+    <link href="~/Libs/alertify/alertify.default.css" rel="stylesheet" />
+    <link href="~/Libs/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Libs/datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
+    
+</head>
+<body data-spy="scroll" data-target=".mainmenu-area">
+    @*<body data-spy="scroll" data-target=".mainmenu-area" >*@
+   <!--Header-->
+    <div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <!-- end of preloader -->
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+        <!-- Text Logo - Use this if you don't have a graphic logo -->
+        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Leno</a> -->
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href="index.html"><img src="~/Files/logo/logo.png" alt="alternative"></a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-awesome fas fa-bars"></span>
+            <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+        <!-- end of mobile menu toggle button -->
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#features">FEATURES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#preview">PREVIEW</a>
+                </li>
+
+                <!-- Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">DETAILS</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="terms-conditions.html"><span class="item-text">TERMS CONDITIONS</span></a>
+                        <div class="dropdown-items-divide-hr"></div>
+                        <a class="dropdown-item" href="privacy-policy.html"><span class="item-text">PRIVACY POLICY</span></a>
+                    </div>
+                </li>
+                <!-- end of dropdown menu -->
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                </li>
+            </ul>
+            <span class="nav-item social-icons">
+                <span class="fa-stack">
+                    <a href="#your-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-facebook-f fa-stack-1x"></i>
+                    </a>
+                </span>
+                <span class="fa-stack">
+                    <a href="#your-link">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fab fa-twitter fa-stack-1x"></i>
+                    </a>
+                </span>
+            </span>
+        </div>
+    </nav> <!-- end of navbar -->
+    <!-- end of navigation -->
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="header-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="text-container">
+                            <h1>MOBILE APP <br>FOR <span id="js-rotating">DESIGNERS, MARKETERS, DEVELOPERS</span></h1>
+                            <p class="p-large">Leno is one of the easiest and feature packed marketing automation apps in the market. Download it today!</p>
+                            <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-apple"></i>APP STORE</a>
+                            <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-google-play"></i>PLAY STORE</a>
+                        </div>
+                    </div> <!-- end of col -->
+                    <div class="col-lg-6">
+                        <div class="image-container">
+                            <img class="img-fluid" src="~/Libs/beone/images/header-iphone.png" alt="alternative">
+                        </div> <!-- end of image-container -->
+                    </div> <!-- end of col -->
+                </div> <!-- end of row -->
+            </div> <!-- end of container -->
+        </div> <!-- end of header-content -->
+    </header> <!-- end of header -->
+    <!-- end of header -->
+
+    <!-- Main-Menu-Area / -->
+    @RenderBody()
+    <!-- Footer-Area -->
+    <div class="modal" tabindex="-1" role="dialog" id="modal-login"></div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal-qltaikhoan"></div>
+    <!--Vendor-JS-->
+    <script src="~/Libs/theme/theme/js/vendor/bootstrap.min.js"></script>
+    <!--Plugin-JS-->
+    <script src="~/Libs/theme/theme/js/owl.carousel.min.js"></script>
+    <script src="~/Libs/theme/theme/js/contact-form.js"></script>
+    <script src="~/Libs/theme/theme/js/waypoints.min.js"></script>
+    <script src="~/Libs/theme/theme/js/jquery.counterup.min.js"></script>
+    <script src="~/Libs/theme/theme/js/masonry.pkgd.min.js"></script>
+    <script src="~/Libs/theme/theme/js/magnific-popup.min.js"></script>
+    <script src="~/Libs/theme/theme/js/imagesloaded.js"></script>
+    <script src="~/Libs/theme/theme/js/ajaxchimp.js"></script>
+    <script src="~/Libs/theme/theme/js/wow.min.js"></script>
+    <script src="~/Libs/theme_admin/vendors/moment/min/moment.min.js"></script>
+    <script src="~/Libs/theme_admin/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!--Main-active-JS-->
+    <script src="~/Libs/theme/theme/js/main.js"></script>
+    <script src="~/Libs/theme/theme/js/simple.money.format.js"></script>
+    <script src="~/Libs/formvalidation/js/formValidation.min.js"></script>
+    <script src="~/Libs/alertify/alertify.min.js"></script>
+    <script src="~/Libs/formvalidation/js/framework/bootstrap.min.js"></script>
+    <script src="~/Libs/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Libs/datetimepicker/bootstrap-datetimepicker.js"></script>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="footer-col">
+                        <h4>About Leno</h4>
+                        <p>We're passionate about creating the best mobile apps for personal development</p>
+                    </div>
+                </div> <!-- end of col -->
+                <div class="col-md-4">
+                    <div class="footer-col middle">
+                        <h4>Important Links</h4>
+                        <ul class="list-unstyled li-space-lg">
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body">Our business partners <a class="turquoise" href="#your-link">startupguide.com</a></div>
+                            </li>
+                            <li class="media">
+                                <i class="fas fa-square"></i>
+                                <div class="media-body">Read our <a class="turquoise" href="terms-conditions.html">Terms & Conditions</a>, <a class="turquoise" href="privacy-policy.html">Privacy Policy</a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- end of col -->
+                <div class="col-md-4">
+                    <div class="footer-col last">
+                        <h4>Social Media</h4>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-google-plus-g fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin-in fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of footer -->
+    <!-- end of footer -->
+    <!-- Copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="p-small">Copyright © 2020 <a href="@Url.Action("Index","Home")">BeOne</a> - All rights reserved</p>
+                </div> <!-- end of col -->
+            </div> <!-- enf of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of copyright -->
+    <!-- end of copyright -->
+    <!-- Scripts -->
+
+</body>
+</html>

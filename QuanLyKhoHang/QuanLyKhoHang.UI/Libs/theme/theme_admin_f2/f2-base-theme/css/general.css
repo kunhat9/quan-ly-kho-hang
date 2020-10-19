@@ -1,0 +1,454 @@
+﻿/* FORMS REGISTER / LOGIN */
+
+.form-register .form-control::-moz-placeholder {
+    color: #fff;
+}
+
+.form-register .form-control:-ms-input-placeholder {
+    color: #fff;
+}
+
+.form-register .form-control::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.form-register .btn-register {
+    background: #ff8100;
+    border-color: #ff8100;
+    padding: 20px;
+    font-size: 28px;
+    color: #FFFFFF;
+}
+
+.link-login, .link {
+    color: #ff8100;
+}
+
+.form-register .has-feedback .form-control-feedback {
+    color: #ff8100;
+    font-size: 24px;
+}
+
+.form-register .controls select {
+    color: #ff8100;
+}
+
+.form-register .checkbox label {
+    color: #ff8100;
+}
+
+.form-register.form-element .form-control, .form-register .form-element .form-control:focus .lookup input::-webkit-input-placeholder {
+    color: #000000;
+}
+
+.form-register .btn.btn-info:hover {
+    background-color: #fff;
+    color: #ff8100;
+}
+
+.form-register select {
+    cursor: pointer;
+}
+
+.link-footer-loginbox {
+    text-decoration: underline;
+}
+
+    .link-footer-loginbox:hover {
+        color: #000000;
+    }
+
+.divider-loginbox {
+    margin: 80px 0;
+}
+
+/* DASHBOARD */
+
+.page-dashboard.skin-purple .main-header .navbar {
+    background-color: #4b2698;
+}
+
+.page-dashboard .ulogo {
+    max-width: 150px;
+    margin: 0px auto;
+}
+
+.page-dashboard .box-info-dashboard .box-header .fa {
+    font-size: 28px;
+    color: #fff
+}
+
+.page-dashboard .fa-arrow-left,
+.page-dashboard .fa-arrow-right {
+    font-size: 14px;
+}
+
+.page-dashboard .icon-dollar {
+    background: #ff8100;
+    padding: 5px 11px;
+    border-radius: 100px;
+}
+
+.page-dashboard .media .icon-dollar a {
+    color: #fff;
+}
+
+.page-dashboard .invite-link-input {
+    color: #000000;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.page-dashboard .dollar-value {
+    font-size: 26px;
+}
+
+    .page-dashboard .dollar-value span {
+        margin: 10px;
+    }
+
+.page-dashboard .content-wrapper,
+.page-dashboard .content {
+    background-color: #FFFFFF;
+}
+
+.page-dashboard .box-body.bg-topwidget {
+    background-color: #ff8100;
+    padding: 14px 14px 4px 14px;
+}
+
+.page-dashboard .bg-success {
+    background-color: #ff8100;
+}
+
+.page-dashboard .box-body .text-success {
+    color: #ff8100 !important;
+}
+
+.skin-green .page-dashboard .main-header .navbar {
+    background-color: #ff8100;
+}
+/* BINÁRIO */
+.page-binary .content-wrapper,
+.page-binary .content {
+    background-color: #FFF;
+}
+
+.page-binary .container-binary-tree {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+    .page-binary .container-binary-tree .bintree {
+        min-width: 900px;
+    }
+
+.page-binary .ulogo {
+    max-width: 150px;
+    margin: 0px auto;
+}
+
+.tooltip {
+    padding: 15px;
+    min-width: 200px;
+}
+
+    .tooltip .tooltip-inner {
+        background-color: #ff8100;
+        padding: 15px;
+    }
+
+        .tooltip .tooltip-inner p {
+            margin: 0;
+        }
+
+.arrow {
+    display: none !important;
+}
+
+.tooltip .tooltip-inner h4 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.tooltip .tooltip-arrow {
+    border-top-color: #ff8100 !important;
+}
+
+.green-tooltip + .tooltip > .tooltip-inner {
+    background-color: #ff8100;
+}
+
+.green-tooltip + .tooltip > .tooltip-arrow {
+    border-top-color: #ff8100;
+}
+
+.page-binary .btn-search {
+    background-color: #ff8100;
+    border-radius: 0;
+    border-color: #ff8100;
+}
+
+.page-binary input[type=text] {
+    border-radius: 0;
+    background-color: #ffffff;
+}
+/* Robot */
+.page-robot .ulogo {
+    max-width: 150px;
+    margin: 30px auto;
+}
+
+.page-robot table th,
+.page-robot table td, {
+    color: #FFFFFF !important;
+}
+
+.page-robot .label-success {
+    background-color: #ff8100;
+}
+
+.page-robot .up {
+    color: #ff8100;
+}
+
+.page-robot .down {
+    color: #ef5350;
+}
+
+.BUY {
+    border-color: #ff8100;
+    padding: 5px;
+}
+
+.SELL {
+    border-color: #ef5350;
+    padding: 5px;
+}
+/* GENERAL */
+.text-green {
+    color: #ff8100;
+}
+
+.btn-buy-ticket {
+    margin-right: 10px;
+}
+
+.modal-dubai-tickets .modal-dialog {
+    width: 100%;
+    max-width: 900px;
+}
+
+    .modal-dubai-tickets .modal-dialog img {
+        margin-bottom: 20px;
+    }
+
+.modal-dubai-tickets .modal-footer {
+    padding-top: 20px;
+}
+
+.modal-general .modal-dialog {
+    width: 100%;
+    max-width: 900px;
+}
+
+    .modal-general .modal-dialog img {
+        margin-bottom: 20px;
+    }
+
+.modal-general .modal-footer {
+    padding-top: 20px;
+}
+
+.modal-general .document {
+    margin: 0 auto;
+    display: block;
+}
+
+/* ALERTS */
+
+.accordion-rules-note .btn-link {
+    width: 100%;
+    text-align: left;
+    color: red;
+    font-size: 16px;
+    line-height: 28px;
+    padding: 15px;
+}
+
+.accordion-rules-note h5 {
+    width: 100%;
+}
+
+.accordion-rules-note .card-header {
+    border: 1px solid red;
+    padding: 0;
+}
+
+.accordion-rules-note .card-body {
+    border-left: 1px solid red;
+    border-right: 1px solid red;
+    border-bottom: 1px solid red;
+    color: #1f1f1f;
+}
+
+.accordion-rules-note .card-header .fa {
+    font-size: 26px;
+}
+
+[data-toggle="collapse"] .icon-arrow:before {
+    content: "\f139";
+}
+
+[data-toggle="collapse"].collapsed .icon-arrow:before {
+    content: "\f13a";
+}
+
+/* ERROR PAGES */
+.error-body {
+    width: 100%;
+    height: 100%;
+    margin: 0px auto 0;
+    text-align: center;
+    position: fixed;
+    background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+    .error-body.not-found {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body.waf-block {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body.ip-block {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body.challenge {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body.under-attack {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body.maintenance {
+        background-image: url("../../f2-theme/imgs/bg-error-pages.9bab778bb586.jpg")
+    }
+
+    .error-body h2 {
+        font-size: 48px;
+        color: #FFFFFF;
+    }
+
+    .error-body h3 {
+        color: #FFFFFF;
+    }
+
+    .error-body.under-attack h2 {
+        font-size: 48px;
+    }
+
+    .error-body.pace-inactive {
+        background: #f3f5f7;
+        margin-top: 0;
+        padding-top: 100px;
+    }
+
+.error-page .search-form {
+    width: 280px;
+    margin: 0 auto;
+}
+
+.error-page .main-footer {
+    margin-left: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    padding: 15px 30px 30px;
+}
+
+.error-page .headline {
+    font-size: 180px;
+    font-weight: 900;
+    line-height: initial;
+}
+
+.error-page .btn-success {
+    background-color: #ff8100;
+    border-color: #ff8100
+}
+
+    .error-page .btn-success .fa-arrow-left {
+        margin-right: 5px;
+    }
+
+@media (max-width:991px) {
+    .error-page {
+        width: 100%
+    }
+
+        .error-page > .headline {
+            float: none;
+            text-align: center;
+        }
+}
+
+.error-content .btn {
+    width: auto;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+@media (max-width:767px) {
+    .error-page .headline {
+        font-size: 72px;
+        font-weight: 900;
+    }
+}
+
+.error-page > .error-content > h3 {
+    font-weight: 300;
+    font-size: 25px;
+}
+
+@media (max-width:991px) {
+    .error-page .error-content {
+        margin-left: 0;
+    }
+
+    .error-page > .error-content > h3 {
+        text-align: center;
+    }
+}
+
+.error-body .logo-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.error-body .logo {
+    max-width: 300px;
+    align-self: center;
+}
+
+/* COLORS */
+.clr-gray {
+    color: #95a5a6;
+}
+
+.clr-red {
+    color: #e74c3c;
+}
+
+.clr-green {
+    color: #1abc9c;
+}

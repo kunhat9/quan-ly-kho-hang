@@ -1,0 +1,34 @@
+﻿<header class="header-area" id="home-page">
+    <div class="over-background"></div>
+    <div class="col-md-12 navbar-home">
+        <div class="container">
+            <div class="row text-right">
+                <div class="col-md-9 col-sm-6 col-xs-6"></div>
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <a class="" style="cursor:pointer;" onclick="javascript: $('#modal-login').load('@Url.Action("Register","Account", new { area=""})', function (e) { $('#modal-login').modal('show'); });"> <img src="~/Libs/theme/theme/css/images/user-login-button.png" title="Đăng ký" alt="Đăng ký" />Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-home">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <img src="/Libs/theme/theme/css/images/logo-header.png" title="" alt="" />
+                </div>
+                <div class="col-md-12 text-center">
+                    <h1 class="title-home-header white">BỐN MÙA AZ RESTAURANT</h1>
+                </div>
+                <div class="col-md-12 text-center">
+                    <p class="sub-title-home white">
+                        Bốn mùa AZ Restaurant là sự lựa chọn hoàn hảo khi kết hợp hàng loạt các <br> món ăn ngon từ nướng, chiên, xào, lẩu, hải sản hay các đặc sản
+                        <br>Tây Nguyên
+                    </p>
+                </div>
+                <div class="col-md-12 text-center">
+                    <a class="login-home" style="cursor:pointer;" onclick="javascript: $('#modal-login').load('@Url.Action("Login_Member","Account", new { area=""})', function (e) { $('#modal-login').modal('show'); });"> Đăng nhập</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

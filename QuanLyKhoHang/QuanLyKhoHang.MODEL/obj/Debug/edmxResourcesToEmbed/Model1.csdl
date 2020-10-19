@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_STORAGESModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AppConfig">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageLogin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_Categories">
+    <Key>
+      <PropertyRef Name="CategoriesId" />
+    </Key>
+    <Property Name="CategoriesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoriesName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CategoriesNote" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CategoriesStatus" Type="Int32" />
+    <NavigationProperty Name="TB_Products" Relationship="Self.FK_ProductCategoriesId" FromRole="TB_Categories" ToRole="TB_Products" />
+  </EntityType>
+  <EntityType Name="TB_Inventory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="TB_InventoryDetails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="Total" Type="Int32" />
+    <Property Name="TotalRemaining" Type="Int32" />
+    <Property Name="TotalUsed" Type="Int32" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StatusID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TB_OrderDetails">
+    <Key>
+      <PropertyRef Name="DetailId" />
+    </Key>
+    <Property Name="DetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DetailNumber" Type="Int32" />
+    <Property Name="DetailPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="DetailValueDate" Type="DateTime" Precision="0" />
+    <Property Name="DetailExpiredDate" Type="DateTime" Precision="0" />
+    <Property Name="DetailOrderId" Type="Int32" />
+    <Property Name="DetailProductId" Type="Int32" />
+    <NavigationProperty Name="TB_Orders" Relationship="Self.FK_DetailOrderId" FromRole="TB_OrderDetails" ToRole="TB_Orders" />
+    <NavigationProperty Name="TB_Products" Relationship="Self.FK_DetailProductId" FromRole="TB_OrderDetails" ToRole="TB_Products" />
+  </EntityType>
+  <EntityType Name="TB_Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OrderType" Type="Int32" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <Property Name="OrderProviderId" Type="Int32" />
+    <Property Name="OrderUserId" Type="Int32" />
+    <NavigationProperty Name="TB_OrderDetails" Relationship="Self.FK_DetailOrderId" FromRole="TB_Orders" ToRole="TB_OrderDetails" />
+    <NavigationProperty Name="TB_Providers" Relationship="Self.FK_OrderProviderId" FromRole="TB_Orders" ToRole="TB_Providers" />
+    <NavigationProperty Name="TB_Users" Relationship="DB_STORAGESModel.FK_OrderUserId" FromRole="TB_Orders" ToRole="TB_Users" />
+  </EntityType>
+  <EntityType Name="TB_Products">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ProductNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProductStatus" Type="Int32" />
+    <Property Name="ProductProviderId" Type="Int32" />
+    <Property Name="ProductCategoriesId" Type="Int32" />
+    <NavigationProperty Name="TB_Categories" Relationship="Self.FK_ProductCategoriesId" FromRole="TB_Products" ToRole="TB_Categories" />
+    <NavigationProperty Name="TB_OrderDetails" Relationship="Self.FK_DetailProductId" FromRole="TB_Products" ToRole="TB_OrderDetails" />
+    <NavigationProperty Name="TB_Providers" Relationship="Self.FK_ProductProviderId" FromRole="TB_Products" ToRole="TB_Providers" />
+  </EntityType>
+  <EntityType Name="TB_Providers">
+    <Key>
+      <PropertyRef Name="ProviderId" />
+    </Key>
+    <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProviderName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderStatus" Type="Int32" />
+    <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TB_Orders" Relationship="Self.FK_OrderProviderId" FromRole="TB_Providers" ToRole="TB_Orders" />
+    <NavigationProperty Name="TB_Products" Relationship="Self.FK_ProductProviderId" FromRole="TB_Providers" ToRole="TB_Products" />
+  </EntityType>
+  <Association Name="FK_ProductCategoriesId">
+    <End Role="TB_Categories" Type="Self.TB_Categories" Multiplicity="0..1" />
+    <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Categories">
+        <PropertyRef Name="CategoriesId" />
+      </Principal>
+      <Dependent Role="TB_Products">
+        <PropertyRef Name="ProductCategoriesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailOrderId">
+    <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="0..1" />
+    <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Orders">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="TB_OrderDetails">
+        <PropertyRef Name="DetailOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailProductId">
+    <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="0..1" />
+    <End Role="TB_OrderDetails" Type="Self.TB_OrderDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Products">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="TB_OrderDetails">
+        <PropertyRef Name="DetailProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderProviderId">
+    <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+    <End Role="TB_Orders" Type="Self.TB_Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Providers">
+        <PropertyRef Name="ProviderId" />
+      </Principal>
+      <Dependent Role="TB_Orders">
+        <PropertyRef Name="OrderProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductProviderId">
+    <End Role="TB_Providers" Type="Self.TB_Providers" Multiplicity="0..1" />
+    <End Role="TB_Products" Type="Self.TB_Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Providers">
+        <PropertyRef Name="ProviderId" />
+      </Principal>
+      <Dependent Role="TB_Products">
+        <PropertyRef Name="ProductProviderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QuanLyKhoHangEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AppConfigs" EntityType="Self.AppConfig" />
+    <EntitySet Name="TB_Categories" EntityType="Self.TB_Categories" />
+    <EntitySet Name="TB_Inventory" EntityType="Self.TB_Inventory" />
+    <EntitySet Name="TB_InventoryDetails" EntityType="Self.TB_InventoryDetails" />
+    <EntitySet Name="TB_OrderDetails" EntityType="Self.TB_OrderDetails" />
+    <EntitySet Name="TB_Orders" EntityType="Self.TB_Orders" />
+    <EntitySet Name="TB_Products" EntityType="Self.TB_Products" />
+    <EntitySet Name="TB_Providers" EntityType="Self.TB_Providers" />
+    <AssociationSet Name="FK_ProductCategoriesId" Association="Self.FK_ProductCategoriesId">
+      <End Role="TB_Categories" EntitySet="TB_Categories" />
+      <End Role="TB_Products" EntitySet="TB_Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailOrderId" Association="Self.FK_DetailOrderId">
+      <End Role="TB_Orders" EntitySet="TB_Orders" />
+      <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailProductId" Association="Self.FK_DetailProductId">
+      <End Role="TB_Products" EntitySet="TB_Products" />
+      <End Role="TB_OrderDetails" EntitySet="TB_OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderProviderId" Association="Self.FK_OrderProviderId">
+      <End Role="TB_Providers" EntitySet="TB_Providers" />
+      <End Role="TB_Orders" EntitySet="TB_Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductProviderId" Association="Self.FK_ProductProviderId">
+      <End Role="TB_Providers" EntitySet="TB_Providers" />
+      <End Role="TB_Products" EntitySet="TB_Products" />
+    </AssociationSet>
+    <EntitySet Name="TB_Users" EntityType="DB_STORAGESModel.TB_Users" />
+    <AssociationSet Name="FK_OrderUserId" Association="DB_STORAGESModel.FK_OrderUserId">
+      <End Role="TB_Users" EntitySet="TB_Users" />
+      <End Role="TB_Orders" EntitySet="TB_Orders" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="TB_Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="UserFullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="UserDateCreated" Type="DateTime" Precision="3" />
+    <Property Name="UserPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="Int32" />
+    <Property Name="UserStatus" Type="Int32" />
+    <Property Name="UserNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Avatar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TB_Orders" Relationship="DB_STORAGESModel.FK_OrderUserId" FromRole="TB_Users" ToRole="TB_Orders" />
+  </EntityType>
+  <Association Name="FK_OrderUserId">
+    <End Type="DB_STORAGESModel.TB_Users" Role="TB_Users" Multiplicity="0..1" />
+    <End Type="DB_STORAGESModel.TB_Orders" Role="TB_Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TB_Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="TB_Orders">
+        <PropertyRef Name="OrderUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

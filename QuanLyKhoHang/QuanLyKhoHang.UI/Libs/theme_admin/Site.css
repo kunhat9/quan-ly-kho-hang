@@ -1,0 +1,65 @@
+﻿table th {
+    text-align: center;
+    vertical-align: top;
+}
+
+.bat-buoc{
+    color:red;
+}
+.nav > li > a:focus, .nav > li > a:hover{
+    background-color:transparent !important;
+}
+.active-display {
+    display: block;
+}
+
+.hidden-display {
+    display: none;
+}
+.text-blue {
+    color: blue;
+}
+
+.text-green {
+    color: green;
+}
+
+.text-purple {
+    color: purple;
+}
+
+.text-yellow {
+    color: #f3d609;
+}
+
+.text-red {
+    color: red;
+}
+strong.text-black {
+    background-color: #73879C;
+    margin-right:10px;
+}
+strong.text-blue {
+    background-color: blue;
+    margin-right: 10px;
+}
+
+strong.text-green {
+    background-color: green;
+    margin-right: 10px;
+}
+
+strong.text-purple {
+    background-color: purple;
+    margin-right: 10px;
+}
+
+strong.text-yellow {
+    background-color: #f3d609;
+    margin-right: 10px;
+}
+
+strong.text-red {
+    background-color: red;
+    margin-right: 10px;
+}

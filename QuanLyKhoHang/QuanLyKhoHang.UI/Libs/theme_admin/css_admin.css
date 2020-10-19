@@ -1,0 +1,195 @@
+﻿.nav-md .container.body .right_col {
+    padding: 0;
+}
+
+body .container.body .right_col {
+    background: #EBEBEB;
+}
+
+input.form-control {
+    border: 1px solid #878787;
+    border-top: unset;
+    border-right: unset;
+    -webkit-box-shadow: unset;
+    box-shadow: unset;
+}
+.table > thead > tr > th{
+    border-color:#999;
+}
+table th {
+    text-align: center;
+    color: #4263A7;
+}
+
+table td {
+    color: #555555;
+}
+
+table {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+.x_panel {
+    background: unset;
+    border: unset;
+    padding: 0;
+}
+
+.x_title {
+    background: #4263A7;
+    border: unset;
+    padding: 10px 5px 5px 25px;
+    color: #fff;
+    margin-left: 20px;
+}
+a#menu_toggle{
+    color:#fff;
+}
+.left_col {
+    width: 100%;
+    background-image: linear-gradient(#4263A7, #fff, #fff, #fff, #fff) !important;
+}
+.nav_menu {
+    background: #4263A7;
+}
+.nav.side-menu > li > a {
+    color: #000;
+    font-weight:bold;
+}
+
+    .nav.side-menu > li > a:hover {
+        color: #fff !important;
+        background: #4263A7;
+    }
+.nav > li > a {
+    padding: 13px 5px 12px 10px;
+}
+.nav.side-menu > li.active, .nav.side-menu > li.current-page {
+    border-right: 6px solid #4263A7;
+}
+    .nav.side-menu > li.active > a {
+        background: #4263A7;
+        color: #fff !important;
+    }
+.nav.child_menu > li > a{
+    color:#000;
+}
+.nav li li.current-page a, .nav.child_menu li li a.active, .nav.child_menu li li a:hover {
+    color: #4263A7;
+}
+.nav.navbar-nav > li > a {
+    color: #fff !important;
+}
+
+.nav > li > a.menu {
+    padding: 13px 5px 5px 10px;
+}
+.top_nav li a i {
+    font-size: 20px;
+}
+.div-control {
+    border: 1px solid #eee;
+    padding: 30px;
+    border-radius: 20px;
+    background: #fff;
+    margin: 10px;
+    box-shadow: 0px 0px 50px 0px #878787;
+}
+
+.btn.btn-css {
+    border-radius: 20px;
+    color:white;
+    border-color:#fff;
+}
+.btn.btn-css i{
+    padding-right:15px;
+}
+.btn.btn-blue {
+    background: linear-gradient( 90deg, #0498CF, #0498CF 30px, #3F5B94 10px, #3F5B94 20px );
+}
+.btn.btn-green {
+    background: linear-gradient( 90deg, #26B99A, #26B99A 30px, #169F85 10px, #169F85 20px );
+}
+.btn.btn-blue-light {
+    background: linear-gradient( 90deg, #5bc0de, #5bc0de 30px, #1b6d85 10px, #1b6d85 20px );
+}
+.btn.btn-orange {
+    background: linear-gradient( 90deg, #F6BF15, #F6BF15 30px, #E97D13 10px, #E97D13 20px );
+}
+.btn.btn-red {
+    background: linear-gradient( 90deg, #fa7171, #fa7171 30px, #df1616 10px, #df1616 20px );
+}
+.x_content {
+    padding: 20px;
+}
+.div-action.x_content {
+    padding: 5px 20px;
+}
+
+.div-action a {
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #555555;
+    color: #555555;
+}
+
+    .div-action a:last-child {
+        border-right: unset;
+    }
+.div-action .checkbox, .radio{
+    display:inline-block;
+}
+.profile {
+}
+
+    .profile .profile-image {
+        margin: 5px auto;
+        width: 80px;
+        height: 80px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% auto;
+        border: 3px solid #eee;
+        border-radius: 100px;
+        padding: 5px;
+    }
+
+    .profile .profile-name {
+        font-size: 18px;
+        color: #fff;
+        text-shadow: #000 0.1em 0.1em 0.2em
+    }
+
+    .profile .profile-coin {
+        margin: 10px auto 0 auto;
+        width: 190px;
+        border: 1px solid #fff;
+        border-radius: 10px;
+        padding: 10px;
+        background-color: #4263A7;
+        color: white;
+        box-shadow: 0px 0px 10px 0px #808080;
+    }
+
+        .profile .profile-coin p {
+            margin-bottom: 0px;
+        }
+
+        .profile .profile-coin .profile-coin-1-text {
+            font-size: 16px;
+        }
+
+        .profile .profile-coin .profile-coin-1 img {
+            padding-bottom: 5px !important;
+        }
+
+        .profile .profile-coin .profile-coin-2 img {
+            padding-top: 5px;
+        }
+
+        .profile .profile-coin .profile-coin-2-text {
+            padding-top: 9px;
+        }
