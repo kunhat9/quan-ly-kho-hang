@@ -1,0 +1,144 @@
+﻿@model QuanLyKhoHang.MODEL.TB_Categories
+@using QuanLyKhoHang.UI.Models
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Thông tin danh mục sản phẩm</h4>
+        </div>
+        <form class="fv-form fv-form-bootstrap" id="frm-capnhat1">
+            <div class="modal-body">
+                <input type="hidden" id="CategoriesId" name="CategoriesId" value="@Model.CategoriesId" />
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Tên danh mục</label>
+                        <div>
+                            <input type="text" class="form-control" id="CategoriesName" name="CategoriesName" value="@Model.CategoriesName" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Trạng thái:</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" name="CategoriesStatus">
+                                <option value="@EnumStatus.ACTIVE" @(Model != null && Model.CategoriesStatus == EnumStatus.ACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.ACTIVE)</option>
+                                <option value="@EnumStatus.INACTIVE" @(Model != null && Model.CategoriesStatus == EnumStatus.INACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.INACTIVE)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label" for="first-name">Mô tả</label>
+                        <div>
+                            <textarea rows="3" class="form-control" autocomplete="off" name="CategoriesNote">@Model.CategoriesNote</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button id="btn-save1" type="submit" class="btn btn-success">Lưu</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+    });
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('#frm-capnhat1').formValidation({
+            framework: 'bootstrap',
+            excluded: ':disabled',
+            fields: {
+
+
+                ProviderName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                CategoriesNote : {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 300) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 300 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                CategoriesStatus: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        }
+                    }
+                },
+        }).on('success.form.fv', function (e) {
+            document.getElementById("btn-save1").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Update", "Categories", new { area = "QuanTri" })',
+                type: 'POST',
+                dataType: 'json',
+                mimeType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false,
+                cache: false,
+                data: new FormData(document.getElementById('frm-capnhat1')),
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "Categories", new { area= "Member" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save1").disabled = false;
+                        $("#btn-save1").removeClass("disabled");
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+
+

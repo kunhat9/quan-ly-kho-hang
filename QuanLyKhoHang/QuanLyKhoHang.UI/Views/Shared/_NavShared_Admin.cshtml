@@ -1,8 +1,8 @@
-﻿@using BEONE.MODEL.EnumConst;
+﻿@using QuanLyKhoHang.UI.Models;
 @{
 
-    BEONE.UI.Models.UserInfo nd_dv = (BEONE.UI.Models.UserInfo)Session["NguoiDung"];
-    BEONE.MODEL.BeOneEntities db = new BEONE.MODEL.BeOneEntities();
+    UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+    QuanLyKhoHang.MODEL.QuanLyKhoHangEntities db = new QuanLyKhoHang.MODEL.QuanLyKhoHangEntities();
 
 
 }
@@ -15,20 +15,11 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                @{ 
-                    var ava = db.Files.FirstOrDefault(x => x.RefernalId == nd_dv.User.UserId && x.RefernalType == EnumRefernalFile.USERS);
-                    var avatar = "";
-                    if (ava != null)
-                    {
-                        avatar = ava.Url;
-                    }
-
-                }
-                <img src="@(!string.IsNullOrEmpty(avatar) ? avatar.Replace("~/", "/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.FullName" class="img-circle profile_img">
+                <img src="@(!string.IsNullOrEmpty(nd_dv.User.Avatar) ? nd_dv.User.Avatar.Replace("~/", "/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.UserFullName" class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Xin chào,</span>
-                <h2>@nd_dv.User.FullName</h2>
+                <h2>@nd_dv.User.UserFullName</h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -38,81 +29,45 @@
             <div class="menu_section">
                 <ul class="nav side-menu">
                     <li class="mn-dashboard"><a href="@Url.Action("MainPage", "Dashboard", new { area = "QuanTri" })"><i class="fa fa-building-o"></i> Dashboard </a></li>
-                    @if (nd_dv.User.UserType == EnumUserType.ADMIN)
+                    @if (nd_dv.User.UserType == EnumUserType.ADMIN || nd_dv.User.UserType == EnumUserType.SUB_ADMIN)
                     {
-                        <li class="mn-users"><a href="@Url.Action("MainPage","User", new { area="QuanTri"})"><i class="fa fa-users"></i> Người dùng</a></li>
-                        <li class="mn-invests"><a href="@Url.Action("MainPage","Invests", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Danh sách góp vốn</a></li>
-                        <li class="mn-invests-upgrade"><a href="@Url.Action("Upgrade","Invests", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Nâng cấp góp vốn</a></li>
-                        <li class="mn-payment"><a href="@Url.Action("MainPage","ExternalPayment", new { area="QuanTri"})"><i class="fa fa-usd"></i> Danh sách chi phí</a></li>
-                        <li class="mn-transactions"><a href="@Url.Action("MainPage","Transactions", new { area="QuanTri"})"><i class="fa fa-refresh"></i> Lịch sử trả lãi</a></li>
-                        <li class="mn-transactions-withdrawal"><a href="@Url.Action("Withdrawal","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền</a></li>
-                        <li class="mn-transactions-withdrawal-admin"><a href="@Url.Action("Withdrawal_Admin","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Admin thêm)</a></li>
-                        <li class="mn-transactions-walletbonus"><a href="@Url.Action("Wallet_Bonus","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử Ví thưởng</a></li>
-                        <li class="mn-transactions-withdrawal-bonus"><a href="@Url.Action("Withdrawal_Bonus","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví thưởng)</a></li>
-                        <li class="mn-transactions-withdrawal-coin"><a href="@Url.Action("Withdrawal_Coin","TransactionCoin", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví coin)</a></li>
-                         <li class="mn-transactions-transfer"><a href="@Url.Action("Transfer","Transactions", new { area="QuanTri"})"><i class="fa fa-share"></i> Lịch sử chuyển tiền</a></li>
-                        <li class="mn-kyc"><a href="@Url.Action("XacMinhKYC","User", new { area="QuanTri"})"><i class="fa fa-share"></i> Xác minh KYC</a></li>
-
+                        <li class="mn-users"><a href="@Url.Action("MainPage","Users", new { area="QuanTri"})"><i class="fa fa-users"></i> Người dùng</a></li>
+                        <li class="mn-provider"><a href="@Url.Action("MainPage","Providers", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Nhà cung cấp</a></li>
+                        <li class="mn-category"><a href="@Url.Action("MainPage","Categories", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Danh mục sản phẩm</a></li>
+                        <li class="mn-product"><a href="@Url.Action("MainPage","Products", new { area="QuanTri"})"><i class="fa fa-usd"></i>Sản phẩm</a></li>
+                        <li class="mn-order"><a href="@Url.Action("MainPage","Order", new { area="QuanTri"})"><i class="fa fa-refresh"></i>Hóa đơn</a></li>
+                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventory", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>
                         <li class="mn-homepage mn-services mn-banks mn-bank-branch mn-notifications mn-config">
-                            <a><i class="fa fa-cogs"></i> Cấu hình<span class="fa fa-chevron-down"></span></a>
+                            <a><i class="fa fa-cogs"></i> Báo cáo thống kê<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li class="mn-homepage"><a href="@Url.Action("Update","HomePage", new { area="QuanTri"})"> Cấu hình trang chủ</a></li>
-                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})"> Quản trị lĩnh vực</a></li>
-                                <li class="mn-banks"><a href="@Url.Action("Mainpage","Banks", new { area="QuanTri"})"> Ngân hàng</a></li>
-                                <li class="mn-bank-branch"><a href="@Url.Action("Mainpage","Bank_Branch", new { area="QuanTri"})"> Chi nhánh</a></li>
-                                <li class="mn-notifications"><a href="@Url.Action("Mainpage","Notifications", new { area="QuanTri"})"> Thông báo</a></li>
-                                <li class="mn-config"><a href="@Url.Action("Mainpage","AppConfig", new { area="QuanTri"})"> Cấu hình</a></li>
-                                <li class="mn-cp"><a href="@Url.Action("Mainpage","ConfigCPRate", new { area="QuanTri"})"> Thiết lập tỉ giá CP</a></li>
-
+                                <li class="mn-homepage"><a href="@Url.Action("Update","Report", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
+                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
+                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
+                                <li class="mn-banks"><a href="@Url.Action("Mainpage","Banks", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
+                                <li class="mn-bank-branch"><a href="@Url.Action("Mainpage","Bank_Branch", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
+                                <li class="mn-notifications"><a href="@Url.Action("Mainpage","Notifications", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
                             </ul>
                         </li>
-                        <li class="mn-supplier mn-cardvalue mn-transactions-buycard">
-                            <a><i class="fa fa-credit-card"></i> Sim thẻ<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li class="mn-supplier"><a href="@Url.Action("MainPage","Supplier", new { area="QuanTri"})">Nhà mạng</a></li>
-                                <li class="mn-cardvalue"><a href="@Url.Action("MainPage","CardValue", new { area="QuanTri"})">Mệnh giá thẻ</a></li>
-                                <li class="mn-transactions-buycard"><a href="@Url.Action("MainPage","TransactionsBuyCard", new { area="QuanTri"})">Lịch sử thanh toán cước điện thoại</a></li>
-                            </ul>
-                        </li>
-
                     }
-                    @*else if (nd_dv.User.UserType == EnumUserType.EMPLOYEES_LEVEL1)
-                    {
-                        <li class="mn-users"><a href="@Url.Action("MainPage","User", new { area="QuanTri"})"><i class="fa fa-users"></i> Người dùng</a></li>
-                        <li class="mn-invests"><a href="@Url.Action("MainPage","Invests", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Danh sách góp vốn</a></li>
-                        <li class="mn-invests-upgrade"><a href="@Url.Action("Upgrade","Invests", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Nâng cấp góp vốn</a></li>
-                        <li class="mn-payment"><a href="@Url.Action("MainPage","ExternalPayment", new { area="QuanTri"})"><i class="fa fa-usd"></i> Danh sách chi phí</a></li>
-                        <li class="mn-transactions"><a href="@Url.Action("MainPage","Transactions", new { area="QuanTri"})"><i class="fa fa-refresh"></i> Lịch sử trả lãi</a></li>
-                        <li class="mn-transactions-withdrawal"><a href="@Url.Action("Withdrawal","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền</a></li>
-                        <li class="mn-transactions-withdrawal-bonus"><a href="@Url.Action("Withdrawal_Bonus","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví thưởng)</a></li>
-                        <li class="mn-transactions-withdrawal-coin"><a href="@Url.Action("Withdrawal_Coin","TransactionCoin", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví coin)</a></li>
-                        <li class="mn-transactions-transfer"><a href="@Url.Action("Transfer","Transactions", new { area="QuanTri"})"><i class="fa fa-share"></i> Lịch sử chuyển tiền</a></li>
-                    }
-                    else if (nd_dv.User.PermissionID == EnumPermission.EMPLOYEES_LEVEL2)
-                    {
-                        <li class="mn-transactions-withdrawal"><a href="@Url.Action("Withdrawal","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền</a></li>
-                        <li class="mn-transactions-withdrawal-bonus"><a href="@Url.Action("Withdrawal_Bonus","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví thưởng)</a></li>
-                    }
-                    else if (nd_dv.User.PermissionID == EnumPermission.EMPLOYEES_APPROVE_CARD)
-                    {
-                        <li class="mn-supplier mn-cardvalue mn-transactions-buycard">
-                            <a><i class="fa fa-truck"></i> Sim thẻ<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
-                                <li class="mn-supplier"><a href="@Url.Action("MainPage","Supplier", new { area="QuanTri"})">Nhà mạng</a></li>
-                                <li class="mn-cardvalue"><a href="@Url.Action("MainPage","CardValue", new { area="QuanTri"})">Mệnh giá thẻ</a></li>
-                                <li class="mn-transactions-buycard"><a href="@Url.Action("MainPage","TransactionsBuyCard", new { area="QuanTri"})">Lịch sử mua thẻ</a></li>
-                            </ul>
-                        </li>
-                    }*@
                     else
                     {
-                        <li class="mn-invests"><a href="@Url.Action("MainPage","Invests", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Danh sách góp vốn</a></li>
-                        <li class="mn-invests-upgrade"><a href="@Url.Action("Upgrade","Invests", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Nâng cấp góp vốn</a></li>
-                        <li class="mn-payment"><a href="@Url.Action("MainPage","ExternalPayment", new { area="QuanTri"})"><i class="fa fa-usd"></i> Danh sách chi phí</a></li>
-                        <li class="mn-transactions"><a href="@Url.Action("MainPage","Transactions", new { area="QuanTri"})"><i class="fa fa-refresh"></i> Lịch sử trả lãi</a></li>
-                        <li class="mn-transactions-withdrawal"><a href="@Url.Action("Withdrawal","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền</a></li>
-
-                        <li class="mn-transactions-withdrawal-bonus"><a href="@Url.Action("Withdrawal_Bonus","Transactions", new { area="QuanTri"})"><i class="fa fa-history"></i> Lịch sử rút tiền (Ví thưởng)</a></li>
+                        <li class="mn-users"><a href="@Url.Action("MainPage","User", new { area="QuanTri"})"><i class="fa fa-users"></i> Người dùng</a></li>
+                        <li class="mn-provider"><a href="@Url.Action("MainPage","Provider", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Nhà cung cấp</a></li>
+                        <li class="mn-category"><a href="@Url.Action("MainPage","Category", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Danh mục sản phẩm</a></li>
+                        <li class="mn-product"><a href="@Url.Action("MainPage","Product", new { area="QuanTri"})"><i class="fa fa-usd"></i>Sản phẩm</a></li>
+                        <li class="mn-order"><a href="@Url.Action("MainPage","Order", new { area="QuanTri"})"><i class="fa fa-refresh"></i>Hóa đơn</a></li>
+                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventory", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>
+                        <li class="mn-homepage mn-services mn-banks mn-bank-branch mn-notifications mn-config">
+                            <a><i class="fa fa-cogs"></i> Báo cáo thống kê<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="mn-homepage"><a href="@Url.Action("Update","Report", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
+                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
+                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
+                                <li class="mn-banks"><a href="@Url.Action("Mainpage","Banks", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
+                                <li class="mn-bank-branch"><a href="@Url.Action("Mainpage","Bank_Branch", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
+                                <li class="mn-notifications"><a href="@Url.Action("Mainpage","Notifications", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
+                            </ul>
+                        </li>
                     }
 
                 </ul>
@@ -131,20 +86,19 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        @*<img src="@(!string.IsNullOrEmpty(nd_dv.User.Avatar) ? nd_dv.User.Avatar.Replace("~/","/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.FullName">*@@nd_dv.User.FullName
+                        @*<img src="@(!string.IsNullOrEmpty(nd_dv.User.Avatar) ? nd_dv.User.Avatar.Replace("~/","/") : "/Files/images/system/user_empty.jpg")" alt="@nd_dv.User.FullName">*@@nd_dv.User.UserFullName
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="@Url.Action("Info","User", new { area = "QuanTri", id= nd_dv.User.UserId})"> Thông tin cá nhân</a></li>
+                        <li><a href="@Url.Action("Info","Users", new { area = "QuanTri", id= nd_dv.User.UserId})"> Thông tin cá nhân</a></li>
                         <li>
                             <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Change_Password","Account",new { area="" })', function (e) { $('#modal-qltaikhoan').modal('show'); });"> Đổi mật khẩu</a>
                         </li>
-                        @if (nd_dv.User.UserType == EnumUserType.ADMIN)
-                        {
-                            <li>
-                                <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Change_Password","User",new { area="QuanTri" })', function (e) { $('#modal-qltaikhoan').modal('show'); });"> Đổi mật khẩu cấp 2</a>
-                            </li>
-                        }
+
+                        <li>
+                            <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Config","Home",new { area="" })', function (e) { $('#modal-qltaikhoan').modal('show'); });">Cấu hình</a>
+                        </li>
+                        
                         <li><a href="@Url.Action("Logout","Account", new { area = ""})"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
                     </ul>
                 </li>

@@ -1,5 +1,6 @@
 ﻿@{ 
     Layout = null;
+    var config = (QuanLyKhoHang.MODEL.AppConfig)ViewBag.Config;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -38,35 +39,36 @@
 </head>
 <body>
     <div class="limiter">
-        <div class="container-login100" style="background-image: url('/Libs/Login_v3/images/bg-01.jpg');">
-            <div class="wrap-login100" style="background: -webkit-linear-gradient(top, #dee0f5, #0683ef)">
-                <form class="login100-form validate-form" id="frm-dangnhap">
-                    <span class="login100-form-logo" style="background: url('/Files/images/system/Euronutrition-logo-1.png') center no-repeat;background-size: 100%;">
-                    </span>
-                    <span class="login100-form-title p-b-34 p-t-27">
-                        ĐĂNG NHẬP
-                    </span>
-                    <div class="wrap-input100 validate-input form-group" data-validate="Nhập tài khoản">
-                        <input class="input100" type="text" name="u" placeholder="Tài khoản" autocomplete="off">
-                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input form-group" data-validate="Nhập mật khẩu">
-                        <input class="input100" type="password" name="p" placeholder="Mật khẩu" autocomplete="off">
-                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
-                    </div>
-                    <div class="container-login100-form-btn">
-                        <button type="submit" id="btn-dangnhap" class="login100-form-btn" style="background: -webkit-linear-gradient(bottom, #dee0f5, #0683ef)">
-                            Đăng nhập
-                        </button>
-                    </div>
-                    <div class="text-center p-t-90">
-                        <a class="txt1" href="#">
-                            Quên mật khẩu?
-                        </a>
-                    </div>
-                </form>
+        <div class="container-login100" style="background-image: url('@(string.IsNullOrEmpty(config.ImageLogin)?"/Libs/Login_v3/images/bg-01.jpg":config.ImageLogin.Replace("~",""))');">
+           
+                <div class="wrap-login100" style="background: @(string.IsNullOrEmpty(config.ImagePanelLogin)?"-webkit-linear-gradient(top, #dee0f5, #0683ef)":"url('"+config.ImagePanelLogin.Replace("~","")+"')")">
+                    <form class="login100-form validate-form" id="frm-dangnhap">
+                        <span class="login100-form-logo" style="background: url('/Files/images/system/Euronutrition-logo-1.png') center no-repeat;background-size: 100%;">
+                        </span>
+                        <span class="login100-form-title p-b-34 p-t-27">
+                            ĐĂNG NHẬP
+                        </span>
+                        <div class="wrap-input100 validate-input form-group" data-validate="Nhập tài khoản">
+                            <input class="input100" type="text" name="u" placeholder="Tài khoản" autocomplete="off">
+                            <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        </div>
+                        <div class="wrap-input100 validate-input form-group" data-validate="Nhập mật khẩu">
+                            <input class="input100" type="password" name="p" placeholder="Mật khẩu" autocomplete="off">
+                            <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        </div>
+                        <div class="container-login100-form-btn">
+                            <button type="submit" id="btn-dangnhap" class="login100-form-btn" style="background: -webkit-linear-gradient(bottom, #dee0f5, #0683ef)">
+                                Đăng nhập
+                            </button>
+                        </div>
+                        <div class="text-center p-t-90">
+                            <a class="txt1" href="#">
+                                Quên mật khẩu?
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
     </div>
 
     <div id="dropDownSelect1"></div>
@@ -125,7 +127,7 @@
                 success: function (data) {
                     if (data.kq == "ok") {
                         alertify.success(data.msg);
-                        window.location.href = '@Url.Action("Mainpage", "Dashboard", new { area= "QuanTri" })';
+                        window.location.href = '@Url.Action("MainPage", "DashBoard", new { area= "QuanTri" })';
                     }
                     else {
                         alertify.error(data.msg);
