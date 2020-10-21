@@ -1,0 +1,603 @@
+﻿
+@using QuanLyKhoHang.UI.Models
+@model OrderInfo
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+
+}
+<div class="x_panel">
+    <div class="x_title">
+        <h2><i class="fa fa-pencil"></i>@(Model.Orders == null ? "Thêm mới hóa đơn" : "Cập nhật hóa đơn")</h2>
+        <div class="clearfix"></div>
+        <ul class="nav nav-tabs bar_tabs nhomquyen col-md-12" role="tablist">
+            <li role="presentation" class="active"><a href="#" id="thongtincoban">Thông tin cơ bản</a></li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <form id="frm-capnhat" method="post" enctype="multipart/form-data" novalidate="novalidate" class="fv-form fv-form-bootstrap">
+            <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>
+            @*<input type="hidden" id="UserID" name="UserID" value="@(Model.User != null ? Model.User.UserId.ToString():"")" />
+                <input type="hidden" id="OldEmail" name="OldEmail" value="@(Model.User != null ? Model.User.Email.ToString():"")" />
+                <input type="hidden" id="OldReferralCode" name="OldReferralCode" value="@(Model.User != null && !string.IsNullOrEmpty(Model.User.RefernalCode) ? Model.User.RefernalCode.ToString():"")" />
+                <input type="hidden" id="User_BankId" name="User_BankId" value="@(Model.User_Bank != null ? Model.User_Bank.User_BankId.ToString():"")" />*@
+
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Chọn nhà cung cấp :</label>
+                    <div>
+                        <select class="ctr-select" data-live-search="true" id="OrderProviderId" name="OrderProviderId">
+                            @Html.Raw(ViewBag.cbxProvider)
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Loại hóa đơn</label>
+                    <div>
+                        <select class="ctr-select" data-live-search="true" id="type" name="type">
+                            <option value="" @(Model.Orders == null ? "selected" : "")>Chọn loại hóa đơn ......</option>
+                            <option value="@EnumOrderType.NHAP" @(Model.Orders != null && Model.Orders.OrderType == null ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.NHAP)</option>
+                            <option value="@EnumOrderType.XUAT" @(Model.Orders != null && Model.Orders.OrderType == null ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.XUAT)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Danh sách sản phẩm :</label>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group" id="listSanPham" hidden>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row mgt-2 mulitiple-form">
+                                <div class="subElement">
+                                    <div class="col-md-12 row">
+                                        <div class="col-md-2">
+                                            <select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">
+                                                <option value="">--Mã sản phẩm --</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ValueDate" type="text" class="form-control not-empty pickadateSearch" placeholder="Ngày sản xuất">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ExpireDate" type="text" class="form-control not-empty pickadateSearch" placeholder="Ngày hết hạn sử dụng">
+                                        </div>
+                                        <div class="col-md-2" hidden>
+                                            <input id="ProductId" type="text" class="form-control" placeholder="Enter property">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input id="ProductNumber" type="text" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input id="ProductUnit" type="text" class="form-control" placeholder="Đơn vị tính">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ProductPrice" onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" type="text" class="form-control" placeholder="Đơn giá">
+                                        </div>
+                                        <div class="col-md-2 diviconplus">
+                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+
+                <div class="form-group clearfix">
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                        <a class="btn btn-primary" href="@Url.Action("MainPage","Orders", new { area = "QuanTri"})">Hủy</a>
+                        <button id="btn-save" type="submit" class="btn btn-success">Lưu thông tin</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-capnhatthongtin"></div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-themmoithongtin"></div>
+
+<style>
+    .subElement {
+        padding-bottom: 50px;
+    }
+</style>
+
+<script>
+    $(function () {
+        $('#ValueDate').datetimepicker({ format: 'DD/MM/YYYY' });
+        $('#ExpireDate').datetimepicker({
+            format: 'DD/MM/YYYY',
+        });
+
+    });
+    $(document).on("change", "[name=OrderProviderId]", function () {
+        var params = {
+            id : $('#OrderProviderId').val()
+        }
+        $.ajax({
+            url: '@Url.Action("GetProductByProvider", "Orders", new { area = "QuanTri" })',
+            type: 'POST',
+            data:params ,
+            success: function (data) {
+                if (data.kq == "ok") {
+                    renderProductCode = data.data;
+                    $('#ProductCode').html(data.data);
+                    $('#listSanPham').removeAttr("hidden","false");
+                }
+                else {
+                    alertify.error(data.msg);
+                }
+            }
+        });
+
+    });
+    var renderProductCode = "";
+    let data = @Html.Raw(Json.Encode(Model));
+    $arr = [0]
+    var current = 1;
+    console.log(current);
+    if(data.order != null){
+        // neu chon create chu ko phai xem chi tiet
+        var product = data.details;
+
+        for(var i =0; i<product.length-1;i++){
+            addElement(i);
+        }
+        $('#ProviderId').val(data.order.OrderProviderId).change();
+        for(var i =0; i<product.length;i++){
+            var pro = product[i];
+            console.log(pro.DetailProductId);
+            if(i != 0 ){
+                $('#ProductCode'+i).val(pro.DetailProductId).change();
+            }else{
+                $('#ProductCode').val(pro.DetailProductId).change();
+            }
+        }
+
+        console.log(product);
+    }
+
+    function addElement(pos) {
+        if(pos != current)
+            pos = current;
+        let attr = `<div class ="subElement">
+                <div class ="col-md-12 row">
+                    <div class ="col-md-2">
+                        <select class="ctr-select" onchange="selectProduct(${current})" name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
+                            `+
+                                renderProductCode
+                        + `</select>
+                    </div>
+                    <div class ="col-md-2">
+                        <input id="ValueDate${current}" type="text" class ="form-control not-empty pickadateSearch" placeholder="Ngày sản xuất">
+                    </div>
+                    <div class ="col-md-2">
+                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty pickadateSearch" placeholder="Ngày hết hạn sử dụng">
+                    </div>
+                    <div class ="col-md-2" hidden>
+                        <input id="ProductId${current}" type="text" class ="form-control" placeholder="Enter property">
+                    </div>
+                    <div class ="col-md-1">
+                        <input id="ProductNumber${current}" type="text" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
+                    </div>
+                     <div class="col-md-1">
+                                                    <input id="ProductUnit${current}" type="text" class="form-control" placeholder="Đơn vị tính">
+                                                </div>
+                    <div class ="col-md-2">
+                        <input id="ProductPrice${current}" type="text"  onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Đơn giá">
+                    </div>
+                    <div class ="col-md-2 diviconplus">
+                        <span class ="iconplus"><i onclick= "removeCurElement(${current})" class ="fa fa-minus" aria-hidden="true"> Loại bỏ</i></span>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        $('.mulitiple-form').append(attr);
+        $arr.push(current);
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+        current = current + 1;
+    }
+    function removeCurElement($cur) {
+        $i = 0;
+        $pos = 0;
+        for ($i; $i < $arr.length; $i++) {
+            if ($arr[$i] == $cur) {
+                $pos = $i;
+                $arr.splice($i, 1);
+            }
+        }
+        $('.subElement')[$pos].remove();
+        current = current - 1;
+    }
+
+    function formatCurrency(target) {
+        const pat = /(\,[0-9]{0,3})$/gm;
+
+        if (pat)
+            var separate = ".";
+        var s = target.value.toString().split('.').join("");
+        var regex = /\B(?=(\d{3})+(?!\d))/g;
+
+        if (s.includes(',')) {
+            s = s.split(',');
+            var ret = s[0].replace(regex, separate);
+            ret = ret + ',' + s[1];
+        } else {
+            var ret = s.replace(regex, separate);
+        }
+        target.value = ret;
+    }
+
+    function validateNumber(e) {
+        if ((e.keyCode > 47 && e.keyCode < 58) || e.keyCode == 44)
+            return true;
+        else
+            return false;
+    }
+    function checkValid(value) {
+        if (value == '' || value == null) return false;
+        else {
+            const patt = /[\'\"\!\#\$\%\^\&\*\(\)\<\>]/g;
+            const res = patt.test(value);
+            return res;
+        }
+    }
+</script>
+
+<script>
+    mnActive = "mn-users";
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+    })
+    $(document).on('keyup', '#UserName', function () {
+        var userName = $("#UserName").val();
+        var convert = change_alias(userName);
+        $("#UserName").val(convert);
+    });
+    $(document).on('change', '#Email', function () {
+        var oldEmail = $("#OldEmail").val();
+        var newEmail = $("#Email").val();
+        if (newEmail != oldEmail) {
+            $(".security").removeClass("hidden-display");
+            $(".security").addClass("active-display");
+        }
+    });
+    $(document).on('change', '#ReferralCode', function () {
+        var oldReferralCode = $("#OldReferralCode").val();
+        var referralCode = $("#ReferralCode").val();
+        if (referralCode != oldReferralCode) {
+            $(".security").removeClass("hidden-display");
+            $(".security").addClass("active-display");
+        }
+    });
+    $(document).on('change', '#BankID', function () {
+        $('#frm-capnhat').formValidation('updateStatus', 'BankID', 'NOT_VALIDATED').formValidation('validateField', 'BankID');
+    });
+    $(document).on('change', '#BankID', function () {
+        var bankID = $("#BankID").val();
+        $.ajax({
+            url: '@Url.Action("GetBranchList", "Account", new { area = "" })?bankID=' + bankID + "&userID=" + $("#UserID").val(),
+            type: 'GET',
+            mimeType: "multipart/form-data",
+            contentType: false,
+            processData: false,
+            async: false,
+            cache: false,
+            success: function (data) {
+                $("#Bank_BranchID").html(data)
+                $("#Bank_BranchID").selectpicker("refresh");
+                $('#frm-capnhat').formValidation('updateStatus', 'Bank_BranchID', 'NOT_VALIDATED').formValidation('validateField', 'Bank_BranchID');
+            }
+        });
+    });
+    $(document).on('change', '#Bank_BranchID', function () {
+        $('#frm-capnhat').formValidation('updateStatus', 'Bank_BranchID', 'NOT_VALIDATED').formValidation('validateField', 'Bank_BranchID');
+    });
+    $(document).on('change', '#ReferralCode', function () {
+        $('#frm-capnhat').formValidation('updateStatus', 'ReferralCode', 'NOT_VALIDATED').formValidation('validateField', 'ReferralCode');
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.datetimepicker1').datetimepicker({
+            format: "DD/MM/YYYY"
+        }).on("dp.change", function (e) {
+            $('#frm-capnhat').formValidation('updateStatus', 'DateOfBirth', 'NOT_VALIDATED').formValidation('validateField', 'DateOfBirth');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#frm-capnhat').formValidation({
+            framework: 'bootstrap',
+            excluded: ':disabled',
+            fields: {
+                UserName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                                if (value.length != 0 && vnf_regex.test(value) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số điện thoại của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 500) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 500 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                FullName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Area: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                IDCard: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                if (isNaN(value)) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số CMND/Thẻ căn cước dạng số'
+                                    }
+                                }
+                                if (value.length != 0 && value.length != 9 && value.length != 12) {
+                                    return {
+                                        valid: false,
+                                        message: 'Sai định dạng. Số CMND/Thẻ căn cước là 9 hoặc 12 số.<br/>Số ký tự hiện tại đang là ' + (value.length)
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                DateOfBirth: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var DateOfBirth = $("#DateOfBirth").val();
+                                var vnf_regex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+                                if (DateOfBirth != "" && vnf_regex.test(DateOfBirth) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Ngày của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Phone: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                                if (value.length != 0 && vnf_regex.test(value) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số điện thoại của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+
+                Bank_Account: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                Bank_UserName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                FbName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                FacebookUrl: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        }
+
+                    }
+                },
+                BankID: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        }
+
+                    }
+                },
+                ReferralCode: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        }
+
+                    }
+                }
+
+            }
+        }).on('success.form.fv', function (e) {
+            document.getElementById("btn-save").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Update", "User", new { area = "QuanTri" })',
+                type: 'POST',
+                dataType: 'json',
+                mimeType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false,
+                cache: false,
+                data: new FormData(document.getElementById('frm-capnhat')),
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "User", new { area= "QuanTri" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save").disabled = false;
+                        $("#btn-save").removeClass("disabled");
+                    }
+                }
+            });
+        });
+    });
+    function change_alias(alias) {
+        var str = alias;
+        str = str.toLowerCase();
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/!|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
+        str = str.replace(/ + /g, " ");
+        str = str.trim();
+        return str;
+    }
+    function EnterUserName(evt) {
+        var val = evt.value;
+        $('#Phone').val(val);
+    }
+</script>
+
+

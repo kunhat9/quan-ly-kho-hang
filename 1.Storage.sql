@@ -15,11 +15,13 @@ CREATE TABLE TB_Users		-- Người dùng
 	, UserPhone nvarchar(20) -- số điện thoại 
 	, UserDateCreated Datetime -- ngày tạo user
 	, UserPassword nvarchar(255) -- mật khẩu đăng nhập 
-	, UserType nvarchar(20)		-- Phân loại: ADMIN / STAFF
+	, UserType int		-- Phân loại: ADMIN / STAFF
 	, UserStatus int	-- Trạng thái
 	, UserNote nvarchar(100)	-- Ghi chú
 	, Avatar nvarchar(max)
 )
+GO
+ALTER TABLE TB_Users ALTER COLUMN UserType INT
 GO
 CREATE TABLE TB_Providers	-- Nhà cung cấp
 (
@@ -49,13 +51,15 @@ CREATE TABLE TB_Products	-- Sản phẩm
 	, ProductName nvarchar(50)		-- Tên sp
 	, ProductImage nvarchar(MAX)	-- Hình ảnh
 	, ProductNote nvarchar(100)		-- Mô tả thêm
+	, ProductPrice decimal(18,2)	-- giá
 	, ProductStatus INT     -- Trạng thái :
 	, ProductProviderId int			-- Mã ncc
-	, CONSTRAINT FK_ProductProviderId FOREIGN KEY (ProductProviderId) REFERENCES TB_PROVIDERS(ProviderId)
+	--, CONSTRAINT FK_ProductProviderId FOREIGN KEY (ProductProviderId) REFERENCES TB_PROVIDERS(ProviderId)
 	, ProductCategoriesId int			-- Mã file
-	, CONSTRAINT FK_ProductCategoriesId FOREIGN KEY (ProductCategoriesId) REFERENCES TB_Categories(CategoriesId)
+	--, CONSTRAINT FK_ProductCategoriesId FOREIGN KEY (ProductCategoriesId) REFERENCES TB_Categories(CategoriesId)
 
 )
+
 GO
 CREATE TABLE TB_Orders	-- Đơn hàng
 (
@@ -64,10 +68,11 @@ CREATE TABLE TB_Orders	-- Đơn hàng
 	, OrderType int		-- Loại đơn: NHAP/XUAT
 	, OrderDate datetime				-- Ngày nhập/xuất hàng
 	, OrderProviderId int			-- Mã ncc
-	, CONSTRAINT FK_OrderProviderId FOREIGN KEY (OrderProviderId) REFERENCES TB_PROVIDERS(ProviderId)
+	--, CONSTRAINT FK_OrderProviderId FOREIGN KEY (OrderProviderId) REFERENCES TB_PROVIDERS(ProviderId)
 	, OrderUserId int				-- Mã người nhập/xuất
-	, CONSTRAINT FK_OrderUserId FOREIGN KEY (OrderUserId) REFERENCES TB_USERS(UserId)
+	--, CONSTRAINT FK_OrderUserId FOREIGN KEY (OrderUserId) REFERENCES TB_USERS(UserId)
 )
+
 GO
 CREATE TABLE TB_OrderDetails	-- Chi tiết đơn hàng
 (
@@ -77,9 +82,9 @@ CREATE TABLE TB_OrderDetails	-- Chi tiết đơn hàng
 	, DetailValueDate date			-- Ngày sản xuất
 	, DetailExpiredDate date		-- Ngày hết hạn
 	, DetailOrderId int				-- Mã đơn hàng
-	, CONSTRAINT FK_DetailOrderId FOREIGN KEY (DetailOrderId) REFERENCES TB_ORDERS(OrderId)
+	--, CONSTRAINT FK_DetailOrderId FOREIGN KEY (DetailOrderId) REFERENCES TB_ORDERS(OrderId)
 	, DetailProductId int			-- Mã sp
-	, CONSTRAINT FK_DetailProductId FOREIGN KEY (DetailProductId) REFERENCES TB_PRODUCTS(ProductId)
+	--, CONSTRAINT FK_DetailProductId FOREIGN KEY (DetailProductId) REFERENCES TB_PRODUCTS(ProductId)
 )
 GO
 CREATE TABLE TB_Inventory -- thông tin kiểm kê hàng hóa
@@ -107,10 +112,18 @@ CREATE TABLE AppConfig
 (
 	Id int identity Primary key
 	, ImageLogin nvarchar(max)
+	, ImagePanelLogin varchar(max)
 )
+GO
+ALTER TABLE TB_Orders ADD OrderStatus int
+GO
+ALTER TABLE TB_Orders ADD OrderPrice decimal(18,2)
+GO
+INSERT INTO AppConfig(ImageLogin,ImagePanelLogin)
+VALUES ('~/Libs/Login_v3/images/bg-01.jpg','~-webkit-linear-gradient(top, #dee0f5, #0683ef)')
+GO
 INSERT INTO [dbo].[TB_USERS]([Username],[UserPassword],[UserType],[UserStatus],[UserNote], UserFullName , UserAddress , UserPhone,UserDateCreated)
-     VALUES ('ADMIN', N'06D49632C9DC9BCB62AEAEF99612BA6B', N'ADMIN', 1,N'',N'Admin Hệ thống',N'',N'',GETDATE())
-
+     VALUES ('ADMIN', N'/f9e7bsNi+c=', 1, 1,N'',N'Admin Hệ thống',N'',N'',GETDATE())
 /*
 	1, Đăng nhập
 	2, Trang chủ

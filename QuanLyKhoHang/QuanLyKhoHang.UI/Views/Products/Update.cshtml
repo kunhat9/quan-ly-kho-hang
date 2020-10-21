@@ -1,0 +1,253 @@
+﻿@model QuanLyKhoHang.MODEL.TB_Products
+@using QuanLyKhoHang.UI.Models
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Thông tin nhà cung cấp</h4>
+        </div>
+        <form class="fv-form fv-form-bootstrap" id="frm-capnhat1">
+            <div class="modal-body">
+                <input type="hidden" id="ProductId" name="ProductId" value="@Model.ProductId" />
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Mã sản phẩm</label>
+                        <div>
+                            <input type="text" class="form-control" id="ProductCode" readonly name="ProductCode" value="@Model.ProductCode" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Trạng thái:</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" name="ProductStatus">
+                                <option value="@EnumStatus.ACTIVE" @(Model != null && Model.ProductStatus == EnumStatus.ACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.ACTIVE)</option>
+                                <option value="@EnumStatus.INACTIVE" @(Model != null && Model.ProductStatus == EnumStatus.INACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.INACTIVE)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Tên sản phẩm</label>
+                        <div>
+                            <input type="text" class="form-control" id="ProductName" name="ProductName" value="@Model.ProductName" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Giá</label>
+                        <div>
+                            <input type="text" class="form-control" id="ProductPrice" name="ProductPrice" value="@Model.ProductPrice" autocomplete="off" )>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Nhà cung cấp</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" name="ProductProviderId">
+                                @Html.Raw(ViewBag.cbxProvider)
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Danh mục</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" name="ProductCategoriesId">
+                                @Html.Raw(ViewBag.cbxCategory)
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label" for="first-name">Mô tả</label>
+                        <div>
+                            <textarea rows="3" class="form-control" autocomplete="off" name="ProductNote">@Model.ProductNote</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label" for="first-name">Ảnh sản phẩm:</label>
+                        <div>
+                            <div style="margin-bottom:10px">
+                                <input type="file" class="form-control" name="_Avatar" />
+                            </div>
+                            @if (Model != null && !string.IsNullOrEmpty(Model.ProductImage))
+                            {
+                                <div class="col-md-55">
+                                    <div class="thumbnail" style="height:auto;">
+                                        <div class="image view view-first">
+                                            <img id="_AnhBia" src="@Model.ProductImage.Replace("~/", "/")" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="width: 100%; display: block;" alt="image" />
+                                            <div class="mask">
+                                                <p></p>
+                                                <div class="tools tools-bottom">
+                                                    <a href="javascript: window.open('@Model.ProductImage.Replace("~/", "/")', '_blank')"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <img id="_AnhBia" src="" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="max-height:150px; display:none;" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button id="btn-save1" type="submit" class="btn btn-success">Lưu</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+    });
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('#frm-capnhat1').formValidation({
+            framework: 'bootstrap',
+            excluded: ':disabled',
+            fields: {
+
+
+                ProductName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                ProductProviderId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                ProductCategoriesId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                ProviderAddress: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                ProductPrice: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                if (isNaN(value)) {
+                                    return {
+                                        valid: false,
+                                        message: 'Giá sản phẩm dạng số!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+
+                _Avatar: {
+                    validators: {
+                        file: {
+                            extension: 'jpeg,jpg,png',
+                            type: 'image/jpeg,image/png',
+                            maxSize: 5242880,
+                            message: 'Hệ thống chỉ hỗ trợ tệp tin hình ảnh định dạng jpeg,jpg,png nhỏ hơn hoặc bằng 5Mb'
+                        },
+                        @if(Model != null && Model.ProductImage==null)
+                            {
+                                <text>
+                                notEmpty: {
+                                    message: 'Dữ liệu bắt buộc!'
+                                },
+                                </text>
+                            }
+                        }
+                    },
+            }
+        }).on('success.form.fv', function (e) {
+            document.getElementById("btn-save1").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Update", "Products", new { area = "QuanTri" })',
+                type: 'POST',
+                dataType: 'json',
+                mimeType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false,
+                cache: false,
+                data: new FormData(document.getElementById('frm-capnhat1')),
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "Products", new { area= "QuanTri" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save1").disabled = false;
+                        $("#btn-save1").removeClass("disabled");
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+
+

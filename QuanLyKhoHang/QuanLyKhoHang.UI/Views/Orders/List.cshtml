@@ -1,0 +1,58 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model IEnumerable<OrderInfo>
+@{
+    int stt = 0;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">@(++stt)</td>
+            <td class="text-center">
+                <span class="">@item.Orders.OrderCode</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(EnumOrderType.ToString(item.Orders.OrderType))</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.Orders.OrderDate.Value.ToString("dd/MM/yyyy")</span>
+            </td>
+            <td class="text-center">@item.Orders.OrderPrice.Value.ToString("#,###.###")</td>
+            <td class="text-center">@item.ProductInfo.Provider.ProviderName</td>
+           
+            
+            <td class="text-center">
+                <span data-id="@item.Orders.OrderId" onclick="CapNhatTrangThai($(this))" style="cursor: pointer" title="Cập nhật trạng thái">
+                    <i class="fa @(item.Orders.OrderStatus == EnumOrderStatus.DANG_SU_DUNG? "fa-unlock":"fa-lock")" style="font-size:22px;"></i>
+                </span>
+            </td>
+
+            <td class="text-center clickable-td">
+                <div class="dropdown">
+                    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:160px;">
+                        Thao tác
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="btn btn-xs btn-warning" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Update", "Orders", new { area = "QuanTri" , id = item.Orders.OrderId})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><i class="fa fa-plus"></i>Sửa </a>
+                        </li>
+                        <li>
+                            <a class="btn btn-xs btn-danger" data-id="@item.Orders.OrderId" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    }
+}
+<script>
+    $('#idsotrang').val('@ViewBag.sotrang');
+    document.getElementById("idtongsotrang").innerHTML = '@ViewBag.tongsotrang';
+    document.getElementById("idtongso").innerHTML = '(' + '@ViewBag.tongso' + ')';
+    $(".clickable-td").on("click", function (e) {
+        //e.stopPropagation();
+        $(".dropdown-toggle").dropdown();
+    });
+</script>

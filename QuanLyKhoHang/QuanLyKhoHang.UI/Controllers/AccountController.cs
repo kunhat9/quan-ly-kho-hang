@@ -9,17 +9,23 @@ using System.Web.Mvc;
 
 namespace QuanLyKhoHang.UI.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public QuanLyKhoHangEntities db = new QuanLyKhoHangEntities();
+        
+        
+        public ActionResult MainPage()
+        {
+            return RedirectToAction("Login");
+        }
         [Route("login")]
         public ActionResult Login()
         {
             UserInfo nd = (UserInfo)Session["NguoiDung"];
             if (nd != null)
                 return RedirectToAction("Mainpage", "Dashboard", new { area = "QuanTri" });
-            var logoLogin = db.AppConfigs.FirstOrDefault().ImageLogin;
-            ViewBag.Logo = string.IsNullOrEmpty("") ? "" : logoLogin;
+            var config = db.AppConfigs.FirstOrDefault();
+            ViewBag.Config = config;
             return View();
         }
 
@@ -46,7 +52,41 @@ namespace QuanLyKhoHang.UI.Controllers
         {
             Session["NguoiDung"] = null;
             Session["User_Member"] = null;
-            return RedirectToAction("MainPage", "Home", new { area = "" });
+            return RedirectToAction("MainPage", "Account", new { area = "" });
+        }
+
+
+        [Route("change-password")]
+        public ActionResult Change_Password()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [Route("change-password")]
+        public ActionResult Change_Password(string OldPassword = "", string NewPassword = "")
+        {
+            UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+            if (nd_dv == null)
+                return RedirectToAction("MainPage", "Home", new { });
+
+            var user = (from a in db.TB_Users.ToList()
+                        where nd_dv.User.UserId == a.UserId
+                        select new UserInfo()
+                        {
+                            User = a,
+                        }).FirstOrDefault();
+
+            OldPassword = OldPassword.Encode();
+
+            if (user.User.UserPassword != OldPassword)
+                return Json(new { kq = "err", msg = "Mật khẩu cũ không đúng!" }, JsonRequestBehavior.AllowGet);
+
+            NewPassword = NewPassword.Encode();
+            user.User.UserPassword = NewPassword;
+            db.SaveChanges();
+            Session["NguoiDung"] = user;
+            return Json(new { kq = "ok", data = nd_dv.User.UserType, msg = "Success!" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

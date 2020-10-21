@@ -1,0 +1,313 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model UserInfo
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<div class="x_panel">
+    <div class="x_title">
+        <h2><i class="fa fa-pencil"></i> Cập nhật thông tin</h2>
+        <div class="clearfix"></div>
+        <ul class="nav nav-tabs bar_tabs nhomquyen col-md-12" role="tablist">
+            <li role="presentation" class="active"><a href="#" id="thongtincoban">Thông tin cơ bản</a></li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <form id="frm-capnhat" method="post" enctype="multipart/form-data" novalidate="novalidate" class="fv-form fv-form-bootstrap">
+            <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>
+            <input type="hidden" id="UserId" name="UserId" value="@Model.User.UserId" />
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Họ tên:</label>
+                    <div>
+                        <input type="text" class="form-control" name="UserFullName" autocomplete="off" value="@Model.User.UserFullName">
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Trạng thái:</label>
+                    <div>
+                        <select class="ctr-select" data-live-search="true" name="UserStatus">
+                            <option value="@EnumStatus.ACTIVE" @(Model.User.UserStatus == EnumStatus.ACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.ACTIVE)</option>
+                            <option value="@EnumStatus.INACTIVE" @(Model.User.UserStatus == EnumStatus.INACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.INACTIVE)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Số điện thoại:</label>
+                    <div>
+                        <input type="text" class="form-control" name="UserPhone" autocomplete="off" value="@Model.User.UserPhone">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Địa chỉ:</label>
+                    <div>
+                        <input type="text" class="form-control" name="UserAddress" autocomplete="off" value="@Model.User.UserAddress">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+               
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Mô tả:</label>
+                    <div>
+                       <textarea id="UserNote" name="UserNote" class="form-control">@Model.User.UserNote</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Ảnh đại diện:</label>
+                    <div>
+                        <div style="margin-bottom:10px">
+                            <input type="file" class="form-control" name="_Avatar" />
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.User.Avatar))
+                        {
+                            <div class="col-md-55">
+                                <div class="thumbnail" style="height:auto;">
+                                    <div class="image view view-first">
+                                        <img id="_AnhBia" src="@Model.User.Avatar.Replace("~/", "/")" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="width: 100%; display: block;" alt="image" />
+                                        <div class="mask">
+                                            <p></p>
+                                            <div class="tools tools-bottom">
+                                                <a href="javascript: window.open('@Model.User.Avatar.Replace("~/", "/")', '_blank')"><i class="fa fa-link"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <img id="_AnhBia" src="" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="max-height:150px; display:none;" />
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                    <div class="col-md-12 col-sm-12 col-xs-12 text-right">
+                        <a class="btn btn-primary" href="@Url.Action("MainPage","User", new { area = "QuanTri"})">Hủy</a>
+                        <button id="btn-save" type="submit" class="btn btn-success">Lưu thông tin</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-capnhatthongtin"></div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-themmoithongtin"></div>
+<script>
+    mnActive = "mn-user";
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('.datetimepicker1').datetimepicker({
+            format: "DD/MM/YYYY"
+        }).on("dp.change", function (e) {
+            $('#frm-capnhat').formValidation('updateStatus', 'DateOfBirth', 'NOT_VALIDATED').formValidation('validateField', 'DateOfBirth');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#frm-capnhat').formValidation({
+            framework: 'bootstrap',
+            excluded: ':disabled',
+            fields: {
+                Email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 500) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 500 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                FullName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                IDCard: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                if (isNaN(value)) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số CMND/Thẻ căn cước dạng số'
+                                    }
+                                }
+                                if (value.length != 0 && value.length != 9 && value.length != 12) {
+                                    return {
+                                        valid: false,
+                                        message: 'Sai định dạng. Số CMND/Thẻ căn cước là 9 hoặc 12 số.<br/>Số ký tự hiện tại đang là ' + (value.length)
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                DateOfBirth: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var DateOfBirth = $("#DateOfBirth").val();
+                                var vnf_regex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+                                if (DateOfBirth != "" && vnf_regex.test(DateOfBirth) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Ngày của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                Phone: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                                if (value.length != 0 && vnf_regex.test(value) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số điện thoại của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                ReferralCode: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                    }
+                },
+                _Avatar: {
+                    validators: {
+                        file: {
+                            extension: 'jpeg,jpg,png',
+                            type: 'image/jpeg,image/png',
+                            maxSize: 5242880,
+                            message: 'Hệ thống chỉ hỗ trợ tệp tin hình ảnh định dạng jpeg,jpg,png nhỏ hơn hoặc bằng 5Mb'
+                        },
+                        @if(Model.User.Avatar==null)
+                        {
+                            <text>
+                            notEmpty: {
+                                message: 'Dữ liệu bắt buộc!'
+                            },
+                            </text>
+                        }
+                    }
+                },
+            }
+        }).on('success.form.fv', function (e) {
+            document.getElementById("btn-save").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Info", "User", new { area = "QuanTri" })',
+                type: 'POST',
+                dataType: 'json',
+                mimeType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false,
+                cache: false,
+                data: new FormData(document.getElementById('frm-capnhat')),
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "Dashboard", new { area= "QuanTri" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save").disabled = false;
+                        $("#btn-save").removeClass("disabled");
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+
+

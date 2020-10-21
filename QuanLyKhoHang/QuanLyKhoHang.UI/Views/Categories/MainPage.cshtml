@@ -1,0 +1,236 @@
+﻿@using QuanLyKhoHang.UI.Models;
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Danh sách <span id="permission-name">Nhà cung cấp</span> <span id="idtongso">(0)</span></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="">
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                        <div>
+                            <input class="form-control" placeholder="Tìm kiếm..." name="tuKhoa" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-sm-12">
+                        <a class="btn btn-primary" onclick="DanhSach()">Tìm kiếm</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="x_content table-responsive">
+
+                <ul class="nav nav-tabs bar_tabs nhomquyen" id="nhomquyenid" role="tablist">
+                    <li role="presentation" class="active"><a href="#" id="@EnumStatus.ACTIVE" data-name="@EnumStatus.ToString(EnumStatus.ACTIVE)" role="tab" data-toggle="tab" aria-expanded="false">@EnumStatus.ToString(EnumStatus.ACTIVE)</a></li>
+                    <li role="presentation" class="active"><a href="#" id="@EnumStatus.INACTIVE" data-name="@EnumStatus.ToString(EnumStatus.INACTIVE)" role="tab" data-toggle="tab" aria-expanded="false">@EnumStatus.ToString(EnumStatus.INACTIVE)</a></li>
+                </ul>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="60">STT</th>
+                            <th class="text-center" width="200">Tên danh mục</th>  
+                            <th class="text-center" width="200">Mô tả</th>
+                            <th class="text-center" width="200">Trạng thái</th>
+                            <th width="150" class="text-center">
+                                @if (nd_dv.User.UserType == EnumUserType.ADMIN)
+                                {
+                                    <a class="btn btn-xs btn-primary" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Update","Categories", new { area = "QuanTri"})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><i class="fa fa-plus"></i> Thêm mới</a>
+                                }
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="list"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="19">
+                                <span class="pull-left" style="margin-left:5px;">
+                                    <img title="Firt page" alt="Firt page" style="cursor:pointer" onclick="ChoosePage(3)" src="~/Files/images/system/PgFirst.gif" />
+                                    &nbsp;
+                                    <img title="Next page" alt="Next page" style="cursor:pointer" onclick="ChoosePage(1)" src="~/Files/images/system/PgPrev.gif" />
+                                    &nbsp;
+                                    <label for="" id="">Page </label>
+                                    <input id="idsotrang" style="width:35px;height:28px; text-align:right;" title="Page number input" onkeyup="ChoosePage(0)" />&nbsp;/&nbsp;
+                                    <strong id="idtongsotrang" title="Tổng số trang">0</strong>&nbsp;
+                                    &nbsp;
+                                    <img title="Preview page" alt="Preview page" style="cursor:pointer" onclick="ChoosePage(2)" src="~/Files/images/system/PgNext.gif" />
+                                    &nbsp;
+                                    <img title="End page" alt="End page" style="cursor:pointer" onclick="ChoosePage(4)" src="~/Files/images/system/PgLast.gif" />
+                                </span>
+                                <span class="pull-right" style="margin-right:5px;">
+                                    <label for="" id="">Số dòng trên 1 trang:</label>
+                                    <select name="tongsodong" onchange="ChoosePage(5)" class="DDControl" style="height:30px;">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20" selected>20</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-chitiet" style="z-index: 9999;"></div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-danhsach"></div>
+<div class="modal" tabindex="-1" role="dialog" id="modal-giaodich"></div>
+
+<script>
+    mnActive = "mn-category";
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+        DanhSach();
+    });
+</script>
+
+<script>
+    function DanhSach() {
+        $("#list").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
+        $("#list").load("@Url.Action("List", "Categories", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&status=" + $("#nhomquyenid").val());
+    }
+</script>
+<script>
+
+    $(document).on("change", "[name=tuKhoa]", function () {
+        DanhSach();
+    });
+</script>
+<script>
+    $(document).on("click", ".nhomquyen li a", function () {
+        //change tab view
+        $(this).parents(".nhomquyen").find(".active").removeClass("active");
+        $(this).parent("li").addClass("active");
+        //get nhom quyen
+        $("#nhomquyenid").val($(this).attr("id"));
+        $("#permission-name").text($(this).attr("data-name"));
+        //call function get danh sach
+        DanhSach();
+        return false;
+    });
+</script>
+<script>
+    function ChoosePage(loaichon)//loaichon = 0 nhập số trang, 1 trước, 2 sau, 3 đầu tiên, 4 cuối cùng, 5 chọn số dòng hiển thị
+    {
+        var tongsotrang = Number($('#idtongsotrang').text())
+        var sotrang = Number($('#idsotrang').val());
+        if (isNaN(sotrang)) {
+            alertify.error("Số trang nhập không đúng định dạng số");
+            return false;
+        }
+        if (sotrang > tongsotrang) {
+            alertify.error("Số trang nhập không được quá tổng số trang");
+            return false;
+        }
+        if (loaichon == 0)//nhập số trang
+        {
+            if (sotrang <= 0 || sotrang > tongsotrang) {
+                alertify.error("Số trang phải lớn hơn hoặc bằng 1, nhỏ hơn hoặc bằng tổng số trang: " + tongsotrang);
+                return false;
+            }
+        }
+        else if (loaichon == 1)// trang trước
+        {
+            sotrang = sotrang - 1;
+            if (sotrang <= 0) {
+                alertify.error("Số trang phải lớn hơn hoặc bằng 1");
+                return false;
+            }
+        }
+        else if (loaichon == 2)//trang sau
+        {
+            sotrang = sotrang + 1;
+            if (sotrang > tongsotrang) {
+                alertify.error("Số trang phải nhỏ hơn hoặc bằng tổng số trang: " + tongsotrang);
+                return false;
+            }
+        }
+        else if (loaichon == 3)//trang đầu tiên
+        {
+            sotrang = 1;
+            if (sotrang > tongsotrang) {
+                alertify.error("Số trang phải nhỏ hơn hoặc bằng tổng số trang: " + tongsotrang);
+                return false;
+            }
+        }
+        else if (loaichon == 4)//trang cuối cùng
+        {
+            sotrang = tongsotrang;
+            if (sotrang > tongsotrang) {
+                alertify.error("Số trang phải nhỏ hơn hoặc bằng tổng số trang: " + tongsotrang);
+                return false;
+            }
+        }
+        $("#list").html("<tr><td class='text-center' colspan='19'><img src='/Files/images/system/loading.gif' alt='Loading' style='margin: auto auto;display: block;margin-top: 80px;height:80px;' /></td></tr>");
+        $("#list").load("@Url.Action("List", "Categories", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&status=" + $("#nhomquyenid").val());
+    }
+</script>
+<script>
+    function Xoa(obj) {
+        alertify.confirm('Xác nhận xóa?', function (e) {
+            if (e) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Categories", new { area = "QuanTri" })',
+                    type: 'GET',
+                    dataType: 'json',
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    data: { id: obj.attr("data-id") },
+                    success: function (data) {
+                        if (data.kq == "ok") {
+                            alertify.success(data.msg);
+                            DanhSach();
+                        }
+                        else {
+                            alertify.error(data.msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+<script>
+    function CapNhatTrangThai(obj) {
+        alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
+            if (e) {
+                $.ajax({
+                    url: '@Url.Action("Change_Status", "Categories", new { area = "QuanTri" })',
+                    type: 'GET',
+                    dataType: 'json',
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    async: false,
+                    cache: false,
+                    data: { id: obj.attr("data-id") },
+                    success: function (data) {
+                        if (data.kq == "ok") {
+                            alertify.success(data.msg);
+                            if (data.data == @EnumStatus.ACTIVE)
+                                obj.html('<i class="fa fa-unlock" style="font-size:22px;"></i>');
+                            else
+                                obj.html('<i class="fa fa-lock" style="font-size:22px;"></i>');
+                            DanhSach();
+                        }
+                        else {
+                            alertify.error(data.msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

@@ -1,0 +1,294 @@
+﻿@model QuanLyKhoHang.MODEL.TB_Users
+@using QuanLyKhoHang.UI.Models
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Thông tin người dùng</h4>
+        </div>
+        <form class="fv-form fv-form-bootstrap" id="frm-capnhat1">
+            <div class="modal-body">
+                <input type="hidden" id="UserId" name="UserId" value="@Model.UserId" />
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Tên tài khoản</label>
+                        <div>
+                            <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Trạng thái:</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" name="UserStatus">
+                                <option value="@EnumStatus.ACTIVE" @(Model != null && Model.UserStatus == EnumStatus.ACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.ACTIVE)</option>
+                                <option value="@EnumStatus.INACTIVE" @(Model != null && Model.UserStatus == EnumStatus.INACTIVE ? "Selected" : "")>@EnumStatus.ToString(EnumStatus.INACTIVE)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Họ tên</label>
+                        <div>
+                            <input type="text" class="form-control" id="UserFullName" name="UserFullName" value="@Model.UserFullName" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Loại người dùng</label>
+                        <div>
+                            <select class="ctr-select" data-live-search="true" id="UserType" name="UserType">
+                                <option value="" @(Model.UserType == null ? "selected" : "")>Chọn người dùng.......</option>
+                                <option value="@EnumUserType.MEMBER" @(Model.UserType == EnumUserType.MEMBER ? "selected" : "")>@EnumUserType.ToString(EnumUserType.MEMBER)</option>
+                                <option value="@EnumUserType.INVENTORY" @(Model.UserType == EnumUserType.INVENTORY ? "selected" : "")>@EnumUserType.ToString(EnumUserType.INVENTORY)</option>
+                                <option value="@EnumUserType.ACCOUNTANT" @(Model.UserType == EnumUserType.ACCOUNTANT ? "selected" : "")>@EnumUserType.ToString(EnumUserType.ACCOUNTANT)</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Địa chỉ</label>
+                        <div>
+                            <input type="text" class="form-control" id="UserAddress" name="UserAddress" value="@Model.UserAddress" autocomplete="off" )>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                        <label class="control-label" for="first-name">Số điện thoại</label>
+                        <div>
+                            <input type="text" class="form-control" id="UserPhone" name="UserPhone" value="@Model.UserPhone" autocomplete="off" )>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label" for="first-name">Mô tả</label>
+                        <div>
+                            <textarea rows="3" class="form-control" autocomplete="off" name="UserNote">@Model.UserNote</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <label class="control-label" for="first-name">Ảnh đại diện:</label>
+                        <div>
+                            <div style="margin-bottom:10px">
+                                <input type="file" class="form-control" name="_Avatar" />
+                            </div>
+                            @if (Model != null && !string.IsNullOrEmpty(Model.Avatar))
+                            {
+                                <div class="col-md-55">
+                                    <div class="thumbnail" style="height:auto;">
+                                        <div class="image view view-first">
+                                            <img id="_AnhBia" src="@Model.Avatar.Replace("~/", "/")" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="width: 100%; display: block;" alt="image" />
+                                            <div class="mask">
+                                                <p></p>
+                                                <div class="tools tools-bottom">
+                                                    <a href="javascript: window.open('@Model.Avatar.Replace("~/", "/")', '_blank')"><i class="fa fa-link"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <img id="_AnhBia" src="" onclick="javascript: window.open($(this).attr('src'), '_blank')" style="max-height:150px; display:none;" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-footer">
+                <button id="btn-save1" type="submit" class="btn btn-success">Lưu</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+    });
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('#frm-capnhat1').formValidation({
+            framework: 'bootstrap',
+            excluded: ':disabled',
+            fields: {
+                Username: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                UserFullName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 100) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                UserType: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                UserStatus: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+
+                    }
+                },
+                UserAddress: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 300) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 300 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                UserNote: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+
+                                if (value.length + (codau ? codau.length : 0) > 300) {
+                                    return {
+                                        valid: false,
+                                        message: 'Dữ liệu không được lớn hơn 300 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                UserPhone: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        callback: {
+                            callback: function (value, validator, $field) {
+                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+                                if (value.length != 0 && vnf_regex.test(value) == false) {
+                                    return {
+                                        valid: false,
+                                        message: 'Số điện thoại của bạn không đúng định dạng!'
+                                    }
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                },
+                _Avatar: {
+                    validators: {
+                        file: {
+                            extension: 'jpeg,jpg,png',
+                            type: 'image/jpeg,image/png',
+                            maxSize: 5242880,
+                            message: 'Hệ thống chỉ hỗ trợ tệp tin hình ảnh định dạng jpeg,jpg,png nhỏ hơn hoặc bằng 5Mb'
+                        },
+                        @if(Model != null && Model.Avatar==null)
+                            {
+                                <text>
+                        notEmpty: {
+                            message: 'Dữ liệu bắt buộc!'
+                        },
+                        </text>
+                            }
+                    }
+                },
+            }
+        }).on('success.form.fv', function (e) {
+            document.getElementById("btn-save1").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Update", "Users", new { area = "QuanTri" })',
+                type: 'POST',
+                dataType: 'json',
+                mimeType: "multipart/form-data",
+                contentType: false,
+                processData: false,
+                async: false,
+                cache: false,
+                data: new FormData(document.getElementById('frm-capnhat1')),
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "Users", new { area= "QuanTri" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save1").disabled = false;
+                        $("#btn-save1").removeClass("disabled");
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+
+

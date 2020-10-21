@@ -4,6 +4,7 @@
     <EntitySetMapping Name="AppConfigs">
       <EntityTypeMapping TypeName="DB_STORAGESModel.AppConfig">
         <MappingFragment StoreEntitySet="AppConfig">
+          <ScalarProperty Name="ImagePanelLogin" ColumnName="ImagePanelLogin" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ImageLogin" ColumnName="ImageLogin" />
         </MappingFragment>
@@ -60,6 +61,8 @@
     <EntitySetMapping Name="TB_Orders">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Orders">
         <MappingFragment StoreEntitySet="TB_Orders">
+          <ScalarProperty Name="OrderPrice" ColumnName="OrderPrice" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="OrderCode" ColumnName="OrderCode" />
           <ScalarProperty Name="OrderType" ColumnName="OrderType" />
@@ -72,6 +75,7 @@
     <EntitySetMapping Name="TB_Products">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Products">
         <MappingFragment StoreEntitySet="TB_Products">
+          <ScalarProperty Name="ProductPrice" ColumnName="ProductPrice" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
           <ScalarProperty Name="ProductName" ColumnName="ProductName" />
@@ -100,17 +104,17 @@
     <EntitySetMapping Name="TB_Users">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Users">
         <MappingFragment StoreEntitySet="TB_Users">
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-          <ScalarProperty Name="UserNote" ColumnName="UserNote" />
-          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
-          <ScalarProperty Name="UserType" ColumnName="UserType" />
-          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
-          <ScalarProperty Name="UserDateCreated" ColumnName="UserDateCreated" />
-          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
-          <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
-          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
-          <ScalarProperty Name="Username" ColumnName="Username" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+          <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+          <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+          <ScalarProperty Name="UserDateCreated" ColumnName="UserDateCreated" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+          <ScalarProperty Name="UserNote" ColumnName="UserNote" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
