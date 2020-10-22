@@ -1,6 +1,6 @@
 ﻿
 @using QuanLyKhoHang.UI.Models
-@model OrderInfo
+@model OrderInfoView
 @{
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 
@@ -16,17 +16,13 @@
     </div>
     <div class="x_content">
         <form id="frm-capnhat" method="post" enctype="multipart/form-data" novalidate="novalidate" class="fv-form fv-form-bootstrap">
-            <button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>
-            @*<input type="hidden" id="UserID" name="UserID" value="@(Model.User != null ? Model.User.UserId.ToString():"")" />
-                <input type="hidden" id="OldEmail" name="OldEmail" value="@(Model.User != null ? Model.User.Email.ToString():"")" />
-                <input type="hidden" id="OldReferralCode" name="OldReferralCode" value="@(Model.User != null && !string.IsNullOrEmpty(Model.User.RefernalCode) ? Model.User.RefernalCode.ToString():"")" />
-                <input type="hidden" id="User_BankId" name="User_BankId" value="@(Model.User_Bank != null ? Model.User_Bank.User_BankId.ToString():"")" />*@
-
+            @*<button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>*@
+            <input type="hidden" id="OrderId" name="OrderId" value="@(Model.Orders != null ? Model.Orders.OrderId:0)" />
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                     <label class="control-label" for="first-name">Chọn nhà cung cấp :</label>
                     <div>
-                        <select class="ctr-select" data-live-search="true" id="OrderProviderId" name="OrderProviderId">
+                        <select class="ctr-select" data-live-search="true" id="OrderProviderId" name="OrderProviderId" disabled="@(Model.Orders != null)">
                             @Html.Raw(ViewBag.cbxProvider)
                         </select>
                     </div>
@@ -34,10 +30,29 @@
                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                     <label class="control-label" for="first-name">Loại hóa đơn</label>
                     <div>
-                        <select class="ctr-select" data-live-search="true" id="type" name="type">
+                        <select disabled="@(Model.Orders != null)" class="ctr-select" data-live-search="true" id="OrderType" name="OrderType">
                             <option value="" @(Model.Orders == null ? "selected" : "")>Chọn loại hóa đơn ......</option>
-                            <option value="@EnumOrderType.NHAP" @(Model.Orders != null && Model.Orders.OrderType == null ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.NHAP)</option>
-                            <option value="@EnumOrderType.XUAT" @(Model.Orders != null && Model.Orders.OrderType == null ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.XUAT)</option>
+                            <option value="@EnumOrderType.NHAP" @(Model.Orders != null && Model.Orders.OrderType == EnumOrderType.NHAP ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.NHAP)</option>
+                            <option value="@EnumOrderType.XUAT" @(Model.Orders != null && Model.Orders.OrderType == EnumOrderType.XUAT ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.XUAT)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Ngày tạo hóa đơn</label>
+                    <div>
+                        <input type="text" class="form-control" id="OrderDate" name="OrderDate" readonly value="@(Model.Orders == null ? DateTime.Now.ToString("dd/MM/yyyy"): Model.Orders.OrderDate.Value.ToString("dd/MM/yyyy"))" autocomplete="off" )>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                    <label class="control-label" for="first-name">Trạng thái:</label>
+                    <div>
+                        <select disabled="@(Model.Orders != null)" class="ctr-select" data-live-search="true" name="UserStatus">
+                            <option value="@EnumOrderStatus.DANG_SU_DUNG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.DANG_SU_DUNG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.DANG_SU_DUNG)</option>
+                            <option value="@EnumOrderStatus.KHONG_SU_DUNG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.KHONG_SU_DUNG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.KHONG_SU_DUNG)</option>
+                            <option value="@EnumOrderStatus.HET_HANG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.HET_HANG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.HET_HANG)</option>
                         </select>
                     </div>
                 </div>
@@ -53,23 +68,30 @@
                         <div class="col-md-12">
                             <div class="form-group row mgt-2 mulitiple-form">
                                 <div class="subElement">
+                                    <div class="col-md-12" row>
+                                        <div class="col-md-10"></div>
+                                        <div class="col-md-2 diviconplus">
+                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12 row">
                                         <div class="col-md-2">
-                                            <select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">
-                                                <option value="">--Mã sản phẩm --</option>
-                                            </select>
+                                            <div id="Product"></div>
+                                        </div>
+                                        <div class="col-md-2" id="Order" hidden>
+                                            <div id="OrderContent"></div>
                                         </div>
                                         <div class="col-md-2">
-                                            <input id="ValueDate" type="text" class="form-control not-empty pickadateSearch" placeholder="Ngày sản xuất">
+                                            <input id="ValueDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
                                         </div>
                                         <div class="col-md-2">
-                                            <input id="ExpireDate" type="text" class="form-control not-empty pickadateSearch" placeholder="Ngày hết hạn sử dụng">
+                                            <input id="ExpireDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
                                         </div>
                                         <div class="col-md-2" hidden>
                                             <input id="ProductId" type="text" class="form-control" placeholder="Enter property">
                                         </div>
                                         <div class="col-md-1">
-                                            <input id="ProductNumber" type="text" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
+                                            <input id="ProductNumber" type="text" data-id="0" onkeyup="CheckTotalProductInOrder(this)" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
                                         </div>
                                         <div class="col-md-1">
                                             <input id="ProductUnit" type="text" class="form-control" placeholder="Đơn vị tính">
@@ -77,9 +99,7 @@
                                         <div class="col-md-2">
                                             <input id="ProductPrice" onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" type="text" class="form-control" placeholder="Đơn giá">
                                         </div>
-                                        <div class="col-md-2 diviconplus">
-                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +114,7 @@
                 <div class="form-group clearfix">
                     <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                         <a class="btn btn-primary" href="@Url.Action("MainPage","Orders", new { area = "QuanTri"})">Hủy</a>
-                        <button id="btn-save" type="submit" class="btn btn-success">Lưu thông tin</button>
+                        <button id="btn-save" type="button" onclick="saveData()" class="btn btn-success">Lưu thông tin</button>
                     </div>
                 </div>
             </div>
@@ -111,26 +131,153 @@
 </style>
 
 <script>
+    let dataModel = @Html.Raw(Json.Encode(Model.OrderDetails));
     $(function () {
         $('#ValueDate').datetimepicker({ format: 'DD/MM/YYYY' });
         $('#ExpireDate').datetimepicker({
             format: 'DD/MM/YYYY',
         });
 
+
+
     });
+    $(document).ready(function(){
+        debugger;
+        let data = @Html.Raw(Json.Encode(Model.OrderDetails));
+        console.log(data);
+        if(data != null){
+            $('#OrderProviderId').change();
+            for(var i = 0 ;i< data.length;i++){
+                var item = data[i].OrderDetails;
+                if(i==0){
+
+                    $('#ProductCode').val(item.DetailProductId.toString()).change();
+                    $('#ProductNumber').val(item.DetailNumber);
+                    $('#ProductPrice').val(item.DetailPrice);
+                    $('#ValueDate').val(fomartDate(item.DetailValueDate));
+                    $('#ExpireDate').val(fomartDate(item.DetailExpiredDate));
+                    $('#ProductUnit').val(item.DetailsUnits);
+
+
+                    if($('#OrderType').val() == '@EnumOrderType.XUAT'){
+                        $('#OrderCode').removeAttr("hidden",'false');
+                        $('#OrderCode'+i).val(item.DetailsOrderProductId.toString()).change();
+                    }
+
+
+                }
+                else {
+                    addElement(i);
+                    $('#ProductCode'+i).val(item.DetailProductId.toString()).change();
+                    $('#ProductNumber'+i).val(item.DetailNumber);
+                    $('#ProductPrice'+i).val(item.DetailPrice);
+                    $('#ValueDate'+i).val(fomartDate(item.DetailValueDate));
+                    $('#ExpireDate'+i).val(fomartDate(item.DetailExpiredDate));
+                    $('#ProductUnit'+i).val(item.DetailsUnits);
+
+                    if($('#OrderType') == '@EnumOrderType.XUAT'){
+                        $('#OrderCode'+i).val(item.DetailsOrderProductId.toString()).change();
+                    }
+
+
+                }
+            }
+        }
+
+    });
+    $(document).on("change", "[name=OrderType]", function () {
+
+        let htmlSubElement = ` <div class="col-md-12" row>
+                                        <div class="col-md-10"></div>
+                                        <div class="col-md-2 diviconplus">
+                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 row">
+                                        <div class="col-md-2">
+                                            <div id="Product"></div>
+                                        </div>
+                                        <div class="col-md-2" id="Order" hidden>
+                                            <div id="OrderContent"></div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ValueDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ExpireDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
+                                        </div>
+                                        <div class="col-md-2" hidden>
+                                            <input id="ProductId" type="text" class="form-control" placeholder="Enter property">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input id="ProductNumber"  data-id="${current}" type="text" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input id="ProductUnit" type="text" class="form-control" placeholder="Đơn vị tính">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input id="ProductPrice" onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" type="text" class="form-control" placeholder="Đơn giá">
+                                        </div>
+                                    </div>`;
+        if(current > 1){
+            for(var i=current-1;i >0;i--){
+                removeCurElement(i);
+            }
+        }
+        $('.subElement').html('');
+        $('.subElement').html(htmlSubElement);
+        var orderType =$('#OrderType').val();
+        if(orderType == '@EnumOrderType.NHAP' || orderType == '@EnumOrderType.XUAT'){
+            if($('#OrderProviderId').val().trim().length > 0){
+                $('#listSanPham').removeAttr("hidden","false");
+                var htmlProduct = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">`+renderProductCode+`</select>`;
+                $('#Product').html(htmlProduct);
+
+
+                var htmlOrderType = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">`+renderProductCode+`</select>`;
+
+                if(orderType == '@EnumOrderType.XUAT'){
+                    $('#Order').removeAttr("hidden","false");
+                    var htmlDefault = `<select class="ctr-select" onchange="selectOrder('0')" data-live-search="true" id="DetailsOrderProductId" name="DetailsOrderProductId"><option value="">Chọn lô hàng nhập......</option></select>`;
+                    $('#OrderContent').html(htmlDefault);
+                }
+                $(".ctr-select").selectpicker({
+                    width: '100%',
+                    showTick: true,
+                });
+                $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY' });
+
+            }
+        }
+    })
+
     $(document).on("change", "[name=OrderProviderId]", function () {
         var params = {
             id : $('#OrderProviderId').val()
         }
+
         $.ajax({
             url: '@Url.Action("GetProductByProvider", "Orders", new { area = "QuanTri" })',
             type: 'POST',
+            async : false,
             data:params ,
             success: function (data) {
                 if (data.kq == "ok") {
-                    renderProductCode = data.data;
-                    $('#ProductCode').html(data.data);
-                    $('#listSanPham').removeAttr("hidden","false");
+                    renderProductCode = `<option value="">Chọn sản phẩm.......</option>`+data.data;
+                    var htmlDefault = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode"><option value="">Chọn sản phẩm.......</option>`+data.data+`</select>`;
+                    $('#Product').html(htmlDefault);
+                    var orderType =$('#OrderType').val();
+
+                    if(orderType == '@EnumOrderType.NHAP' || orderType == '@EnumOrderType.XUAT'){
+                        $('#listSanPham').removeAttr("hidden","false");
+                        if(orderType == '@EnumOrderType.XUAT'){
+                            $('#Order').removeAttr("hidden","false");
+                        }
+                    }
+                    $(".ctr-select").selectpicker({
+                        width: '100%',
+                        showTick: true,
+                    });
                 }
                 else {
                     alertify.error(data.msg);
@@ -140,6 +287,7 @@
 
     });
     var renderProductCode = "";
+    var renderOrderCode ="";
     let data = @Html.Raw(Json.Encode(Model));
     $arr = [0]
     var current = 1;
@@ -164,29 +312,39 @@
 
         console.log(product);
     }
-
+    function fomartDate(jsonDate){
+        var currentTime = Date.parse(jsonDate.match(/\d+/)[0]);
+        var month = currentTime.getMonth() + 1;
+        var day = currentTime.getDate();
+        var year = currentTime.getFullYear();
+        var date = day + "/" + month + "/" + year;
+        return date;
+    }
     function addElement(pos) {
         if(pos != current)
             pos = current;
-        let attr = `<div class ="subElement">
+        var typeOrder = $('#OrderType').val();
+        let attr = ``;
+        if(typeOrder == '@EnumOrderType.NHAP'){
+            attr = `<div class ="subElement">
                 <div class ="col-md-12 row">
                     <div class ="col-md-2">
-                        <select class="ctr-select" onchange="selectProduct(${current})" name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
+                        <select class="ctr-select" onchange="selectProduct(${current})" data-live-search="true" name ="ProductCode${current}" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
                             `+
                                 renderProductCode
                         + `</select>
                     </div>
                     <div class ="col-md-2">
-                        <input id="ValueDate${current}" type="text" class ="form-control not-empty pickadateSearch" placeholder="Ngày sản xuất">
+                        <input id="ValueDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
                     </div>
                     <div class ="col-md-2">
-                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty pickadateSearch" placeholder="Ngày hết hạn sử dụng">
+                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
                     </div>
                     <div class ="col-md-2" hidden>
                         <input id="ProductId${current}" type="text" class ="form-control" placeholder="Enter property">
                     </div>
                     <div class ="col-md-1">
-                        <input id="ProductNumber${current}" type="text" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
+                        <input id="ProductNumber${current}" data-id="${current}" type="text" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
                     </div>
                      <div class="col-md-1">
                                                     <input id="ProductUnit${current}" type="text" class="form-control" placeholder="Đơn vị tính">
@@ -200,14 +358,121 @@
                 </div>
             </div>
         </div>`;
+        }else {
+            attr = `<div class ="subElement">
+                 <div class="col-md-12" row>
+                                        <div class="col-md-10"></div>
+                                        <div class="col-md-2 diviconplus">
+                                            <span class ="iconplus"><i onclick= "removeCurElement(${current})" class ="fa fa-minus" aria-hidden="true"> Loại bỏ</i></span>
+                                        </div>
+                                    </div>
+                <div class ="col-md-12 row">
+                    <div class ="col-md-2">
+                        <select class="ctr-select" onchange="selectProduct(${current})" data-live-search="true" name ="ProductCode${current}" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
+                            `+
+                                renderProductCode
+                        + `</select>
+                    </div>
+                    <div class ="col-md-2">
+                       <div id="OrderContent${current}">
+                       <select class="ctr-select" onchange="selectOrder(${current})" data-live-search="true" name ="OrderCode${current}" tabindex="-1" aria-hidden="true" id="OrderCode${current}">
+                            `+
+                                renderOrderCode
+                        + `</select>
+                       </div>
 
+                    </div>
+                    <div class ="col-md-2">
+                        <input id="ValueDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
+                    </div>
+                    <div class ="col-md-2">
+                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
+                    </div>
+                    <div class ="col-md-2" hidden>
+                        <input id="ProductId${current}" type="text" class ="form-control" placeholder="Enter property">
+                    </div>
+                    <div class ="col-md-1">
+                        <input id="ProductNumber${current}" type="text" data-id="${current}" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
+                    </div>
+                     <div class="col-md-1">
+                                                    <input id="ProductUnit${current}" type="text" class="form-control" placeholder="Đơn vị tính">
+                                                </div>
+                    <div class ="col-md-2">
+                        <input id="ProductPrice${current}" type="text"  onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Đơn giá">
+                    </div>
+
+                </div>
+            </div>
+        </div>`;
+        }
         $('.mulitiple-form').append(attr);
         $arr.push(current);
         $(".ctr-select").selectpicker({
             width: '100%',
             showTick: true,
         });
+        $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY' });
         current = current + 1;
+    }
+    var dataProductXuat ="";
+    function selectProduct(index){
+        dataProductXuat = "";
+        var productId ="";
+        if(index ==0){
+            productId = $('#ProductCode').val();
+        }else {
+            productId = $('#ProductCode'+index).val();
+        }
+        var params = {
+            id : productId
+        }
+        $.ajax({
+            url: '@Url.Action("GetOrderXuatByProduct", "Orders", new { area = "QuanTri" })',
+            type: 'POST',
+            data:params ,
+            success: function (data) {
+                if (data.kq == "ok") {
+                    dataProductXuat = data.data.list;
+                    var htmlDefault = `<select class="ctr-select" onchange="selectOrder('`+index+`')" data-live-search="true" id="OrderCode`+index+`" name="OrderCode`+index+`"><option value="">Chọn hóa đơn.......</option>`+data.data.data+`</select>`;
+
+                    if(index ==0){
+                        $('#OrderContent').html(htmlDefault);
+                    }else {
+                        $('#OrderContent'+index).html(htmlDefault);
+                    }
+
+                    $(".ctr-select").selectpicker({
+                        width: '100%',
+                        showTick: true,
+                    });
+                }
+                else {
+                    alertify.error(data.msg);
+                }
+            }
+        });
+    }
+    function selectOrder(index){
+        var orderId = "";
+        orderId = $('#OrderCode'+index).val();
+        if(index ==0){
+            $('#ValueDate').val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ExpireDate').val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ProductUnit').val((dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailsUnits));
+
+            $('#ValueDate').attr("readonly",true);
+            $('#ExpireDate').attr("readonly",true);
+            $('#ProductUnit').attr("readonly",true);
+        }else {
+            $('#ValueDate'+index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ExpireDate'+index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ProductUnit'+index).val((dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailsUnits));
+
+            $('#ValueDate'+index).attr("readonly",true);
+            $('#ExpireDate'+index).attr("readonly",true);
+            $('#ProductUnit'+index).attr("readonly",true);
+
+        }
     }
     function removeCurElement($cur) {
         $i = 0;
@@ -221,6 +486,8 @@
         $('.subElement')[$pos].remove();
         current = current - 1;
     }
+
+
 
     function formatCurrency(target) {
         const pat = /(\,[0-9]{0,3})$/gm;
@@ -257,7 +524,7 @@
 </script>
 
 <script>
-    mnActive = "mn-users";
+    mnActive = "mn-order";
     $(document).ready(function () {
         $(".ctr-select").selectpicker({
             width: '100%',
@@ -322,240 +589,104 @@
     });
 </script>
 <script>
-    $(document).ready(function () {
-        $('#frm-capnhat').formValidation({
-            framework: 'bootstrap',
-            excluded: ':disabled',
-            fields: {
-                UserName: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-                                if (value.length != 0 && vnf_regex.test(value) == false) {
-                                    return {
-                                        valid: false,
-                                        message: 'Số điện thoại của bạn không đúng định dạng!'
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                Email: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
+    function validate(){
+        if($('#OrderProviderId').val().length ==0)
+        {
+            alertify.error("Chưa chọn nhà cung cấp");
+            $('#OrderProviderId').focus().select();
+            return false;
+        }
+        var type = $('#OrderType').val();
+        if($('#OrderType').val().length ==0)
+        {
+            alertify.error("Chưa chọn loại hóa đơn");
+            $('#OrderType').focus().select();
+            return false;
+        }
 
-                                if (value.length + (codau ? codau.length : 0) > 500) {
-                                    return {
-                                        valid: false,
-                                        message: 'Dữ liệu không được lớn hơn 500 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                Password: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
-
-                                if (value.length + (codau ? codau.length : 0) > 100) {
-                                    return {
-                                        valid: false,
-                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                FullName: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
-
-                                if (value.length + (codau ? codau.length : 0) > 100) {
-                                    return {
-                                        valid: false,
-                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                Area: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
-
-                                if (value.length + (codau ? codau.length : 0) > 100) {
-                                    return {
-                                        valid: false,
-                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                IDCard: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                if (isNaN(value)) {
-                                    return {
-                                        valid: false,
-                                        message: 'Số CMND/Thẻ căn cước dạng số'
-                                    }
-                                }
-                                if (value.length != 0 && value.length != 9 && value.length != 12) {
-                                    return {
-                                        valid: false,
-                                        message: 'Sai định dạng. Số CMND/Thẻ căn cước là 9 hoặc 12 số.<br/>Số ký tự hiện tại đang là ' + (value.length)
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                DateOfBirth: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var DateOfBirth = $("#DateOfBirth").val();
-                                var vnf_regex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-                                if (DateOfBirth != "" && vnf_regex.test(DateOfBirth) == false) {
-                                    return {
-                                        valid: false,
-                                        message: 'Ngày của bạn không đúng định dạng!'
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                Phone: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-                                if (value.length != 0 && vnf_regex.test(value) == false) {
-                                    return {
-                                        valid: false,
-                                        message: 'Số điện thoại của bạn không đúng định dạng!'
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-
-                Bank_Account: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-
-                    }
-                },
-                Bank_UserName: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-
-                    }
-                },
-                FbName: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        },
-                        callback: {
-                            callback: function (value, validator, $field) {
-                                var codau = encodeURIComponent(value).match(/%[89ABab]/g);
-
-                                if (value.length + (codau ? codau.length : 0) > 100) {
-                                    return {
-                                        valid: false,
-                                        message: 'Dữ liệu không được lớn hơn 100 ký tự.<br/>Số ký tự hiện tại đang là ' + (value.length + (codau ? codau.length : 0))
-                                    }
-                                }
-                                return true;
-                            }
-                        }
-                    }
-                },
-                FacebookUrl: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        }
-
-                    }
-                },
-                BankID: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        }
-
-                    }
-                },
-                ReferralCode: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Dữ liệu bắt buộc!'
-                        }
-
-                    }
+        // neu vao nhap thi kiem tra
+        var a = new FormData(document.getElementById('frm-capnhat'));
+        var arr= [];
+        for(var i=current-1;i>=0;i--){
+            var obj = {};
+            if(i==0){
+                if(a.get("ProductCode").length ==0 ){
+                    alertify.error("Chưa lựa chọn sản phẩm");
+                    $('#ProductCode').focus().select();
+                    return false;
                 }
-
+                if($("#ProductNumber").val().length ==0 ){
+                    alertify.error("Chưa nhập số lượng");
+                    $('#ProductNumber').focus();
+                    return false;
+                }
+                if($("#ProductPrice").val().length ==0 ){
+                    alertify.error("Chưa nhập giá sản phẩm");
+                    $('#ProductPrice').focus();
+                    return false;
+                }
+                if($("#ValueDate").val().length ==0 ){
+                    alertify.error("Chưa nhập ngày sản xuất");
+                    $('#ValueDate').focus();
+                    return false;
+                }
+                if($("#ExpireDate").val().length ==0 ){
+                    alertify.error("Chưa  nhập ngày hết hạn");
+                    $('#ExpireDate').focus();
+                    return false;
+                }
+                if($("#ProductUnit").val().length ==0 ){
+                    alertify.error("Chưa nhập đơn vị tính");
+                    $('#ProductUnit').focus();
+                    return false;
+                }
+            }else {
+                if(a.get("ProductCode"+i).length ==0 ){
+                    alertify.error("Chưa lựa chọn sản phẩm");
+                    $('#ProductCode').focus().select();
+                    return false;
+                }
+                if($("#ProductNumber"+i).val().length ==0 ){
+                    alertify.error("Chưa nhập số lượng");
+                    $('#ProductNumber').focus();
+                    return false;
+                }
+                if($("#ProductPrice"+i).val().length ==0 ){
+                    alertify.error("Chưa nhập giá sản phẩm");
+                    $('#ProductPrice').focus();
+                    return false;
+                }
+                if($("#ValueDate"+i).val().length ==0 ){
+                    alertify.error("Chưa nhập ngày sản xuất");
+                    $('#ValueDate').focus();
+                    return false;
+                }
+                if($("#ExpireDate"+i).val().length ==0 ){
+                    alertify.error("Chưa  nhập ngày hết hạn");
+                    $('#ExpireDate').focus();
+                    return false;
+                }
+                if($("#ProductUnit"+i).val().length ==0 ){
+                    alertify.error("Chưa nhập đơn vị tính");
+                    $('#ProductUnit').focus();
+                    return false;
+                }
             }
-        }).on('success.form.fv', function (e) {
-            document.getElementById("btn-save").disabled = true;
-            e.preventDefault();
-            $.ajax({
+        }
+
+        return true;
+    }
+    function CheckTotalProductInOrder(evt){
+        debugger;
+
+        var type = $('#OrderType').val();
+        if(type == '@EnumOrderType.XUAT'){
+            // neu la xuat thy kiem tra so luong hang con lai hay khong
+            //var params = {
+            //    product : product,
+            //    order : order
+            //}
+            @*$.ajax({
                 url: '@Url.Action("Update", "User", new { area = "QuanTri" })',
                 type: 'POST',
                 dataType: 'json',
@@ -576,9 +707,77 @@
                         $("#btn-save").removeClass("disabled");
                     }
                 }
+            });*@
+
+        }
+    }
+    function saveData(){
+        if(validate()){
+            var a = new FormData(document.getElementById('frm-capnhat'));
+            var arr= [];
+            for(var i=current-1;i>=0;i--){
+                var obj = {};
+                if(i==0){
+
+                    obj = {
+                        DetailProductId:a.get("ProductCode"),
+                        DetailsUnits : $("#ProductUnit").val(),
+                        DetailNumber:$("#ProductNumber").val(),
+                        DetailPrice:$("#ProductPrice").val().replace(".",""),
+                        DetailValueDate:$("#ValueDate").val().split('/').reverse().join("-"),
+                        DetailExpiredDate:$("#ExpireDate").val().split('/').reverse().join("-"),
+                        DetailsOrderProductId:$("#OrderCode0").val(),
+                        DetailOrderId:$('#OrderId').val(),
+                    }
+
+                }else {
+                    obj = {
+                        DetailProductId:a.get("ProductCode"+i),
+                        DetailNumber:$("#ProductNumber"+i).val(),
+                        DetailPrice:$("#ProductPrice"+i).val().replace(".",""),
+                        DetailValueDate:$("#ValueDate"+i).val().split('/').reverse().join("-"),
+                        DetailExpiredDate:$("#ExpireDate"+i).val().split('/').reverse().join("-"),
+                        DetailsOrderProductId:$("#OrderCode"+i).val(),
+                        DetailsUnits : $("#ProductUnit"+i).val(),
+                        DetailOrderId:$('#OrderId').val(),
+                    }
+                }
+                if(obj.DetailProductId !=""){
+                    if(obj.DetailsOrderProductId == undefined)
+                        obj.DetailsOrderProductId =0;
+                    arr.push(obj);
+                }
+
+            }
+            var params = {
+                OrderType : a.get("OrderType"),
+                OrderId : $('#OrderId').val(),
+                OrderProviderId : a.get("OrderProviderId"),
+                list : arr
+            }
+            console.log(params);
+            $.ajax({
+                url: '@Url.Action("Update", "Orders", new { area = "QuanTri" })',
+                type: 'POST',
+                data: params,
+                success: function (data) {
+                    if (data.kq == "ok") {
+                        alertify.success(data.msg);
+                        window.location.href = '@Url.Action("MainPage", "Orders", new { area= "QuanTri" })';
+                    }
+                    else {
+                        alertify.error(data.msg);
+                        document.getElementById("btn-save").disabled = false;
+                        $("#btn-save").removeClass("disabled");
+                    }
+                }
             });
-        });
-    });
+        }
+
+
+
+    }
+
     function change_alias(alias) {
         var str = alias;
         str = str.toLowerCase();
@@ -599,5 +798,3 @@
         $('#Phone').val(val);
     }
 </script>
-
-

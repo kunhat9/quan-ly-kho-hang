@@ -48,6 +48,8 @@
     <EntitySetMapping Name="TB_OrderDetails">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_OrderDetails">
         <MappingFragment StoreEntitySet="TB_OrderDetails">
+          <ScalarProperty Name="DetailsUnits" ColumnName="DetailsUnits" />
+          <ScalarProperty Name="DetailsOrderProductId" ColumnName="DetailsOrderProductId" />
           <ScalarProperty Name="DetailId" ColumnName="DetailId" />
           <ScalarProperty Name="DetailNumber" ColumnName="DetailNumber" />
           <ScalarProperty Name="DetailPrice" ColumnName="DetailPrice" />

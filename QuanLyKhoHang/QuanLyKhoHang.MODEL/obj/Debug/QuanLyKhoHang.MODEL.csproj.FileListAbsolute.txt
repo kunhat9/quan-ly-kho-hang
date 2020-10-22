@@ -17,3 +17,13 @@ C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.MODEL\bi
 C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.csprojResolveAssemblyReference.cache
 C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.dll
 C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.pdb
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.dll.config
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\QuanLyKhoHang.MODEL.pdb
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.xml
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.MODEL\obj\Debug\QuanLyKhoHang.MODEL.pdb

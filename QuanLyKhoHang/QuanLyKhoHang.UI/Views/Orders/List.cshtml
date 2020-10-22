@@ -1,5 +1,5 @@
 ﻿@using QuanLyKhoHang.UI.Models
-@model IEnumerable<OrderInfo>
+@model IEnumerable<OrderInfoView>
 @{
     int stt = 0;
 }
@@ -19,7 +19,7 @@
                 <span class="red">@item.Orders.OrderDate.Value.ToString("dd/MM/yyyy")</span>
             </td>
             <td class="text-center">@item.Orders.OrderPrice.Value.ToString("#,###.###")</td>
-            <td class="text-center">@item.ProductInfo.Provider.ProviderName</td>
+            <td class="text-center">@item.OrderDetails.FirstOrDefault().ProductInfo.Provider.ProviderName</td>
            
             
             <td class="text-center">
@@ -36,7 +36,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="btn btn-xs btn-warning" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Update", "Orders", new { area = "QuanTri" , id = item.Orders.OrderId})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><i class="fa fa-plus"></i>Sửa </a>
+                            <a class="btn btn-xs btn-warning" href="@Url.Action("Update", "Orders", new { area = "QuanTri" , id = item.Orders.OrderId})"><i class="fa fa-plus"></i>Sửa </a>
                         </li>
                         <li>
                             <a class="btn btn-xs btn-danger" data-id="@item.Orders.OrderId" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>

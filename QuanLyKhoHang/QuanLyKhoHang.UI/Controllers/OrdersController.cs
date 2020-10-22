@@ -41,7 +41,7 @@ namespace QuanLyKhoHang.UI.Controllers
                 keyword = keyword.BoDauTiengViet().ToLower();
 
 
-            var list = (from a in db.TB_Orders.ToList()
+            var test = (from a in db.TB_Orders.ToList()
                         join b in db.TB_OrderDetails on a.OrderId equals b.DetailOrderId into b1
                         from b in b1.DefaultIfEmpty()
                         join c in db.TB_Products on b.DetailProductId equals c.ProductId into c1
@@ -72,9 +72,16 @@ namespace QuanLyKhoHang.UI.Controllers
                             }
                         })
                    .OrderByDescending(x => x.Orders.OrderDate).ToList();
-
+            var list = test.GroupBy(x => x.Orders.OrderId).Select(t => new OrderInfoView
+            {
+                Orders = t.FirstOrDefault(y => y.Orders.OrderId == t.Key).Orders,
+                OrderDetails = t.Where(y => y.Orders.OrderId == t.Key).Select(k => new OrderDetailsInfo
+                {
+                    OrderDetails = k.OrderDetails,
+                    ProductInfo = k.ProductInfo
+                }).ToList(),
+            }).ToList();
             int tongso = list.Count();
-
             sotrang = sotrang <= 0 ? 1 : sotrang;
             tongsodong = tongsodong <= 0 ? 10 : tongsodong;
             int tongsotrang = tongso % tongsodong > 0 ? tongso / tongsodong + 1 : tongso / tongsodong;
@@ -92,7 +99,7 @@ namespace QuanLyKhoHang.UI.Controllers
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
-            var order = (from a in db.TB_Orders.ToList()
+            var test = (from a in db.TB_Orders.ToList()
                         join b in db.TB_OrderDetails on a.OrderId equals b.DetailOrderId into b1
                         from b in b1.DefaultIfEmpty()
                         join c in db.TB_Products on b.DetailProductId equals c.ProductId into c1
@@ -113,62 +120,68 @@ namespace QuanLyKhoHang.UI.Controllers
                                 Categories = e
                             }
                         })
-                   .FirstOrDefault();
-            order = order == null ? new OrderInfo() : order;
+                   .OrderByDescending(x => x.Orders.OrderDate).ToList();
+            var order = test.GroupBy(x => x.Orders.OrderId).Select(t => new OrderInfoView
+            {
+                Orders = t.FirstOrDefault(y => y.Orders.OrderId == t.Key).Orders,
+                OrderDetails = t.Where(y => y.Orders.OrderId == t.Key).Select(k => new OrderDetailsInfo
+                {
+                    OrderDetails = k.OrderDetails,
+                    ProductInfo = k.ProductInfo
+                }).ToList(),
+            }).FirstOrDefault();
+            order = order == null ? new OrderInfoView() : order;
             string cbxProvider = "<option value=\"\">Chọn nhà cung cấp...</option>";
             var provider = db.TB_Providers.Where(x => x.ProviderStatus == EnumStatus.ACTIVE).ToList();
             foreach (var item in provider)
             {
-                cbxProvider += string.Format("<option value=\"{0}\">{1}</option>", item.ProviderId, item.ProviderName);
+                cbxProvider += string.Format("<option value=\"{0}\" {2}>{1}</option>", item.ProviderId, item.ProviderName,id != null ? order.Orders.OrderProviderId == item.ProviderId?"selected":"":"");
             }
             ViewBag.cbxProvider = cbxProvider;
             return View(order);
         }
         [Route("order/update")]
         [HttpPost, ValidateInput(false)]
-        public ActionResult Update(TB_Products product, HttpPostedFileBase _Avatar = null)
+        public ActionResult Update(TB_Orders order , List<TB_OrderDetails> list)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
 
-            if (product.ProductId == 0)
+            if (order.OrderId == 0)
             {
                 // tao moi
-
-                if (_Avatar != null)
+                order.OrderCode = Functions.CreateCode();
+                order.OrderDate = DateTime.Now;
+                order.OrderStatus = EnumOrderStatus.DANG_SU_DUNG;
+                order.OrderPrice = list.Sum(x => x.DetailPrice * x.DetailNumber);
+                int orderId = 0;
+                using (var context = new QuanLyKhoHangEntities())
                 {
-                    string rootPathImage = string.Format("~/Files/image/provider/{0}", DateTime.Now.ToString("ddMMyyyy"));
-                    string filePathImage = System.IO.Path.Combine(Request.MapPath(rootPathImage));
-                    string[] fileImage = _Avatar.uploadFile(rootPathImage, filePathImage);
-                    product.ProductImage = fileImage[1];
+                    context.TB_Orders.Add(order);
+                    context.SaveChanges();
+
+                    orderId = order.OrderId; // Yes it's here
                 }
-                product.ProductCode = Functions.CreateCode();
-                db.TB_Products.Add(product);
+                list.ForEach(x => x.DetailOrderId = orderId);
+                db.TB_OrderDetails.AddRange(list);
                 db.SaveChanges();
                 return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
+                
                 // up date
-                var productOld = db.TB_Products.FirstOrDefault(x => x.ProductId == product.ProductId);
-                if (productOld == null)
+                var orderOld = db.TB_Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
+                if (orderOld == null)
                     return Json(new { kq = "err", msg = "Thông tin không xác định!" }, JsonRequestBehavior.AllowGet);
-                string avatar = "";
-                if (_Avatar != null)
-                {
-                    string rootPathImage = string.Format("~/Files/image/provider/{0}", DateTime.Now.ToString("ddMMyyyy"));
-                    string filePathImage = System.IO.Path.Combine(Request.MapPath(rootPathImage));
-                    string[] fileImage = _Avatar.uploadFile(rootPathImage, filePathImage);
-                    avatar = fileImage[1];
-                }
-                productOld.ProductName = product.ProductName;
-                productOld.ProductNote = product.ProductNote;
-                productOld.ProductStatus = product.ProductStatus;
-                productOld.ProductProviderId = product.ProductProviderId;
-                productOld.ProductCategoriesId = product.ProductCategoriesId;
-                productOld.ProductImage = avatar;
+                // tim thang order details cua thang kia roi remove di
+                var orderDetailsOld = db.TB_OrderDetails.Where(x => x.DetailOrderId == orderOld.OrderId).ToList();
+                db.TB_OrderDetails.RemoveRange(orderDetailsOld);
+
+                list.ForEach(x => x.DetailOrderId = orderOld.OrderId);
+                db.TB_OrderDetails.AddRange(list);
                 db.SaveChanges();
                 return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
             }
@@ -230,6 +243,107 @@ namespace QuanLyKhoHang.UI.Controllers
                 cbxProduct += string.Format("<option value=\"{0}\">{1}</option>", item.ProductId, item.ProductName);
             }
             return Json(new { kq = "ok",data = cbxProduct, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("order/get-order-by-product")]
+        public ActionResult GetOrderXuatByProduct(int? id)
+        {
+            UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+            string cbxProvider = "";
+            var orderNhap = (from a in db.TB_OrderDetails
+                           join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                           from b in b1.DefaultIfEmpty()
+                           where a.DetailProductId == id
+                           select new {
+                               Order = b,
+                               OrderDetails = a
+                           }
+                           ).Where(x=>x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
+
+            var orderXuat = (from a in db.TB_OrderDetails
+                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                             from b in b1.DefaultIfEmpty()
+                             where a.DetailProductId == id
+                             select new
+                             {
+                                 Order = b,
+                                 OrderDetails = a
+                             }
+                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.XUAT).ToList();
+            List<CompareProduct> list = CompareProduct(id);
+            list = list.Where(x => x.TotalRemain > 0).ToList();
+            foreach (var item in list)
+            {
+                cbxProvider += string.Format("<option value=\"{0}\">{1}</option>", item.Order.OrderId, item.Order.OrderCode + " ( " + item.TotalRemain + " sản phẩm )");
+            }
+            var obj = new
+            {
+                data = cbxProvider,
+                list = list
+            };
+            return Json(new { kq = "ok", data = obj, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
+        }
+
+        private List<CompareProduct> CompareProduct( int? product = null , int ? order = null)
+        {
+            List<CompareProduct> list = new List<CompareProduct>();
+            // hoa don nhap cua san pham do
+            var orderNhap = (from a in db.TB_OrderDetails
+                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                             from b in b1.DefaultIfEmpty()
+                             where a.DetailProductId == product
+                             select new
+                             {
+                                 Order = b,
+                                 OrderDetails = a
+                             }
+                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
+            // danh sach hoa don xuat dung san pham do
+            var orderXuat = (from a in db.TB_OrderDetails
+                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                             from b in b1.DefaultIfEmpty()
+                             where a.DetailProductId == product
+                             select new
+                             {
+                                 Order = b,
+                                 OrderDetails = a
+                             }
+                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.XUAT).ToList();
+            foreach(var item in orderNhap)
+            {
+                CompareProduct p = new Models.CompareProduct();
+                p.Order = item.Order;
+                p.OrderDetails = item.OrderDetails;
+                var totalRemain = orderXuat.Where(x => x.OrderDetails.DetailsOrderProductId == item.Order.OrderId).Sum(x=>x.OrderDetails.DetailNumber);
+                p.TotalRemain = totalRemain == null ? item.OrderDetails.DetailNumber.Value : item.OrderDetails.DetailNumber.Value - totalRemain.Value;
+
+
+                list.Add(p);
+            }
+            return list;
+        }
+
+        [Route("order/check-product-order")]
+        public ActionResult CheckProductInOrder(int? product = null, int? order = null)
+        {
+            UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
+            if(product == null)
+                return Json(new { kq = "err", msg = "Sản phẩm không tìm thấy" }, JsonRequestBehavior.AllowGet);
+            if (order == null)
+                return Json(new { kq = "err", msg = "Không tìm thấy hóa đơn nhập sản phẩm" }, JsonRequestBehavior.AllowGet);
+
+            var total = (from a in db.TB_OrderDetails
+                         join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                         from b in b1.DefaultIfEmpty()
+                         where a.DetailProductId == product
+                         && a.DetailOrderId == order
+                         select b).Count(x => x.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.OrderType == EnumOrderType.NHAP);
+            return Json(new { kq = "ok", data = total, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

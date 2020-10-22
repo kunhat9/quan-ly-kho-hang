@@ -56,6 +56,8 @@
           <Property Name="DetailExpiredDate" Type="date" />
           <Property Name="DetailOrderId" Type="int" />
           <Property Name="DetailProductId" Type="int" />
+          <Property Name="DetailsOrderProductId" Type="int" />
+          <Property Name="DetailsUnits" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="TB_Orders">
           <Key>
@@ -79,10 +81,10 @@
           <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProductImage" Type="nvarchar(max)" />
           <Property Name="ProductNote" Type="nvarchar" MaxLength="100" />
-          <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="ProductStatus" Type="int" />
           <Property Name="ProductProviderId" Type="int" />
           <Property Name="ProductCategoriesId" Type="int" />
+          <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="TB_Providers">
           <Key>
@@ -179,6 +181,8 @@
           <Property Name="DetailExpiredDate" Type="DateTime" Precision="0" />
           <Property Name="DetailOrderId" Type="Int32" />
           <Property Name="DetailProductId" Type="Int32" />
+          <Property Name="DetailsOrderProductId" Type="Int32" />
+          <Property Name="DetailsUnits" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_Orders">
           <Key>
@@ -300,6 +304,8 @@
           <EntitySetMapping Name="TB_OrderDetails">
             <EntityTypeMapping TypeName="DB_STORAGESModel.TB_OrderDetails">
               <MappingFragment StoreEntitySet="TB_OrderDetails">
+                <ScalarProperty Name="DetailsUnits" ColumnName="DetailsUnits" />
+                <ScalarProperty Name="DetailsOrderProductId" ColumnName="DetailsOrderProductId" />
                 <ScalarProperty Name="DetailId" ColumnName="DetailId" />
                 <ScalarProperty Name="DetailNumber" ColumnName="DetailNumber" />
                 <ScalarProperty Name="DetailPrice" ColumnName="DetailPrice" />
