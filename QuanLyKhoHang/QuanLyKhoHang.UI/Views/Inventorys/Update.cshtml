@@ -1,13 +1,13 @@
 ﻿
 @using QuanLyKhoHang.UI.Models
-@model OrderInfoView
+@model InventoryInfoDetails
 @{
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 
 }
 <div class="x_panel">
     <div class="x_title">
-        <h2><i class="fa fa-pencil"></i>@(Model.Orders == null ? "Thêm mới hóa đơn" : "Cập nhật hóa đơn")</h2>
+        <h2><i class="fa fa-pencil"></i>@(Model.Inventory == null ? "Thêm mới biên bản kiểm kê" : "Cập nhật biên bản")</h2>
         <div class="clearfix"></div>
         <ul class="nav nav-tabs bar_tabs nhomquyen col-md-12" role="tablist">
             <li role="presentation" class="active"><a href="#" id="thongtincoban">Thông tin cơ bản</a></li>
@@ -17,95 +17,80 @@
     <div class="x_content">
         <form id="frm-capnhat" method="post" enctype="multipart/form-data" novalidate="novalidate" class="fv-form fv-form-bootstrap">
             @*<button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>*@
-            <input type="hidden" id="OrderId" name="OrderId" value="@(Model.Orders != null ? Model.Orders.OrderId:0)" />
+            <input type="hidden" id="OrderId" name="OrderId" value="@(Model.Inventory != null ? Model.Inventory.Id:0)" />
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
-                <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                    <label class="control-label" for="first-name">Chọn nhà cung cấp :</label>
+                <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                    <label class="control-label" for="first-name">Mã biên bản</label>
                     <div>
-                        <select class="ctr-select" data-live-search="true" id="OrderProviderId" name="OrderProviderId" disabled="@(Model.Orders != null)">
-                            @Html.Raw(ViewBag.cbxProvider)
+                        <input type="text" class="form-control" id="Note" name="Note" readonly value="@(Model.Inventory != null ? Model.Inventory.Code:"" )" autocomplete="off" )>
+                    </div>
+                </div>
+                <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                    <label class="control-label" for="first-name">Chọn người lập phiếu kiểm kê</label>
+                    <div>
+                        <select class="ctr-select" data-live-search="true" id="UserId" name="UserId" disabled="@(Model.Inventory != null)">
+                            @Html.Raw(ViewBag.cbxUser)
                         </select>
                     </div>
                 </div>
-                <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                    <label class="control-label" for="first-name">Loại hóa đơn</label>
+                <div class="form-group col-md-4 col-sm-4 col-xs-12">
+                    <label class="control-label" for="first-name">Ngày lập biên bản kiểm kê</label>
                     <div>
-                        <select disabled="@(Model.Orders != null)" class="ctr-select" data-live-search="true" id="OrderType" name="OrderType">
-                            <option value="" @(Model.Orders == null ? "selected" : "")>Chọn loại hóa đơn ......</option>
-                            <option value="@EnumOrderType.NHAP" @(Model.Orders != null && Model.Orders.OrderType == EnumOrderType.NHAP ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.NHAP)</option>
-                            <option value="@EnumOrderType.XUAT" @(Model.Orders != null && Model.Orders.OrderType == EnumOrderType.XUAT ? "selected" : "")>@EnumOrderType.ToString(EnumOrderType.XUAT)</option>
-                        </select>
+                        <input type="text" class="form-control" id="CreatedDate" name="CreatedDate" readonly value="@(Model.Inventory == null ? DateTime.Now.ToString("dd/MM/yyyy"): Model.Inventory.CreatedDate.Value.ToString("dd/MM/yyyy"))" autocomplete="off" )>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
-                <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                    <label class="control-label" for="first-name">Ngày tạo hóa đơn</label>
+               
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Nội dung biên bản</label>
                     <div>
-                        <input type="text" class="form-control" id="OrderDate" name="OrderDate" readonly value="@(Model.Orders == null ? DateTime.Now.ToString("dd/MM/yyyy"): Model.Orders.OrderDate.Value.ToString("dd/MM/yyyy"))" autocomplete="off" )>
-                    </div>
-                </div>
-                <div class="form-group col-md-6 col-sm-6 col-xs-12">
-                    <label class="control-label" for="first-name">Trạng thái:</label>
-                    <div>
-                        <select disabled="@(Model.Orders != null)" class="ctr-select" data-live-search="true" name="UserStatus">
-                            <option value="@EnumOrderStatus.DANG_SU_DUNG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.DANG_SU_DUNG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.DANG_SU_DUNG)</option>
-                            <option value="@EnumOrderStatus.KHONG_SU_DUNG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.KHONG_SU_DUNG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.KHONG_SU_DUNG)</option>
-                            <option value="@EnumOrderStatus.HET_HANG" @(Model.Orders != null && Model.Orders.OrderStatus == EnumOrderStatus.HET_HANG ? "Selected" : "")>@EnumOrderStatus.ToString(EnumOrderStatus.HET_HANG)</option>
-                        </select>
+                        <textarea class="form-control" id="Note" name="Note">@(Model.Inventory != null ? Model.Inventory.Note:"")</textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
-                    <label class="control-label" for="first-name">Danh sách sản phẩm :</label>
+                    <label class="control-label" for="first-name">Danh sách sản phẩm đã kiểm kê :</label>
                 </div>
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
-                <div class="form-group" id="listSanPham" hidden>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group row mgt-2 mulitiple-form">
-                                <div class="subElement">
-                                    <div class="col-md-12" row>
-                                        <div class="col-md-10"></div>
-                                        <div class="col-md-2 diviconplus">
-                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 row">
-                                        <div class="col-md-2">
-                                            <div id="Product"></div>
-                                        </div>
-                                        <div class="col-md-2" id="Order" hidden>
-                                            <div id="OrderContent"></div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ValueDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ExpireDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
-                                        </div>
-                                        <div class="col-md-2" hidden>
-                                            <input id="ProductId" type="text" class="form-control" placeholder="Enter property">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input id="ProductNumber" type="text" data-id="0" onkeyup="CheckTotalProductInOrder(this)" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input id="ProductUnit" type="text" class="form-control" placeholder="Đơn vị tính">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ProductPrice" onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" type="text" class="form-control" placeholder="Đơn giá">
-                                        </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Tìm kiếm sản phẩm:</label>
                 </div>
+                <div>
+                    <select class="ctr-select" data-live-search="true" multiple id="product" name="product" >
+                        @Html.Raw(ViewBag.cbxProduct)
+                    </select>
+                </div>
+            </div>
+
+            @* lap o de tim nhap so luong san pham se duoc kiem ke chon ra roi khong can hidden*@
+            <div class="x_content table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="60">STT</th>
+                            <th class="text-center" width="150">Mã sản phẩm</th>
+                            <th class="text-center" width="150">Tên sản phẩm</th>
+                            <th class="text-center" width="100">Mã hóa đơn</th>
+                            <th class="text-center" width="150">Ngày nhập</th>
+                            <th class="text-center" width="150">Ngày hết hạn</th>
+                            <th class="text-center" width="100">Đơn vị tính</th>
+                            <th class="text-center" width="150">Đơn giá</th>
+                            <th class="text-center" width="150">Tổng số sản phẩm</th>
+                            <th class="text-center" width="300">Tổng số đã nhập thực tế</th>
+                            <th class="text-center" width="150">Tổng số còn lại</th>
+                            <th class="text-center" width="300">Tổng số sản phẩm còn lại thực tế</th>
+                            <th class="text-center" width="150">Trạng thái</th>
+                            <th class="text-center" width="200">Mô tả</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="listProduct"></tbody>
+                </table>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                 <div class="clearfix"></div>
@@ -129,128 +114,34 @@
         padding-bottom: 50px;
     }
 </style>
-
 <script>
-    let dataModel = @Html.Raw(Json.Encode(Model.OrderDetails));
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+        DanhSach();
+    });
+    function DanhSach() {
+        $("#listProduct").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
+        $("#listProduct").load("@Url.Action("ListProduct", "Inventorys", new { area = "QuanTri" })?listProduct=" + $('#product').val());
+    }
+
+    $(document).on("change", "[name=product]", function () {
+        DanhSach();
+
+    })
+</script>
+<script>
+    let dataModel = @Html.Raw(Json.Encode(Model.Inventory));
     $(function () {
         $('#ValueDate').datetimepicker({ format: 'DD/MM/YYYY' });
         $('#ExpireDate').datetimepicker({
             format: 'DD/MM/YYYY',
         });
-
-
-
     });
-    $(document).ready(function(){
-        debugger;
-        let data = @Html.Raw(Json.Encode(Model.OrderDetails));
-        console.log(data);
-        if(data != null){
-            $('#OrderProviderId').change();
-            for(var i = 0 ;i< data.length;i++){
-                var item = data[i].OrderDetails;
-                if(i==0){
-
-                    $('#ProductCode').val(item.DetailProductId.toString()).change();
-                    $('#ProductNumber').val(item.DetailNumber);
-                    $('#ProductPrice').val(item.DetailPrice);
-                    $('#ValueDate').val(fomartDate(item.DetailValueDate));
-                    $('#ExpireDate').val(fomartDate(item.DetailExpiredDate));
-                    $('#ProductUnit').val(item.DetailsUnits);
-
-
-                    if($('#OrderType').val() == '@EnumOrderType.XUAT'){
-                        $('#OrderCode').removeAttr("hidden",'false');
-                        $('#OrderCode'+i).val(item.DetailsOrderProductId.toString()).change();
-                    }
-
-
-                }
-                else {
-                    addElement(i);
-                    $('#ProductCode'+i).val(item.DetailProductId.toString()).change();
-                    $('#ProductNumber'+i).val(item.DetailNumber);
-                    $('#ProductPrice'+i).val(item.DetailPrice);
-                    $('#ValueDate'+i).val(fomartDate(item.DetailValueDate));
-                    $('#ExpireDate'+i).val(fomartDate(item.DetailExpiredDate));
-                    $('#ProductUnit'+i).val(item.DetailsUnits);
-
-                    if($('#OrderType').val() == '@EnumOrderType.XUAT'){
-                        $('#OrderCode'+i).val(item.DetailsOrderProductId.toString()).change();
-                    }
-
-
-                }
-            }
-        }
-
-    });
-    $(document).on("change", "[name=OrderType]", function () {
-
-        let htmlSubElement = ` <div class="col-md-12" row>
-                                        <div class="col-md-10"></div>
-                                        <div class="col-md-2 diviconplus">
-                                            <span class="iconplus"><i class="fa fa-plus" onclick="addElement(0)" aria-hidden="true">Thêm sản phẩm</i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 row">
-                                        <div class="col-md-2">
-                                            <div id="Product"></div>
-                                        </div>
-                                        <div class="col-md-2" id="Order" hidden>
-                                            <div id="OrderContent"></div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ValueDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ExpireDate" type="text" class="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
-                                        </div>
-                                        <div class="col-md-2" hidden>
-                                            <input id="ProductId" type="text" class="form-control" placeholder="Enter property">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input id="ProductNumber"  data-id="${current}" type="text" onkeypress="return validateNumber(event)" class="form-control" placeholder="Số lượng">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input id="ProductUnit" type="text" class="form-control" placeholder="Đơn vị tính">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input id="ProductPrice" onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" type="text" class="form-control" placeholder="Đơn giá">
-                                        </div>
-                                    </div>`;
-        if(current > 1){
-            for(var i=current-1;i >0;i--){
-                removeCurElement(i);
-            }
-        }
-        $('.subElement').html('');
-        $('.subElement').html(htmlSubElement);
-        var orderType =$('#OrderType').val();
-        if(orderType == '@EnumOrderType.NHAP' || orderType == '@EnumOrderType.XUAT'){
-            if($('#OrderProviderId').val().trim().length > 0){
-                $('#listSanPham').removeAttr("hidden","false");
-                var htmlProduct = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">`+renderProductCode+`</select>`;
-                $('#Product').html(htmlProduct);
-
-
-                var htmlOrderType = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode">`+renderProductCode+`</select>`;
-
-                if(orderType == '@EnumOrderType.XUAT'){
-                    $('#Order').removeAttr("hidden","false");
-                    var htmlDefault = `<select class="ctr-select" onchange="selectOrder('0')" data-live-search="true" id="DetailsOrderProductId" name="DetailsOrderProductId"><option value="">Chọn lô hàng nhập......</option></select>`;
-                    $('#OrderContent').html(htmlDefault);
-                }
-                $(".ctr-select").selectpicker({
-                    width: '100%',
-                    showTick: true,
-                });
-                $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY' });
-
-            }
-        }
-    })
-
+    
+    
     $(document).on("change", "[name=OrderProviderId]", function () {
         var params = {
             id : $('#OrderProviderId').val()
@@ -286,32 +177,7 @@
         });
 
     });
-    var renderProductCode = "";
-    var renderOrderCode ="";
-    let data = @Html.Raw(Json.Encode(Model));
-    $arr = [0]
-    var current = 1;
-    console.log(current);
-    if(data.order != null){
-        // neu chon create chu ko phai xem chi tiet
-        var product = data.details;
-
-        for(var i =0; i<product.length-1;i++){
-            addElement(i);
-        }
-        $('#ProviderId').val(data.order.OrderProviderId).change();
-        for(var i =0; i<product.length;i++){
-            var pro = product[i];
-            console.log(pro.DetailProductId);
-            if(i != 0 ){
-                $('#ProductCode'+i).val(pro.DetailProductId).change();
-            }else{
-                $('#ProductCode').val(pro.DetailProductId).change();
-            }
-        }
-
-        console.log(product);
-    }
+    
     function fomartDate(jsonDate){
         var currentTime = Date.parse(jsonDate.match(/\d+/)[0]);
         var month = currentTime.getMonth() + 1;
@@ -319,100 +185,6 @@
         var year = currentTime.getFullYear();
         var date = day + "/" + month + "/" + year;
         return date;
-    }
-    function addElement(pos) {
-        if(pos != current)
-            pos = current;
-        var typeOrder = $('#OrderType').val();
-        let attr = ``;
-        if(typeOrder == '@EnumOrderType.NHAP'){
-            attr = `<div class ="subElement">
-                <div class ="col-md-12 row">
-                    <div class ="col-md-2">
-                        <select class="ctr-select" onchange="selectProduct(${current})" data-live-search="true" name ="ProductCode${current}" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
-                            `+
-                                renderProductCode
-                        + `</select>
-                    </div>
-                    <div class ="col-md-2">
-                        <input id="ValueDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
-                    </div>
-                    <div class ="col-md-2">
-                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
-                    </div>
-                    <div class ="col-md-2" hidden>
-                        <input id="ProductId${current}" type="text" class ="form-control" placeholder="Enter property">
-                    </div>
-                    <div class ="col-md-1">
-                        <input id="ProductNumber${current}" data-id="${current}" type="text" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
-                    </div>
-                     <div class="col-md-1">
-                                                    <input id="ProductUnit${current}" type="text" class="form-control" placeholder="Đơn vị tính">
-                                                </div>
-                    <div class ="col-md-2">
-                        <input id="ProductPrice${current}" type="text"  onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Đơn giá">
-                    </div>
-                    <div class ="col-md-2 diviconplus">
-                        <span class ="iconplus"><i onclick= "removeCurElement(${current})" class ="fa fa-minus" aria-hidden="true"> Loại bỏ</i></span>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-        }else {
-            attr = `<div class ="subElement">
-                 <div class="col-md-12" row>
-                                        <div class="col-md-10"></div>
-                                        <div class="col-md-2 diviconplus">
-                                            <span class ="iconplus"><i onclick= "removeCurElement(${current})" class ="fa fa-minus" aria-hidden="true"> Loại bỏ</i></span>
-                                        </div>
-                                    </div>
-                <div class ="col-md-12 row">
-                    <div class ="col-md-2">
-                        <select class="ctr-select" onchange="selectProduct(${current})" data-live-search="true" name ="ProductCode${current}" tabindex="-1" aria-hidden="true" id="ProductCode${current}">
-                            `+
-                                renderProductCode
-                        + `</select>
-                    </div>
-                    <div class ="col-md-2">
-                       <div id="OrderContent${current}">
-                       <select class="ctr-select" onchange="selectOrder(${current})" data-live-search="true" name ="OrderCode${current}" tabindex="-1" aria-hidden="true" id="OrderCode${current}">
-                            `+
-                                renderOrderCode
-                        + `</select>
-                       </div>
-
-                    </div>
-                    <div class ="col-md-2">
-                        <input id="ValueDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày sản xuất">
-                    </div>
-                    <div class ="col-md-2">
-                        <input id="ExpireDate${current}" type="text" class ="form-control not-empty datetimepicker" placeholder="Ngày hết hạn sử dụng">
-                    </div>
-                    <div class ="col-md-2" hidden>
-                        <input id="ProductId${current}" type="text" class ="form-control" placeholder="Enter property">
-                    </div>
-                    <div class ="col-md-1">
-                        <input id="ProductNumber${current}" type="text" data-id="${current}" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Số lượng">
-                    </div>
-                     <div class="col-md-1">
-                                                    <input id="ProductUnit${current}" type="text" class="form-control" placeholder="Đơn vị tính">
-                                                </div>
-                    <div class ="col-md-2">
-                        <input id="ProductPrice${current}" type="text"  onkeyup="formatCurrency(this)" onkeypress="return validateNumber(event)" class ="form-control" placeholder="Đơn giá">
-                    </div>
-
-                </div>
-            </div>
-        </div>`;
-        }
-        $('.mulitiple-form').append(attr);
-        $arr.push(current);
-        $(".ctr-select").selectpicker({
-            width: '100%',
-            showTick: true,
-        });
-        $('.datetimepicker').datetimepicker({ format: 'DD/MM/YYYY' });
-        current = current + 1;
     }
     var dataProductXuat ="";
     function selectProduct(index){
@@ -774,11 +546,7 @@
                 }
             });
         }
-
-
-
     }
-
     function change_alias(alias) {
         var str = alias;
         str = str.toLowerCase();

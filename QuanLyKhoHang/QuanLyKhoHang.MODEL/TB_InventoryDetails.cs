@@ -23,5 +23,7 @@ namespace QuanLyKhoHang.MODEL
         public Nullable<int> TotalUsed { get; set; }
         public string Note { get; set; }
         public Nullable<int> StatusID { get; set; }
+        public Nullable<int> InventoryId { get; set; }
+        public Nullable<int> TotalNow { get; set; }
     }
 }

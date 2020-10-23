@@ -6,12 +6,12 @@ using System.Web;
 
 namespace QuanLyKhoHang.UI.Models
 {
-    public class CompareProduct
+    public class ProductInfoOrder
     {
-        public TB_OrderDetails OrderDetails { get; set; }
-        public TB_Orders Order { get; set; }
         public TB_Products Product { get; set; }
+        public TB_Categories Categories { get; set; }
         public TB_Providers Provider { get; set; }
-        public int TotalRemain { get; set; }
+        public TB_Orders Order { get; set; }
+        public TB_OrderDetails OrderDetails { get; set; }
     }
 }

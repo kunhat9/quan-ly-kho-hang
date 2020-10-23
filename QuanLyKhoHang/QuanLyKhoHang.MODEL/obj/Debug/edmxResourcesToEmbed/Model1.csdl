@@ -25,19 +25,7 @@
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="UserId" Type="Int32" />
     <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TB_InventoryDetails">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ProductId" Type="Int32" />
-    <Property Name="Unit" Type="Int32" />
-    <Property Name="OrderId" Type="Int32" />
-    <Property Name="Total" Type="Int32" />
-    <Property Name="TotalRemaining" Type="Int32" />
-    <Property Name="TotalUsed" Type="Int32" />
-    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="StatusID" Type="Int32" />
   </EntityType>
   <EntityType Name="TB_OrderDetails">
@@ -114,11 +102,27 @@
     <EntitySet Name="AppConfigs" EntityType="Self.AppConfig" />
     <EntitySet Name="TB_Categories" EntityType="Self.TB_Categories" />
     <EntitySet Name="TB_Inventory" EntityType="Self.TB_Inventory" />
-    <EntitySet Name="TB_InventoryDetails" EntityType="Self.TB_InventoryDetails" />
     <EntitySet Name="TB_OrderDetails" EntityType="Self.TB_OrderDetails" />
     <EntitySet Name="TB_Orders" EntityType="Self.TB_Orders" />
     <EntitySet Name="TB_Products" EntityType="Self.TB_Products" />
     <EntitySet Name="TB_Providers" EntityType="Self.TB_Providers" />
     <EntitySet Name="TB_Users" EntityType="Self.TB_Users" />
+    <EntitySet Name="TB_InventoryDetails" EntityType="DB_STORAGESModel.TB_InventoryDetails" />
   </EntityContainer>
+  <EntityType Name="TB_InventoryDetails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" />
+    <Property Name="Unit" Type="Int32" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="Total" Type="Int32" />
+    <Property Name="TotalRemaining" Type="Int32" />
+    <Property Name="TotalUsed" Type="Int32" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StatusID" Type="Int32" />
+    <Property Name="InventoryId" Type="Int32" />
+    <Property Name="TotalNow" Type="Int32" />
+  </EntityType>
 </Schema>

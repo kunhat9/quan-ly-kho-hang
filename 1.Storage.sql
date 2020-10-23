@@ -21,8 +21,6 @@ CREATE TABLE TB_Users		-- Người dùng
 	, Avatar nvarchar(max)
 )
 GO
-ALTER TABLE TB_Users ALTER COLUMN UserType INT
-GO
 CREATE TABLE TB_Providers	-- Nhà cung cấp
 (
 	ProviderId int IDENTITY PRIMARY KEY
@@ -43,7 +41,6 @@ CREATE TABLE TB_Categories  -- loại sản phẩm
 	, CategoriesStatus int			-- trạng thái
 )
 GO
-
 CREATE TABLE TB_Products	-- Sản phẩm
 (
 	ProductId int IDENTITY PRIMARY KEY
@@ -57,7 +54,6 @@ CREATE TABLE TB_Products	-- Sản phẩm
 	--, CONSTRAINT FK_ProductProviderId FOREIGN KEY (ProductProviderId) REFERENCES TB_PROVIDERS(ProviderId)
 	, ProductCategoriesId int			-- Mã file
 	--, CONSTRAINT FK_ProductCategoriesId FOREIGN KEY (ProductCategoriesId) REFERENCES TB_Categories(CategoriesId)
-
 )
 
 GO
@@ -72,7 +68,10 @@ CREATE TABLE TB_Orders	-- Đơn hàng
 	, OrderUserId int				-- Mã người nhập/xuất
 	--, CONSTRAINT FK_OrderUserId FOREIGN KEY (OrderUserId) REFERENCES TB_USERS(UserId)
 )
-
+GO
+ALTER TABLE TB_Orders ADD OrderStatus int
+GO
+ALTER TABLE TB_Orders ADD OrderPrice decimal(18,2)
 GO
 CREATE TABLE TB_OrderDetails	-- Chi tiết đơn hàng
 (
@@ -87,26 +86,42 @@ CREATE TABLE TB_OrderDetails	-- Chi tiết đơn hàng
 	--, CONSTRAINT FK_DetailProductId FOREIGN KEY (DetailProductId) REFERENCES TB_PRODUCTS(ProductId)
 )
 GO
+ALTER TABLE TB_OrderDetails ADD DetailsOrderProductId int
+GO
+ALTER TABLE TB_OrderDetails ADD DetailsUnits nvarchar(max)
+GO
 CREATE TABLE TB_Inventory -- thông tin kiểm kê hàng hóa
 (
 	Id int identity Primary key
+	, Code nvarchar(50) -- ma kiem ke
 	, CreatedDate datetime -- ngày thực hiện
 	, UserId int -- người thực hiện
 	, Note nvarchar(max) -- mô tả , lý do kiểm kê
+	, StatusID int -- trạng thái 
 )
+GO
+--ALTER TABLE TB_Inventory ADD  Code nvarchar(50)
+--ALTER TABLE TB_Inventory ADD  StatusID int
 GO
 CREATE TABLE TB_InventoryDetails -- chi tiết bản kiểm kê
 (
 	Id int identity Primary key
 	, ProductId int -- sản phẩm
+	, InventoryId int -- mã kiêm kê
 	, Unit int -- đơn vị tính
 	, OrderId int -- mã hóa đơn ( nếu kiểm kê theo lô hàng thì cần còn không thì thôi )
 	, Total	int	-- số lượng ban đầu tính theo tổng hóa đơn
 	, TotalRemaining int -- số lượng còn lại
 	, TotalUsed int		-- số lượng đã sử dụng
 	, Note nvarchar(max) -- lý do thừa , thiếu , đủ
+	, TotalNow int		-- số lượng thực tế ( người kiểm kê nhập )
+	, TotalRemainNow int -- số lượng ban đầu theo sổ sách
 	, StatusID int		-- trạng thái hàng hóa ( hết hạn , còn hạn , còn hàng )
 )	
+GO
+--ALTER TABLE TB_InventoryDetails ADD  InventoryId int -- mã kiêm kê
+--ALTER TABLE TB_InventoryDetails ADD TotalNow int -- thực tế
+--ALTER TABLE TB_InventoryDetails ADD TotalRemainNow int -- thực tế
 GO
 CREATE TABLE AppConfig
 (
@@ -114,32 +129,10 @@ CREATE TABLE AppConfig
 	, ImageLogin nvarchar(max)
 	, ImagePanelLogin varchar(max)
 )
-GO
-ALTER TABLE TB_Orders ADD OrderStatus int
-GO
-ALTER TABLE TB_Orders ADD OrderPrice decimal(18,2)
+
 GO
 INSERT INTO AppConfig(ImageLogin,ImagePanelLogin)
 VALUES ('~/Libs/Login_v3/images/bg-01.jpg','~-webkit-linear-gradient(top, #dee0f5, #0683ef)')
 GO
 INSERT INTO [dbo].[TB_USERS]([Username],[UserPassword],[UserType],[UserStatus],[UserNote], UserFullName , UserAddress , UserPhone,UserDateCreated)
      VALUES ('ADMIN', N'/f9e7bsNi+c=', 1, 1,N'',N'Admin Hệ thống',N'',N'',GETDATE())
-/*
-	1, Đăng nhập
-	2, Trang chủ
-	3, Quản lý User (UserType: ADMIN)
-		Danh sách nhân viên
-		Thêm/sửa nhân viên
-	4, Quản lý NCC
-		Danh sách ncc - Tạo phiếu yêu cầu
-		Thêm/sửa ncc
-	5, Quản lý Sản phẩm
-		Danh sách sp
-		Thêm/sửa sp
-	6, Quản lý Kho (Nhập / xuất)
-		Danh sách phiếu nhập
-		Thêm phiếu nhập
-		Danh sách phiếu xuất
-		Thêm phiếu xuất
-	7, Báo cáo - Thống kê
-*/

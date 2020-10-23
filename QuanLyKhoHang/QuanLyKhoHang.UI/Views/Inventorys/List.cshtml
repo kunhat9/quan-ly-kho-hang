@@ -1,0 +1,66 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model IEnumerable<InventoryInfo>
+@{
+    int stt = 0;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">@(++stt)</td>
+            <td class="text-center">
+                <span class="">@item.Inventory.Code</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.Users.UserFullName)</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.Inventory.Note)</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.ListInventoryDetails.Sum(x=>x.Total)</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.ListInventoryDetails.Sum(x => x.TotalRemaining)</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.ListInventoryDetails.Sum(x => x.TotalUsed)</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.ListInventoryDetails.Sum(x => x.TotalNow)</span>
+            </td>
+            <td class="text-center">
+                <span data-id="@item.Inventory.Id" onclick="CapNhatTrangThai($(this))" style="cursor: pointer" title="Cập nhật trạng thái">
+                    <i class="fa @(item.Inventory.StatusID == EnumInventoryStatus.DAY_DU? "fa-unlock":"fa-lock")" style="font-size:22px;"></i>
+                </span>
+            </td>
+
+            <td class="text-center clickable-td">
+                <div class="dropdown">
+                    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width:160px;">
+                        Thao tác
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="btn btn-xs btn-warning" href="@Url.Action("Update", "Inventorys", new { area = "QuanTri" , id = item.Inventory.Id})"><i class="fa fa-plus"></i>Sửa </a>
+                        </li>
+                        <li>
+                            <a class="btn btn-xs btn-danger" data-id="@item.Inventory.Id" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    }
+}
+<script>
+    $('#idsotrang').val('@ViewBag.sotrang');
+    document.getElementById("idtongsotrang").innerHTML = '@ViewBag.tongsotrang';
+    document.getElementById("idtongso").innerHTML = '(' + '@ViewBag.tongso' + ')';
+    $(".clickable-td").on("click", function (e) {
+        //e.stopPropagation();
+        $(".dropdown-toggle").dropdown();
+    });
+</script>

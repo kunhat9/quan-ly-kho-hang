@@ -36,16 +36,16 @@
                         <li class="mn-category"><a href="@Url.Action("MainPage","Categories", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Danh mục sản phẩm</a></li>
                         <li class="mn-product"><a href="@Url.Action("MainPage","Products", new { area="QuanTri"})"><i class="fa fa-usd"></i>Sản phẩm</a></li>
                         <li class="mn-order"><a href="@Url.Action("MainPage","Orders", new { area="QuanTri"})"><i class="fa fa-refresh"></i>Hóa đơn</a></li>
-                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventory", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>
+                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventorys", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>
                         <li class="mn-homepage mn-services mn-banks mn-bank-branch mn-notifications mn-config">
                             <a><i class="fa fa-cogs"></i> Báo cáo thống kê<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li class="mn-homepage"><a href="@Url.Action("Update","Report", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
-                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
-                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
-                                <li class="mn-banks"><a href="@Url.Action("Mainpage","Banks", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
-                                <li class="mn-bank-branch"><a href="@Url.Action("Mainpage","Bank_Branch", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
-                                <li class="mn-notifications"><a href="@Url.Action("Mainpage","Notifications", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
+                                <li class="mn-product-transaction"><a href="@Url.Action("ProductTransaction","Reports", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
+                                <li class="mn-product-remain"><a href="@Url.Action("ProductRemain","Reports", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
+                                <li class="mn-product-expired"><a href="@Url.Action("ProductExpired","Reports", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
+                                <li class="mn-product-not-have"><a href="@Url.Action("ProductNotHave","Reports", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
+                                <li class="mn-product-about-expired"><a href="@Url.Action("ProductAboutExpired","Reports", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
+                                <li class="mn-product-about-not-have"><a href="@Url.Action("ProductAboutNotHave","Reports", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
                             </ul>
                         </li>
                     }

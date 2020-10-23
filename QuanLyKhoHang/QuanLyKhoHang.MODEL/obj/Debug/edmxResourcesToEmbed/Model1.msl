@@ -23,25 +23,12 @@
     <EntitySetMapping Name="TB_Inventory">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Inventory">
         <MappingFragment StoreEntitySet="TB_Inventory">
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Note" ColumnName="Note" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TB_InventoryDetails">
-      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
-        <MappingFragment StoreEntitySet="TB_InventoryDetails">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="Unit" ColumnName="Unit" />
-          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-          <ScalarProperty Name="Total" ColumnName="Total" />
-          <ScalarProperty Name="TotalRemaining" ColumnName="TotalRemaining" />
-          <ScalarProperty Name="TotalUsed" ColumnName="TotalUsed" />
-          <ScalarProperty Name="Note" ColumnName="Note" />
-          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -117,6 +104,23 @@
           <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
           <ScalarProperty Name="UserNote" ColumnName="UserNote" />
           <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_InventoryDetails">
+      <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
+        <MappingFragment StoreEntitySet="TB_InventoryDetails">
+          <ScalarProperty Name="TotalNow" ColumnName="TotalNow" />
+          <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="TotalUsed" ColumnName="TotalUsed" />
+          <ScalarProperty Name="TotalRemaining" ColumnName="TotalRemaining" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

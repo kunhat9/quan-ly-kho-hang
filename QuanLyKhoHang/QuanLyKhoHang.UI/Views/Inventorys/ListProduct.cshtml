@@ -1,0 +1,69 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model IEnumerable<CompareProduct>
+@{
+    int stt = 0;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr id="@item.Order.OrderCode">
+            <td class="text-center">@(++stt)</td>
+            <td class="text-center">
+                <span class="">@item.Product.ProductCode</span>
+            </td>
+            <td class="text-center">
+                <span class="">@item.Product.ProductName</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.Order.OrderCode)</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.Order.OrderDate.Value.ToString("dd/MM/yyyy"))</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy"))</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.OrderDetails.DetailsUnits)</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(item.OrderDetails.DetailPrice)</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.OrderDetails.DetailNumber</span>
+            </td>
+            <td class="text-center">
+                <input name="totalProduct" id="totalProduct" class="form-control" value="" />
+            </td>
+            <td class="text-center">
+                <span class="red">@item.TotalRemain</span>
+            </td>
+            <td class="text-center">
+                <input name="remainProduct" id="remainProduct" class="form-control" value="" />
+            </td>
+            <td class="text-center" width="200">
+                <div>
+                    <a href="#" onclick="ChangeStatus(this)" data-id="@item.Order.OrderCode" data-value="0" title="Cập nhật trạng thái của sản phẩm"><span id="status" class="">Không xác định</span></a>
+                </div>
+            </td>
+            <td class="text-center" width="200">
+                <div>
+                    <a href="#" onclick="ChangeNote(this)" data-id="@item.Order.OrderCode" title="Cập nhật thông tin mô tả"><span id="note" class="">Mô tả</span></a>
+                </div>
+            </td>
+            
+        </tr>
+    }
+}
+<script>
+    function ChangeStatus(evt) {
+        debugger;
+        alert('bat change trang thai');
+
+
+    }
+    function ChangeNote(evt) {
+        alert('bat change thong tin mo ta')
+    }
+</script>

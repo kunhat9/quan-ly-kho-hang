@@ -1,0 +1,72 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model IEnumerable<ProductInfoOrder>
+@{
+    int stt = 0;
+    int ?totalNhap = 0;
+    int ?totalXuat = 0;
+    int? total = 0;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        total += item.OrderDetails.DetailNumber;
+        if (item.Order.OrderType == EnumOrderType.NHAP)
+        {
+            totalNhap += item.OrderDetails.DetailNumber;
+        }else
+        {
+            totalXuat += item.OrderDetails.DetailNumber;
+        }
+        <tr>
+            <td class="text-center">@(++stt)</td>
+
+            <td class="text-center">
+                <span class="">@item.Product.ProductCode</span>
+            </td>
+            <td class="text-center">
+                <span class="">@item.Product.ProductName</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.Order.OrderCode</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@(EnumOrderType.ToString(item.Order.OrderType))</span>
+            </td>
+            <td class="text-center">@item.Order.OrderDate.Value.ToString("dd/MM/yyyy")</td>
+            <td class="text-center">@item.OrderDetails.DetailNumber</td>
+            <td class="text-center">@item.OrderDetails.DetailPrice.Value.ToString("#,###.###")</td>
+            <td class="text-center">@item.OrderDetails.DetailValueDate.Value.ToString("dd/MM/yyyy")</td>
+            <td class="text-center">@item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy")</td>
+            <td class="text-center">@item.OrderDetails.DetailsUnits</td>
+        </tr>
+    }
+    <tr>
+        
+        <td colspan="6" class="text-center red">Tổng số sản phẩm</td>
+        <td class="text-center green">@total sản phẩm</td>
+        @if (ViewBag.ReportType == EnumReportType.GIAO_DICH_SAN_PHAM)
+        {
+            <td class="text-center red">Nhập</td>
+            <td class="text-center green">@totalNhap sản phẩm</td>
+            <td class="text-center red">Xuất</td>
+            <td class="text-center green">@totalXuat sản phẩm</td>
+        }
+        else
+        {
+            <td colspan="4" class=""></td>
+           
+        }
+
+    </tr>
+}
+<script>
+    $('#idsotrang').val('@ViewBag.sotrang');
+    document.getElementById("idtongsotrang").innerHTML = '@ViewBag.tongsotrang';
+    document.getElementById("idtongso").innerHTML = '(' + '@ViewBag.tongso' + ')';
+    $(".clickable-td").on("click", function (e) {
+        //e.stopPropagation();
+        $(".dropdown-toggle").dropdown();
+    });
+</script>
+

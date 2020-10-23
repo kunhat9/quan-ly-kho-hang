@@ -11,7 +11,7 @@ namespace QuanLyKhoHang.UI.Controllers
 {
     [RouteArea("QuanTri", AreaPrefix = "admin")]
     [Route("{action}")]
-    public class OrdersController : Controller
+    public class OrdersController : BaseController
     {
         public QuanLyKhoHangEntities db = new QuanLyKhoHangEntities();
         [Route("order/trang-chu")]
@@ -27,7 +27,7 @@ namespace QuanLyKhoHang.UI.Controllers
             {
                 cbxProduct += string.Format("<option value=\"{0}\">{1}</option>", item.ProductId, item.ProductName);
             }
-            ViewBag.cbxProvider = cbxProduct;
+            ViewBag.cbxProduct = cbxProduct;
             return View();
         }
         [Route("order/danh-sach")]
@@ -50,7 +50,7 @@ namespace QuanLyKhoHang.UI.Controllers
                         from d in d1.DefaultIfEmpty()
                         join e in db.TB_Categories on c.ProductCategoriesId equals e.CategoriesId into e1
                         from e in e1.DefaultIfEmpty()
-                        where  (keyword == "" || (keyword != "" && (c.ProductCode.ToLower().Contains(keyword) || c.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
+                        where (keyword == "" || (keyword != "" && (c.ProductCode.ToLower().Contains(keyword) || c.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
                         || c.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)))
                         || d.ProviderName.BoDauTiengViet().ToLower().Contains(keyword)
                         || e.CategoriesName.BoDauTiengViet().ToLower().Contains(keyword)
@@ -58,13 +58,13 @@ namespace QuanLyKhoHang.UI.Controllers
                         || d.ProviderNote.BoDauTiengViet().ToLower().Contains(keyword)
                         )
                         && a.OrderStatus == status
-                        && product == null?true: b.DetailProductId == product
+                        && product == null ? true : b.DetailProductId == product
                         && type == null ? true : a.OrderType == type
                         select new OrderInfo()
                         {
                             Orders = a,
                             OrderDetails = b,
-                            ProductInfo =  new ProductInfo()
+                            ProductInfo = new ProductInfo()
                             {
                                 Product = c,
                                 Provider = d,
@@ -135,19 +135,34 @@ namespace QuanLyKhoHang.UI.Controllers
             var provider = db.TB_Providers.Where(x => x.ProviderStatus == EnumStatus.ACTIVE).ToList();
             foreach (var item in provider)
             {
-                cbxProvider += string.Format("<option value=\"{0}\" {2}>{1}</option>", item.ProviderId, item.ProviderName,id != null ? order.Orders.OrderProviderId == item.ProviderId?"selected":"":"");
+                cbxProvider += string.Format("<option value=\"{0}\" {2}>{1}</option>", item.ProviderId, item.ProviderName, id != null ? order.Orders.OrderProviderId == item.ProviderId ? "selected" : "" : "");
             }
             ViewBag.cbxProvider = cbxProvider;
             return View(order);
         }
         [Route("order/update")]
         [HttpPost, ValidateInput(false)]
-        public ActionResult Update(TB_Orders order , List<TB_OrderDetails> list)
+        public ActionResult Update(TB_Orders order, List<TB_OrderDetails> list)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
+            if (order.OrderType == EnumOrderType.XUAT)
+            {
+                foreach (var item in list)
+                {
+                    List<CompareProduct> listCheck = CompareProduct(item.DetailProductId, item.DetailsOrderProductId);
+                    foreach (var check in listCheck)
+                    {
+                        if (item.DetailNumber > check.TotalRemain)
+                        {
+                            return Json(new { kq = "err", msg = "Hóa đơn " + check.Order.OrderCode + " đang còn " + check.TotalRemain + " sản phẩm" }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
 
+
+                }
+            }
 
             if (order.OrderId == 0)
             {
@@ -171,7 +186,7 @@ namespace QuanLyKhoHang.UI.Controllers
             }
             else
             {
-                
+
                 // up date
                 var orderOld = db.TB_Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
                 if (orderOld == null)
@@ -179,6 +194,11 @@ namespace QuanLyKhoHang.UI.Controllers
                 // tim thang order details cua thang kia roi remove di
                 var orderDetailsOld = db.TB_OrderDetails.Where(x => x.DetailOrderId == orderOld.OrderId).ToList();
                 db.TB_OrderDetails.RemoveRange(orderDetailsOld);
+                // check so luong san pham con lai trong kho xem co du khong
+
+
+
+
 
                 list.ForEach(x => x.DetailOrderId = orderOld.OrderId);
                 db.TB_OrderDetails.AddRange(list);
@@ -242,7 +262,7 @@ namespace QuanLyKhoHang.UI.Controllers
             {
                 cbxProduct += string.Format("<option value=\"{0}\">{1}</option>", item.ProductId, item.ProductName);
             }
-            return Json(new { kq = "ok",data = cbxProduct, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
+            return Json(new { kq = "ok", data = cbxProduct, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
         }
 
         [Route("order/get-order-by-product")]
@@ -253,14 +273,15 @@ namespace QuanLyKhoHang.UI.Controllers
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             string cbxProvider = "";
             var orderNhap = (from a in db.TB_OrderDetails
-                           join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
-                           from b in b1.DefaultIfEmpty()
-                           where a.DetailProductId == id
-                           select new {
-                               Order = b,
-                               OrderDetails = a
-                           }
-                           ).Where(x=>x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
+                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
+                             from b in b1.DefaultIfEmpty()
+                             where a.DetailProductId == id
+                             select new
+                             {
+                                 Order = b,
+                                 OrderDetails = a
+                             }
+                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
 
             var orderXuat = (from a in db.TB_OrderDetails
                              join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
@@ -286,45 +307,7 @@ namespace QuanLyKhoHang.UI.Controllers
             return Json(new { kq = "ok", data = obj, msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
         }
 
-        private List<CompareProduct> CompareProduct( int? product = null , int ? order = null)
-        {
-            List<CompareProduct> list = new List<CompareProduct>();
-            // hoa don nhap cua san pham do
-            var orderNhap = (from a in db.TB_OrderDetails
-                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
-                             from b in b1.DefaultIfEmpty()
-                             where a.DetailProductId == product
-                             select new
-                             {
-                                 Order = b,
-                                 OrderDetails = a
-                             }
-                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
-            // danh sach hoa don xuat dung san pham do
-            var orderXuat = (from a in db.TB_OrderDetails
-                             join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
-                             from b in b1.DefaultIfEmpty()
-                             where a.DetailProductId == product
-                             select new
-                             {
-                                 Order = b,
-                                 OrderDetails = a
-                             }
-                           ).Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.XUAT).ToList();
-            foreach(var item in orderNhap)
-            {
-                CompareProduct p = new Models.CompareProduct();
-                p.Order = item.Order;
-                p.OrderDetails = item.OrderDetails;
-                var totalRemain = orderXuat.Where(x => x.OrderDetails.DetailsOrderProductId == item.Order.OrderId).Sum(x=>x.OrderDetails.DetailNumber);
-                p.TotalRemain = totalRemain == null ? item.OrderDetails.DetailNumber.Value : item.OrderDetails.DetailNumber.Value - totalRemain.Value;
-
-
-                list.Add(p);
-            }
-            return list;
-        }
-
+       
         [Route("order/check-product-order")]
         public ActionResult CheckProductInOrder(int? product = null, int? order = null)
         {
@@ -332,7 +315,7 @@ namespace QuanLyKhoHang.UI.Controllers
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
-            if(product == null)
+            if (product == null)
                 return Json(new { kq = "err", msg = "Sản phẩm không tìm thấy" }, JsonRequestBehavior.AllowGet);
             if (order == null)
                 return Json(new { kq = "err", msg = "Không tìm thấy hóa đơn nhập sản phẩm" }, JsonRequestBehavior.AllowGet);

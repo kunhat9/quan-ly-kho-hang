@@ -18,5 +18,7 @@ namespace QuanLyKhoHang.MODEL
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> UserId { get; set; }
         public string Note { get; set; }
+        public string Code { get; set; }
+        public Nullable<int> StatusID { get; set; }
     }
 }

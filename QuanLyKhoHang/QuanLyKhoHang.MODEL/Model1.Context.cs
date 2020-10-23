@@ -28,11 +28,11 @@ namespace QuanLyKhoHang.MODEL
         public virtual DbSet<AppConfig> AppConfigs { get; set; }
         public virtual DbSet<TB_Categories> TB_Categories { get; set; }
         public virtual DbSet<TB_Inventory> TB_Inventory { get; set; }
-        public virtual DbSet<TB_InventoryDetails> TB_InventoryDetails { get; set; }
         public virtual DbSet<TB_OrderDetails> TB_OrderDetails { get; set; }
         public virtual DbSet<TB_Orders> TB_Orders { get; set; }
         public virtual DbSet<TB_Products> TB_Products { get; set; }
         public virtual DbSet<TB_Providers> TB_Providers { get; set; }
         public virtual DbSet<TB_Users> TB_Users { get; set; }
+        public virtual DbSet<TB_InventoryDetails> TB_InventoryDetails { get; set; }
     }
 }
