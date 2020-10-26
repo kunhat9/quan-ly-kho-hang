@@ -40,7 +40,7 @@
     <Property Name="DetailOrderId" Type="Int32" />
     <Property Name="DetailProductId" Type="Int32" />
     <Property Name="DetailsOrderProductId" Type="Int32" />
-    <Property Name="DetailsUnits" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DetailsUnits" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_Orders">
     <Key>

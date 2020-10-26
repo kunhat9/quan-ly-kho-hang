@@ -22,10 +22,10 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="UserId" Type="int" />
     <Property Name="Note" Type="nvarchar(max)" />
-    <Property Name="Code" Type="nvarchar" MaxLength="50" />
     <Property Name="StatusID" Type="int" />
   </EntityType>
   <EntityType Name="TB_InventoryDetails">
@@ -34,16 +34,16 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductId" Type="int" />
+    <Property Name="InventoryId" Type="int" />
     <Property Name="Unit" Type="int" />
     <Property Name="OrderId" Type="int" />
     <Property Name="Total" Type="int" />
     <Property Name="TotalRemaining" Type="int" />
     <Property Name="TotalUsed" Type="int" />
     <Property Name="Note" Type="nvarchar(max)" />
-    <Property Name="StatusID" Type="int" />
-    <Property Name="InventoryId" Type="int" />
     <Property Name="TotalNow" Type="int" />
     <Property Name="TotalRemainNow" Type="int" />
+    <Property Name="StatusID" Type="int" />
   </EntityType>
   <EntityType Name="TB_OrderDetails">
     <Key>
@@ -57,7 +57,7 @@
     <Property Name="DetailOrderId" Type="int" />
     <Property Name="DetailProductId" Type="int" />
     <Property Name="DetailsOrderProductId" Type="int" />
-    <Property Name="DetailsUnits" Type="nvarchar" MaxLength="255" />
+    <Property Name="DetailsUnits" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="TB_Orders">
     <Key>
@@ -81,10 +81,10 @@
     <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
     <Property Name="ProductImage" Type="nvarchar(max)" />
     <Property Name="ProductNote" Type="nvarchar" MaxLength="100" />
+    <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="ProductStatus" Type="int" />
     <Property Name="ProductProviderId" Type="int" />
     <Property Name="ProductCategoriesId" Type="int" />
-    <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="2" />
   </EntityType>
   <EntityType Name="TB_Providers">
     <Key>

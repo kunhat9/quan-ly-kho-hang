@@ -135,4 +135,4 @@ INSERT INTO AppConfig(ImageLogin,ImagePanelLogin)
 VALUES ('~/Libs/Login_v3/images/bg-01.jpg','~-webkit-linear-gradient(top, #dee0f5, #0683ef)')
 GO
 INSERT INTO [dbo].[TB_USERS]([Username],[UserPassword],[UserType],[UserStatus],[UserNote], UserFullName , UserAddress , UserPhone,UserDateCreated)
-     VALUES ('ADMIN', N'/f9e7bsNi+c=', 1, 1,N'',N'Admin Hệ thống',N'',N'',GETDATE())
+     VALUES ('ADMIN', N'/f9e7bsNi+c=', 0, 1,N'',N'Admin Hệ thống',N'',N'',GETDATE())

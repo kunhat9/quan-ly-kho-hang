@@ -334,30 +334,18 @@ namespace QuanLyKhoHang.UI.Controllers
         }
 
         [Route("inventory/export-excel")]
-        protected string BillExport(string filePath, string userId, string startDate, string endDate, string type)
+        public ActionResult ExportExcel(int? id = null)
         {
+          
             Application xlApp = new Application();
             if (xlApp == null)
             {
-                return "Lỗi không thể sử dụng được thư viện EXCEL";
+                return Json(new { kq = "err", msg = "Lỗi không thể sử dụng được thư viện EXCEL" }, JsonRequestBehavior.AllowGet);
             }
 
             try
             {
-                if (string.IsNullOrEmpty(startDate))
-                {
-                    return "Vui lòng chọn ngày bắt đầu";
-                }
-                else if (string.IsNullOrEmpty(endDate))
-                {
-                    return "Vui lòng chọn ngày kết thúc";
-                }
-
-
-                DateTime? from, to;
-                from = startDate.ToDateTime();
-                to = startDate.ToDateTime();
-
+                
                 var test = (from a in db.TB_Inventory.ToList()
                             join b in db.TB_InventoryDetails on a.Id equals b.InventoryId into b1
                             from b in b1.DefaultIfEmpty()
@@ -374,9 +362,8 @@ namespace QuanLyKhoHang.UI.Controllers
                                 Product = c,
                                 Provider = d,
                                 Users = e
-                            }).Where(x => (string.IsNullOrEmpty(startDate) ? true : x.Inventory.CreatedDate >= from) && (string.IsNullOrEmpty(endDate) ? true : x.Inventory.CreatedDate <= to))
-                       .ToList();
-                var list = test.GroupBy(x => x.Inventory.Id).Select(t => new InventoryInfo
+                            }).Where(x => x.Inventory.Id == id).ToList();
+                var data = test.GroupBy(x => x.Inventory.Id).Select(t => new InventoryInfo
                 {
 
                     Inventory = t.FirstOrDefault(y => y.Inventory.Id == t.Key).Inventory,
@@ -384,11 +371,14 @@ namespace QuanLyKhoHang.UI.Controllers
                     Users = t.FirstOrDefault(y => y.Inventory.Id == t.Key).Users
                 })
                 .OrderByDescending(x => x.Inventory.CreatedDate)
-                .ToList();
-                if (list == null || list.Count == 0)
+                .FirstOrDefault();
+                if (data == null)
                 {
-                    return "Lỗi không có bản kiểm kê nào";
+                    return Json(new { kq = "err", msg = "Lỗi không có bản kiểm kê nào" }, JsonRequestBehavior.AllowGet);
                 }
+
+                string fileName = "\\Export\\KiemKe" + data.Inventory.Code+".xls";
+                string filePath = HttpContext.Server.MapPath("~" + fileName);
 
                 xlApp.DisplayAlerts = false;
                 xlApp.Visible = false;
@@ -399,85 +389,91 @@ namespace QuanLyKhoHang.UI.Controllers
                 int fontSizeTieuDe = 18;
                 int fontSizeTenTruong = 14;
                 int fontSizeNoiDung = 12;
-
-                DateTime dateStart = new DateTime();
-                DateTime.TryParseExact(startDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out dateStart);
-                DateTime dateEnd = new DateTime();
-                DateTime.TryParseExact(endDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out dateEnd);
                 //Info
-                ws.AddValue("B2", "E2", "Trung tâm bồi dưỡng kiến thức", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
-                ws.AddValue("B3", "E3", "Trung tâm ", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
+                ws.AddValue("A1", "B1", "Đơn vị :", fontSizeTieuDe, false, XlHAlign.xlHAlignCenter, false, 20);
+                ws.AddValue("A2", "B2", "Bộ phận :", fontSizeTenTruong, false, XlHAlign.xlHAlignCenter, false);
 
-                ws.AddValue("H2", "K2", "Cộng hòa Xã hội Chủ nghĩa Việt Nam", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
-                ws.AddValue("H3", "K3", "   Độc lập - Tự do - Hạnh phúc", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
-                ws.AddValue("E5", "G5", "Thông báo", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter);
-                ws.AddValue("E6", "G6", "Học phí từ " + dateStart.ToString("dd/MM/yyy") + " đến " + dateEnd.ToString("dd/MM/yyy"), fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
+                ws.AddValue("E5", "K5", "BIÊN BẢN KIỂM KÊ HÀNG HÓA, SẢN PHẨM", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
+                ws.AddValue("A7", "E7", "Thời điểm kiểm kê :"+ data.Inventory.CreatedDate.Value.ToString("dd/MM/yyyy HH:ss:mm"), fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false, 20);
+                ws.AddValue("A8", "B8", "Ban kiểm kê gồm :", fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false, 20);
 
-                //ws.AddValue("A8", "A8", "Kính gửi phụ huynh học sinh " + data[0].UserFullName, fontSizeTenTruong, false, XlHAlign.xlHAlignLeft, false);
-                ws.AddValue("A9", "A9", "Trung tâm bồi dưỡng kiến thức Chu Văn An thông báo thu học phí từ " + dateStart.ToString("dd/MM/yyy") + " đến " + dateEnd.ToString("dd/MM/yyy") + " bao gồm:", fontSizeTenTruong, false, XlHAlign.xlHAlignLeft, false);
+                ws.AddValue("A9", "K9", "Ông (bà) :"+ data.Users.UserFullName+ "   Chức vụ :"+EnumUserType.ToString(data.Users.UserType)+" Trưởng ban", fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false);
+                ws.AddValue("A10", "K10", "Ông (bà) :...........................      Chức vụ :............................ Ủy viên", fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false);
+                ws.AddValue("A12", "E12", "Đã kiểm kê những mặt hàng dưới đây : ", fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false);
 
 
-                int rowStart = 11, rowIndex = 11;
+                int rowStart = 13, rowIndex = 13;
                 //Header
-                ws.AddValue("E" + rowIndex, "E" + rowIndex, "Môn học", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
-                ws.AddValue("F" + rowIndex, "F" + rowIndex, "Số buổi", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
-                ws.AddValue("G" + rowIndex, "G" + rowIndex, "Thành tiền", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 18);
+                ws.AddValue("A" + rowIndex, "A" + rowIndex, "STT", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("B" + rowIndex, "B" + rowIndex, "Mã sản phẩm", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("C" + rowIndex, "C" + rowIndex, "Tên sản phẩm", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("D" + rowIndex, "D" + rowIndex, "Mã hóa đơn", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("E" + rowIndex, "E" + rowIndex, "Ngày nhập", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("F" + rowIndex, "F" + rowIndex, "Ngày hết hạn", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("G" + rowIndex, "G" + rowIndex, "Đơn vị tính", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("H" + rowIndex, "H" + rowIndex, "Đơn giá", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("I" + rowIndex, "I" + rowIndex, "Tổng số sản phẩm", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("J" + rowIndex, "J" + rowIndex, "Tổng sản phẩm nhập thực tế", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("K" + rowIndex, "K" + rowIndex, "Tổng số đã sử dụng ", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("L" + rowIndex, "L" + rowIndex, "Tông số còn lại", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("M" + rowIndex, "M" + rowIndex, "Tổng số còn lại thực tế", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("N" + rowIndex, "N" + rowIndex, "Trạng thái", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("O" + rowIndex, "O" + rowIndex, "Mô tả", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
                 rowIndex += 1;
-                decimal total = 0;
+                int total = 0;
+                int totalNow = 0;
+                int totalUsed = 0;
+                int totalRemain = 0;
+                int totalRemainNow = 0;
 
 
 
                 //Body
 
-                //for (int i = 0; i < data.Count; i++)
-                //{
-                //    string subjectName = Subjects_Service.GetByBoxScheduleId(data[i].ScheduleId).SubjectName;
-                //    dynamic[] val = { subjectName, data[i].CountNumber
-                //            , data[i].TuitionStudies };
-                //    ws.AddValue("E" + rowIndex, "G" + rowIndex, val, fontSizeNoiDung, false, XlHAlign.xlHAlignLeft, false);
-                //    total += data[i].TuitionStudies;
-                //    rowIndex += 1;
-                //}
-
-
-
-
-
+                for (int i = 0; i < data.ListInventoryDetails.Count; i++)
+                {
+                    var item = data.ListInventoryDetails[i];
+                    var stt = i + 1;
+                    var product = db.TB_Products.FirstOrDefault(x => x.ProductId == item.ProductId);
+                    var order = db.TB_Orders.FirstOrDefault(x => x.OrderId == item.OrderId);
+                    var orderDetails = db.TB_OrderDetails.Where(x => x.DetailOrderId == item.OrderId && x.DetailProductId == item.ProductId).FirstOrDefault();
+                    dynamic[] val = { stt,product.ProductCode,product.ProductName,order.OrderCode,order.OrderDate, orderDetails.DetailExpiredDate,item.Unit,orderDetails.DetailPrice,item.Total,item.TotalNow,item.TotalUsed,item.TotalRemaining,item.TotalRemainNow,EnumInventoryStatus.ToString(item.StatusID),item.Note.Trim()};
+                    ws.AddValue("A" + rowIndex, "O" + rowIndex, val, fontSizeNoiDung, false, XlHAlign.xlHAlignLeft, false);
+                    total += item.Total.Value;
+                    totalNow += item.Total.Value;
+                    totalUsed += item.TotalUsed.Value;
+                    totalRemain += item.TotalRemaining.Value;
+                    totalRemainNow += item.TotalRemainNow.Value;
+                    rowIndex += 1;
+                }
                 //End
-                ws.AddValue("F" + rowIndex, "F" + rowIndex, "TỔNG CỘNG", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 18);
-                ws.AddValue("G" + rowIndex, "G" + rowIndex, total, fontSizeTenTruong);
-
-                //Sign
-                //string fullName = "";
-                //if (Session[AppSessionKeys.USER_INFO] != null)
-                //{
-                //    fullName = ((TB_USERS)Session[AppSessionKeys.USER_INFO]).UserFullName;
-                //}
-                ws.AddValue("D" + (rowIndex + 2), "G" + (rowIndex + 2), "NHÂN VIÊN", fontSizeTenTruong, true);
-                //ws.AddValue("D" + (rowIndex + 8), "G" + (rowIndex + 8), fullName, fontSizeTenTruong, true);
-
+                ws.AddValue("H" + rowIndex, "H" + rowIndex, "TỔNG CỘNG", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 18);
+                ws.AddValue("I" + rowIndex, "I" + rowIndex, total.ToString("#,###.###"), fontSizeTenTruong);
+                ws.AddValue("J" + rowIndex, "J" + rowIndex, totalNow.ToString("#,###.###"), fontSizeTenTruong);
+                ws.AddValue("K" + rowIndex, "K" + rowIndex, totalUsed.ToString("#,###.###"), fontSizeTenTruong);
+                ws.AddValue("L" + rowIndex, "L" + rowIndex, totalRemain.ToString("#,###.###"), fontSizeTenTruong);
+                ws.AddValue("M" + rowIndex, "M" + rowIndex, totalRemainNow.ToString("#,###.###"), fontSizeTenTruong);
                 //Border
-                ws.get_Range("E" + rowStart, "G" + rowIndex).SetBorderAround();
+                ws.get_Range("D" + rowStart, "U" + rowIndex).SetBorderAround();
 
                 //Save
                 wb.SaveAs(filePath);
+                wb.SaveAs(filePath, XlFileFormat.xlOpenXMLWorkbook, missing, missing, false, false
+                    , XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlUserResolution
+                    , true, missing, missing, missing);
+                wb.Saved = true;
                 wb.Close(true, missing, missing);
-                //wb.SaveAs(filePath, XlFileFormat.xlOpenXMLWorkbook, missing, missing, false, false
-                //    , XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlUserResolution
-                //    , true, missing, missing, missing);
-                //wb.Saved = true;
                 //wb.Close();
 
                 //thoát và thu hồi bộ nhớ cho COM
                 ws.ReleaseObject();
                 wb.ReleaseObject();
 
-                return "";
+                return Json(new { kq = "ok", msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                //return ex.ToString();
-                throw ex;
+                return Json(new { kq = "err", msg = "Đã xảy ra lỗi khi lưu dữ liệu. Kiểm tra File" }, JsonRequestBehavior.AllowGet);
             }
             finally
             {
