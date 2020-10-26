@@ -1,4 +1,5 @@
-﻿using QuanLyKhoHang.MODEL;
+﻿using BASICAUTHORIZE.ATCAPITAL.HETHONGGOPCOPHAN;
+using QuanLyKhoHang.MODEL;
 using QuanLyKhoHang.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,13 @@ namespace QuanLyKhoHang.UI.Controllers
 {
     public class BaseController : Controller
     {
-        protected List<CompareProduct> CompareProduct(int? product = null, int? order = null)
+        protected List<CompareProduct> CompareProduct(int? product = null, int? order = null, string startDate ="", string endDate= "")
         {
             QuanLyKhoHangEntities db = new QuanLyKhoHangEntities();
             List<CompareProduct> list = new List<CompareProduct>();
+            DateTime? from, to;
+            from = startDate.ToDateTime();
+            to = endDate.ToDateTime();
             // hoa don nhap cua san pham do
             var orderNhap = (from a in db.TB_OrderDetails
                              join b in db.TB_Orders on a.DetailOrderId equals b.OrderId into b1
@@ -32,6 +36,7 @@ namespace QuanLyKhoHang.UI.Controllers
                                  Provider = d
                              }
                            ).Where(a => (product == null ? true : a.OrderDetails.DetailProductId == product) && (order == null ? true : a.Order.OrderId == order))
+                           .Where(x=> string.IsNullOrEmpty(startDate)?true:x.Order.OrderDate >= from && string.IsNullOrEmpty(endDate)?true:x.Order.OrderDate<= to)
                            .Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.NHAP).ToList();
             // danh sach hoa don xuat dung san pham do
             var orderXuat = (from a in db.TB_OrderDetails
@@ -44,15 +49,18 @@ namespace QuanLyKhoHang.UI.Controllers
                                  OrderDetails = a
                              }
                            )
+                           .Where(x => string.IsNullOrEmpty(startDate) ? true : x.Order.OrderDate >= from && string.IsNullOrEmpty(endDate) ? true : x.Order.OrderDate <= to)
                            .Where(x => x.Order.OrderStatus == EnumOrderStatus.DANG_SU_DUNG && x.Order.OrderType == EnumOrderType.XUAT).ToList();
             foreach (var item in orderNhap)
             {
                 CompareProduct p = new Models.CompareProduct();
+                
                 p.Order = item.Order;
                 p.OrderDetails = item.OrderDetails;
                 p.Product = item.Product;
                 p.Provider = item.Provider;
                 var totalRemain = orderXuat.Where(x => x.OrderDetails.DetailsOrderProductId == item.Order.OrderId && item.Product.ProductId == x.OrderDetails.DetailProductId).Sum(x => x.OrderDetails.DetailNumber);
+                p.TotalUse = totalRemain == null ? 0 : totalRemain.Value;
                 p.TotalRemain = totalRemain == null ? item.OrderDetails.DetailNumber.Value : item.OrderDetails.DetailNumber.Value - totalRemain.Value;
 
 

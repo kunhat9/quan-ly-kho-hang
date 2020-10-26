@@ -110,6 +110,7 @@
     <EntitySetMapping Name="TB_InventoryDetails">
       <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
         <MappingFragment StoreEntitySet="TB_InventoryDetails">
+          <ScalarProperty Name="TotalRemainNow" ColumnName="TotalRemainNow" />
           <ScalarProperty Name="TotalNow" ColumnName="TotalNow" />
           <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
           <ScalarProperty Name="StatusID" ColumnName="StatusID" />

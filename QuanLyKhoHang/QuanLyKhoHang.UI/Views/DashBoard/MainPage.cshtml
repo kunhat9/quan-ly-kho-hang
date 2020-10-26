@@ -1,5 +1,312 @@
-﻿@{
+﻿@using QuanLyKhoHang.UI.Models
+@{
+    ViewBag.Title = "MainPage";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
 }
-<p>Đây là trang chủ nhé</p>
+<style>
+    .panel_toolbox {
+        min-width: 0;
+    }
+</style>
+
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tổng số giao dịch hệ thống:</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Tổng số giao dịch</span>
+                            <div class="count">@(ViewBag.SystemImport + ViewBag.SystemExport) giao dịch</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Giao dịch nhập kho</span>
+                            <div class="count">@ViewBag.SystemImport  giao dịch</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Giao dịch xuất kho</span>
+                            <div class="count">@ViewBag.SystemExport  giao dịch</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tổng số giao dịch trong ngày:</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Tổng số giao dịch</span>
+                            <div class="count">@(ViewBag.TotalTranImport + ViewBag.TotalTranExport) giao dịch</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Giao dịch nhập kho</span>
+                            <div class="count">@ViewBag.TotalTranImport  giao dịch</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i>Giao dịch xuất kho</span>
+                            <div class="count">@ViewBag.TotalTranExport  giao dịch</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Sản phẩm còn trong kho</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i></span>
+                            <div class="count">Số lượng</div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-money"></i></span>
+                            <div class="count">@ViewBag.TotalRemain sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Sản phẩm hết hạn</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                       
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i></span>
+                            <div class="count">Số lượng</div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-money"></i></span>
+                            <div class="count">@ViewBag.TotalExpire sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Sản phẩm sắp hết hạn</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                       
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i></span>
+                            <div class="count">Số lượng</div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-money"></i></span>
+                            <div class="count">@ViewBag.TotalExpireNow sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Sản phẩm hết hàng</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i></span>
+                            <div class="count">Số lượng</div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-money"></i></span>
+                            <div class="count">@ViewBag.TotalNotHave sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Sắp hết hàng</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="col-md-12 col-lg-12 col-xs-12">
+                    <div class="tile_count">
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-line-chart"></i></span>
+                            <div class="count">Số lượng</div>
+                        </div>
+                        <div class="col-md-6 col-sm-6  tile_stats_count">
+                            <span class="count_top"><i class="fa fa-money"></i></span>
+                            <div class="count">@ViewBag.TotalNotHaveNow sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Danh sách đơn hàng nhập kho</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="60">STT</th>
+                            <th class="text-center" width="200">Mã hóa đơn</th>
+                            <th class="text-center" width="200">Loại hóa đơn</th>
+                            <th class="text-center" width="200">Ngày lập hóa đơn</th>
+                            <th class="text-center" width="200">Số tiền</th>
+                            <th class="text-center" width="200">Nhà cung cấp</th>
+                            <th class="text-center" width="200">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbNhap"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12 clearfix">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Danh sách đơn hàng xuất kho</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="x_content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="60">STT</th>
+                                <th class="text-center" width="200">Mã hóa đơn</th>
+                                <th class="text-center" width="200">Loại hóa đơn</th>
+                                <th class="text-center" width="200">Ngày lập hóa đơn</th>
+                                <th class="text-center" width="200">Số tiền</th>
+                                <th class="text-center" width="200">Nhà cung cấp</th>
+                                <th class="text-center" width="200">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbXuat"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    mnActive = "mn-dashboard";
+    $(document).ready(function () {
+        $(".ctr-select").selectpicker({
+            width: '100%',
+            showTick: true,
+        });
+        DanhSach();
+    });
+</script>
+<script>
+    function DanhSach() {
+        $("#tbNhap").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
+        $("#tbXuat").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
+        $("#tbNhap").load("@Url.Action("List", "DashBoard", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=10"+ "&type=" + '@EnumOrderType.NHAP');
+        $("#tbXuat").load("@Url.Action("List", "DashBoard", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=10" + "&type=" + '@EnumOrderType.XUAT');
+    }
+</script>

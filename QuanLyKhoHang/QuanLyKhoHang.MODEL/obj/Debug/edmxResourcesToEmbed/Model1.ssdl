@@ -43,6 +43,7 @@
     <Property Name="StatusID" Type="int" />
     <Property Name="InventoryId" Type="int" />
     <Property Name="TotalNow" Type="int" />
+    <Property Name="TotalRemainNow" Type="int" />
   </EntityType>
   <EntityType Name="TB_OrderDetails">
     <Key>

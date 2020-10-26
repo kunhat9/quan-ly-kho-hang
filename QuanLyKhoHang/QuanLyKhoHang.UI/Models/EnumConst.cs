@@ -98,6 +98,8 @@ namespace QuanLyKhoHang.UI.Models
             }
         }
     }
+
+
     public static class EnumUserType
     {
         public const int ADMIN = 0;

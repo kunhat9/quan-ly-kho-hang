@@ -1,4 +1,5 @@
 ﻿using BASICAUTHORIZE.ATCAPITAL.HETHONGGOPCOPHAN;
+using Microsoft.Office.Interop.Excel;
 using QuanLyKhoHang.MODEL;
 using QuanLyKhoHang.UI.Models;
 using System;
@@ -31,7 +32,7 @@ namespace QuanLyKhoHang.UI.Controllers
             return View();
         }
         [Route("inventory/danh-sach")]
-        public ActionResult List(int status = EnumInventoryStatus.DAY_DU, int? product = null, string startDate = "", string endDate = "", int sotrang = 1, int tongsodong = 10)
+        public ActionResult List(int ?status = EnumInventoryStatus.DAY_DU, int? product = null, string startDate = "", string endDate = "", int sotrang = 1, int tongsodong = 10)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
@@ -123,7 +124,7 @@ namespace QuanLyKhoHang.UI.Controllers
             var users = db.TB_Users.Where(x => x.UserType == EnumUserType.INVENTORY).ToList();
             foreach (var item in users)
             {
-                cbxUser += string.Format("<option value=\"{0}\">{1}</option>", item.UserId, item.UserFullName);
+                cbxUser += string.Format("<option value=\"{0}\" {2}>{1}</option>", item.UserId, item.UserFullName, inventory.Inventory != null ? inventory.Inventory.UserId == item.UserId?"selected":"":"");
             }
             ViewBag.cbxUser = cbxUser;
 
@@ -131,45 +132,27 @@ namespace QuanLyKhoHang.UI.Controllers
         }
         [Route("inventory/update")]
         [HttpPost, ValidateInput(false)]
-        public ActionResult Update(TB_Orders order, List<TB_OrderDetails> list)
+        public ActionResult Update(TB_Inventory inventory, List<TB_InventoryDetails> list)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
-            if (order.OrderType == EnumOrderType.XUAT)
-            {
-                foreach (var item in list)
-                {
-                    List<CompareProduct> listCheck = CompareProduct(item.DetailProductId, item.DetailsOrderProductId);
-                    foreach (var check in listCheck)
-                    {
-                        if (item.DetailNumber > check.TotalRemain)
-                        {
-                            return Json(new { kq = "err", msg = "Hóa đơn " + check.Order.OrderCode + " đang còn " + check.TotalRemain + " sản phẩm" }, JsonRequestBehavior.AllowGet);
-                        }
-                    }
-
-
-                }
-            }
-
-            if (order.OrderId == 0)
+            if (inventory.Id == 0)
             {
                 // tao moi
-                order.OrderCode = Functions.CreateCode();
-                order.OrderDate = DateTime.Now;
-                order.OrderStatus = EnumOrderStatus.DANG_SU_DUNG;
-                order.OrderPrice = list.Sum(x => x.DetailPrice * x.DetailNumber);
-                int orderId = 0;
+                inventory.CreatedDate = DateTime.Now;
+                inventory.Code = Functions.CreateCode();
+                inventory.StatusID = EnumInventoryStatus.DAY_DU;
+                int inventoryId = 0;
                 using (var context = new QuanLyKhoHangEntities())
                 {
-                    context.TB_Orders.Add(order);
+                    context.TB_Inventory.Add(inventory);
                     context.SaveChanges();
 
-                    orderId = order.OrderId; // Yes it's here
+                    inventoryId = inventory.Id; // Yes it's here
                 }
-                list.ForEach(x => x.DetailOrderId = orderId);
-                db.TB_OrderDetails.AddRange(list);
+                list.ForEach(x => x.InventoryId = inventoryId);
+                db.TB_InventoryDetails.AddRange(list);
                 db.SaveChanges();
                 return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
             }
@@ -177,40 +160,37 @@ namespace QuanLyKhoHang.UI.Controllers
             {
 
                 // up date
-                var orderOld = db.TB_Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
-                if (orderOld == null)
+                var inventoryOld = db.TB_Inventory.FirstOrDefault(x => x.Id == inventory.Id);
+                if (inventoryOld == null)
                     return Json(new { kq = "err", msg = "Thông tin không xác định!" }, JsonRequestBehavior.AllowGet);
+                inventoryOld.Note = inventory.Note;
+                inventoryOld.StatusID = inventory.StatusID;
                 // tim thang order details cua thang kia roi remove di
-                var orderDetailsOld = db.TB_OrderDetails.Where(x => x.DetailOrderId == orderOld.OrderId).ToList();
-                db.TB_OrderDetails.RemoveRange(orderDetailsOld);
+                var invenDetails = db.TB_InventoryDetails.Where(x => x.InventoryId == inventory.Id).ToList();
+                db.TB_InventoryDetails.RemoveRange(invenDetails);
                 // check so luong san pham con lai trong kho xem co du khong
-
-
-
-
-
-                list.ForEach(x => x.DetailOrderId = orderOld.OrderId);
-                db.TB_OrderDetails.AddRange(list);
+                list.ForEach(x => x.InventoryId = inventoryOld.Id);
+                db.TB_InventoryDetails.AddRange(list);
                 db.SaveChanges();
                 return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
             }
         }
 
-
-
         [Route("inventory/danh-sach-san-pham-kiem-ke")]
-        public ActionResult ListProduct(List<int> listProduct)
+        public ActionResult ListProduct(List<int> listProduct, int? Id = null, string startDate ="", string endDate ="")
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             List<CompareProduct> listCompare = new List<Models.CompareProduct>();
+            List<CompareProduct> list = new List<CompareProduct>();
+            ViewBag.Id = Id == null ? 0 : Id;
             if(listProduct.Count == 0)
             {
                 var product = db.TB_Products.Where(x => x.ProductStatus == EnumStatus.ACTIVE).ToList();
                 foreach (var item in product)
                 {
-                    List<CompareProduct> temp = CompareProduct(item.ProductId);
+                    List<CompareProduct> temp = CompareProduct(item.ProductId,null,startDate,endDate);
                     if (temp.Count > 0)
                     {
                         temp.ForEach(x => listCompare.Add(x));
@@ -221,7 +201,7 @@ namespace QuanLyKhoHang.UI.Controllers
             {
                 foreach (var item in listProduct)
                 {
-                    List<CompareProduct> temp = CompareProduct(item);
+                    List<CompareProduct> temp = CompareProduct(item,null,startDate,endDate);
                     if (temp.Count > 0)
                     {
                         temp.ForEach(x => listCompare.Add(x));
@@ -229,8 +209,36 @@ namespace QuanLyKhoHang.UI.Controllers
                 }
             }
             
+            if(Id != 0)
+            {
+                // lay ra danh sach lan kiem ke dau tien
+                var listInvenDetails = db.TB_InventoryDetails.Where(x => x.InventoryId == Id).ToList();
+                foreach(var item in listCompare)
+                {
+                    foreach(var value in listInvenDetails)
+                    {
+                        if(value.OrderId == item.Order.OrderId && value.ProductId == item.Product.ProductId)
+                        {
+                            item.Total = value.Total == null?0:value.Total.Value;
+                            item.TotalNow = value.TotalNow == null ? 0 : value.TotalNow.Value;
+                            item.TotalRemain = value.TotalRemaining == null ? 0 : value.TotalRemaining.Value;
+                            item.TotalRemainNow = value.TotalRemainNow == null ? 0 : value.TotalRemainNow.Value;
+                            item.TotalUse = value.TotalUsed == null ? 0 : value.TotalUsed.Value;
+                            item.InventoryDetails = value;
+                            list.Add(item);
+                        }
+                    }                
+                }
+
+            }else
+            {
+                list = listCompare;
+               
+                
+            }
             
-            return PartialView(listCompare);
+            
+            return PartialView(list);
         }
 
         [Route("inventory/change-status")]
@@ -259,43 +267,52 @@ namespace QuanLyKhoHang.UI.Controllers
 
 
         [Route("inventory/change-status-inventory")]
-        public ActionResult ChangeStatus()
+        public ActionResult ChangeStatus(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("Index", "Home", new { area = "" });
-            return PartialView();
+            var inventory = db.TB_Inventory.FirstOrDefault(x => x.Id == id);
+            if(inventory == null)
+                return Json(new { kq = "err", msg = "Kiểm kê không hợp lệ" }, JsonRequestBehavior.AllowGet);
+            return PartialView(inventory);
         }
 
         [HttpPost]
         [Route("inventory/change-status-inventory")]
-        public ActionResult ChangeStatus(int? status = null)
+        public ActionResult ChangeStatus(int? status = null, int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("Index", "Home", new { area = "" });
-            
-            return Json(new { kq = "ok",data = status, msg = "Success!" }, JsonRequestBehavior.AllowGet);
+            var inventory = db.TB_Inventory.FirstOrDefault(x => x.Id == id);
+            if (inventory == null)
+                return Json(new { kq = "err", msg = "Kiểm kê không hợp lệ" }, JsonRequestBehavior.AllowGet);
+            inventory.StatusID = status;
+            db.SaveChanges();
+
+            return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
         }
 
         [Route("inventory/change-note-inventory")]
-        public ActionResult ChangeNote()
+        public ActionResult ChangeNote(int index)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("Index", "Home", new { area = "" });
+            ViewBag.Index = index;
             return PartialView();
         }
 
         [HttpPost]
         [Route("inventory/change-note-inventory")]
-        public ActionResult ChangeNote(string note="")
+        public ActionResult ChangeNote(string descriptiopn = "")
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("Index", "Home", new { area = "" });
 
-            return Json(new { kq = "ok", data = note, msg = "Success!" }, JsonRequestBehavior.AllowGet);
+            return Json(new { kq = "ok", data = descriptiopn, msg = "Success!" }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -315,6 +332,163 @@ namespace QuanLyKhoHang.UI.Controllers
             db.SaveChanges();
             return Json(new { kq = "ok", msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
         }
+
+        [Route("inventory/export-excel")]
+        protected string BillExport(string filePath, string userId, string startDate, string endDate, string type)
+        {
+            Application xlApp = new Application();
+            if (xlApp == null)
+            {
+                return "Lỗi không thể sử dụng được thư viện EXCEL";
+            }
+
+            try
+            {
+                if (string.IsNullOrEmpty(startDate))
+                {
+                    return "Vui lòng chọn ngày bắt đầu";
+                }
+                else if (string.IsNullOrEmpty(endDate))
+                {
+                    return "Vui lòng chọn ngày kết thúc";
+                }
+
+
+                DateTime? from, to;
+                from = startDate.ToDateTime();
+                to = startDate.ToDateTime();
+
+                var test = (from a in db.TB_Inventory.ToList()
+                            join b in db.TB_InventoryDetails on a.Id equals b.InventoryId into b1
+                            from b in b1.DefaultIfEmpty()
+                            join c in db.TB_Products on b.ProductId equals c.ProductId into c1
+                            from c in c1.DefaultIfEmpty()
+                            join d in db.TB_Providers on c.ProductProviderId equals d.ProviderId into d1
+                            from d in d1.DefaultIfEmpty()
+                            join e in db.TB_Users on a.UserId equals e.UserId into e1
+                            from e in e1.DefaultIfEmpty()
+                            select new
+                            {
+                                Inventory = a,
+                                InventoryDetails = b,
+                                Product = c,
+                                Provider = d,
+                                Users = e
+                            }).Where(x => (string.IsNullOrEmpty(startDate) ? true : x.Inventory.CreatedDate >= from) && (string.IsNullOrEmpty(endDate) ? true : x.Inventory.CreatedDate <= to))
+                       .ToList();
+                var list = test.GroupBy(x => x.Inventory.Id).Select(t => new InventoryInfo
+                {
+
+                    Inventory = t.FirstOrDefault(y => y.Inventory.Id == t.Key).Inventory,
+                    ListInventoryDetails = t.Select(y => y.InventoryDetails).Where(s => s.InventoryId == t.Key).ToList(),
+                    Users = t.FirstOrDefault(y => y.Inventory.Id == t.Key).Users
+                })
+                .OrderByDescending(x => x.Inventory.CreatedDate)
+                .ToList();
+                if (list == null || list.Count == 0)
+                {
+                    return "Lỗi không có bản kiểm kê nào";
+                }
+
+                xlApp.DisplayAlerts = false;
+                xlApp.Visible = false;
+                object missing = Type.Missing;
+                Workbook wb = xlApp.Workbooks.Add(missing);
+                Worksheet ws = (Worksheet)wb.Worksheets[1];
+
+                int fontSizeTieuDe = 18;
+                int fontSizeTenTruong = 14;
+                int fontSizeNoiDung = 12;
+
+                DateTime dateStart = new DateTime();
+                DateTime.TryParseExact(startDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out dateStart);
+                DateTime dateEnd = new DateTime();
+                DateTime.TryParseExact(endDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out dateEnd);
+                //Info
+                ws.AddValue("B2", "E2", "Trung tâm bồi dưỡng kiến thức", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
+                ws.AddValue("B3", "E3", "Trung tâm ", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
+
+                ws.AddValue("H2", "K2", "Cộng hòa Xã hội Chủ nghĩa Việt Nam", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
+                ws.AddValue("H3", "K3", "   Độc lập - Tự do - Hạnh phúc", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
+                ws.AddValue("E5", "G5", "Thông báo", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter);
+                ws.AddValue("E6", "G6", "Học phí từ " + dateStart.ToString("dd/MM/yyy") + " đến " + dateEnd.ToString("dd/MM/yyy"), fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
+
+                //ws.AddValue("A8", "A8", "Kính gửi phụ huynh học sinh " + data[0].UserFullName, fontSizeTenTruong, false, XlHAlign.xlHAlignLeft, false);
+                ws.AddValue("A9", "A9", "Trung tâm bồi dưỡng kiến thức Chu Văn An thông báo thu học phí từ " + dateStart.ToString("dd/MM/yyy") + " đến " + dateEnd.ToString("dd/MM/yyy") + " bao gồm:", fontSizeTenTruong, false, XlHAlign.xlHAlignLeft, false);
+
+
+                int rowStart = 11, rowIndex = 11;
+                //Header
+                ws.AddValue("E" + rowIndex, "E" + rowIndex, "Môn học", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("F" + rowIndex, "F" + rowIndex, "Số buổi", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 12);
+                ws.AddValue("G" + rowIndex, "G" + rowIndex, "Thành tiền", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 18);
+                rowIndex += 1;
+                decimal total = 0;
+
+
+
+                //Body
+
+                //for (int i = 0; i < data.Count; i++)
+                //{
+                //    string subjectName = Subjects_Service.GetByBoxScheduleId(data[i].ScheduleId).SubjectName;
+                //    dynamic[] val = { subjectName, data[i].CountNumber
+                //            , data[i].TuitionStudies };
+                //    ws.AddValue("E" + rowIndex, "G" + rowIndex, val, fontSizeNoiDung, false, XlHAlign.xlHAlignLeft, false);
+                //    total += data[i].TuitionStudies;
+                //    rowIndex += 1;
+                //}
+
+
+
+
+
+                //End
+                ws.AddValue("F" + rowIndex, "F" + rowIndex, "TỔNG CỘNG", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, true, 18);
+                ws.AddValue("G" + rowIndex, "G" + rowIndex, total, fontSizeTenTruong);
+
+                //Sign
+                //string fullName = "";
+                //if (Session[AppSessionKeys.USER_INFO] != null)
+                //{
+                //    fullName = ((TB_USERS)Session[AppSessionKeys.USER_INFO]).UserFullName;
+                //}
+                ws.AddValue("D" + (rowIndex + 2), "G" + (rowIndex + 2), "NHÂN VIÊN", fontSizeTenTruong, true);
+                //ws.AddValue("D" + (rowIndex + 8), "G" + (rowIndex + 8), fullName, fontSizeTenTruong, true);
+
+                //Border
+                ws.get_Range("E" + rowStart, "G" + rowIndex).SetBorderAround();
+
+                //Save
+                wb.SaveAs(filePath);
+                wb.Close(true, missing, missing);
+                //wb.SaveAs(filePath, XlFileFormat.xlOpenXMLWorkbook, missing, missing, false, false
+                //    , XlSaveAsAccessMode.xlNoChange, XlSaveConflictResolution.xlUserResolution
+                //    , true, missing, missing, missing);
+                //wb.Saved = true;
+                //wb.Close();
+
+                //thoát và thu hồi bộ nhớ cho COM
+                ws.ReleaseObject();
+                wb.ReleaseObject();
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                //return ex.ToString();
+                throw ex;
+            }
+            finally
+            {
+                if (xlApp != null)
+                {
+                    xlApp.Quit();
+                }
+                xlApp.ReleaseObject();
+            }
+        }
+
 
     }
 }

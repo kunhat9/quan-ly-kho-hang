@@ -48,6 +48,7 @@
           <Property Name="StatusID" Type="int" />
           <Property Name="InventoryId" Type="int" />
           <Property Name="TotalNow" Type="int" />
+          <Property Name="TotalRemainNow" Type="int" />
         </EntityType>
         <EntityType Name="TB_OrderDetails">
           <Key>
@@ -258,6 +259,7 @@
           <Property Name="StatusID" Type="Int32" />
           <Property Name="InventoryId" Type="Int32" />
           <Property Name="TotalNow" Type="Int32" />
+          <Property Name="TotalRemainNow" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -374,6 +376,7 @@
           <EntitySetMapping Name="TB_InventoryDetails">
             <EntityTypeMapping TypeName="DB_STORAGESModel.TB_InventoryDetails">
               <MappingFragment StoreEntitySet="TB_InventoryDetails">
+                <ScalarProperty Name="TotalRemainNow" ColumnName="TotalRemainNow" />
                 <ScalarProperty Name="TotalNow" ColumnName="TotalNow" />
                 <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />

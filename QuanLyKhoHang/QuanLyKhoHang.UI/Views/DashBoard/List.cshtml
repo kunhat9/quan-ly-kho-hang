@@ -1,0 +1,32 @@
+﻿@using QuanLyKhoHang.UI.Models
+@model IEnumerable<OrderInfoView>
+@{
+    int stt = 0;
+}
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-center">@(++stt)</td>
+            <td class="text-center">
+                <span class="">@item.Orders.OrderCode</span>
+            </td>
+            <td class="text-center">
+                <span class="">@(EnumOrderType.ToString(item.Orders.OrderType))</span>
+            </td>
+            <td class="text-center">
+                <span class="red">@item.Orders.OrderDate.Value.ToString("dd/MM/yyyy")</span>
+            </td>
+            <td class="text-center">@item.Orders.OrderPrice.Value.ToString("#,###.###")</td>
+            <td class="text-center">@item.OrderDetails.FirstOrDefault().ProductInfo.Provider.ProviderName</td>
+
+
+            <td class="text-center">
+                <span data-id="@item.Orders.OrderId" onclick="CapNhatTrangThai($(this))" style="cursor: pointer" title="Cập nhật trạng thái">
+                    <i class="fa @(item.Orders.OrderStatus == EnumOrderStatus.DANG_SU_DUNG? "fa-unlock":"fa-lock")" style="font-size:22px;"></i>
+                </span>
+            </td>
+        </tr>
+    }
+}

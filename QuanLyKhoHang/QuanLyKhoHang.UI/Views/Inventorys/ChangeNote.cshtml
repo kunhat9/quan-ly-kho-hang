@@ -1,4 +1,8 @@
 ﻿@using QuanLyKhoHang.UI.Models
+
+@{
+    int index = (int)ViewBag.Index;
+}
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -11,7 +15,7 @@
                     <div class="form-group col-md-12 col-sm-12 col-xs-12">
                         <label class="control-label" for="first-name">Mô tả :</label>
                         <div>
-                            <textarea id="note" name="note" class="form-control" cols="3"></textarea>
+                            <textarea id="descriptiopn" name="descriptiopn" class="form-control" cols="3"></textarea>
                         </div>
                     </div>
                 </div>
@@ -43,7 +47,7 @@
             document.getElementById("btn-save1").disabled = true;
             e.preventDefault();
             $.ajax({
-                url: '@Url.Action("ChangeStatus", "Inventorys", new { area = "QuanTri" })',
+                url: '@Url.Action("ChangeNote", "Inventorys", new { area = "QuanTri" })',
                 type: 'POST',
                 dataType: 'json',
                 mimeType: "multipart/form-data",
@@ -55,6 +59,9 @@
                 success: function (data) {
                     if (data.kq == "ok") {
                         alertify.success(data.msg);
+                        debugger;
+                        $('#note_@index').text(data.data);
+                        $('#modal-qltaikhoan').modal('hide');
                     }
                     else {
                         alertify.error(data.msg);

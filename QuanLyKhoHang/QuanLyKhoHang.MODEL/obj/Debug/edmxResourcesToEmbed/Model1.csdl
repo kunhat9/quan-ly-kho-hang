@@ -124,5 +124,6 @@
     <Property Name="StatusID" Type="Int32" />
     <Property Name="InventoryId" Type="Int32" />
     <Property Name="TotalNow" Type="Int32" />
+    <Property Name="TotalRemainNow" Type="Int32" />
   </EntityType>
 </Schema>

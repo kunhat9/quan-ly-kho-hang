@@ -58,10 +58,12 @@
                             <th class="text-center" width="150">Mã kiểm kê</th>
                             <th class="text-center" width="150">Người thực hiện</th>
                             <th class="text-center" width="150">Nội dung</th>
-                            <th class="text-center" width="150">Số lượng kiểm kê</th>
                             <th class="text-center" width="150">Số lượng nhập</th>
+                            <th class="text-center" width="150">Số lượng nhập thực tế</th>
                             <th class="text-center" width="150">Số lượng đã xuất</th>
-                            <th class="text-center" width="150">Số lượng thực tế</th>
+                            <th class="text-center" width="150">Số lượng còn lại</th>
+                            <th class="text-center" width="150">Số lượng còn lại thực tế</th>
+                            <th class="text-center" width="150">Trạng thái</th>
                             <th width="150" class="text-center">
                                 @if (nd_dv.User.UserType == EnumUserType.ADMIN)
                                 {
@@ -110,7 +112,7 @@
 <div class="modal" tabindex="-1" role="dialog" id="modal-danhsach"></div>
 <div class="modal" tabindex="-1" role="dialog" id="modal-giaodich"></div>
 <script>
-    mnActive = "mn-product-inventory";
+    mnActive = "mn-inventory";
     $(document).ready(function () {
         $(".ctr-select").selectpicker({
             width: '100%',
@@ -137,7 +139,7 @@
 <script>
     function DanhSach() {
         $("#list").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
-        $("#list").load("@Url.Action("List", "Inventorys", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&order=" + $("#order").val() + "&provider=" + $('#provider').val() + "&type=" + $('#type').val() + "&fromDate=" + $('#fromDate').val() + "&toDate=" + $('#toDate').val() + "&reportType=" + '@EnumReportType.SAN_PHAM_TRONG_KHO');
+        $("#list").load("@Url.Action("List", "Inventorys", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&order=" + $("#order").val() + "&provider=" + $('#provider').val() + "&type=" + $('#type').val() + "&fromDate=" + $('#fromDate').val() + "&toDate=" + $('#toDate').val() + "&reportType=" + '@EnumReportType.SAN_PHAM_TRONG_KHO' + "&status=" + $('#nhomquyenid').val());
     }
 </script>
 <script>
@@ -215,7 +217,7 @@
             }
         }
         $("#list").html("<tr><td class='text-center' colspan='19'><img src='/Files/images/system/loading.gif' alt='Loading' style='margin: auto auto;display: block;margin-top: 80px;height:80px;' /></td></tr>");
-      $("#list").load("@Url.Action("List", "Inventorys", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&order=" + $("#order").val() + "&provider=" + $('#provider').val() + "&type=" + $('#type').val() + "&fromDate=" + $('#fromDate').val() + "&toDate=" + $('#toDate').val() + "&reportType=" + '@EnumReportType.SAN_PHAM_TRONG_KHO');
+        $("#list").load("@Url.Action("List", "Inventorys", new { area = "QuanTri" })?keyword=" + encodeURI($("[name=tuKhoa]").val()) + "&tongsodong=" + $('[name=tongsodong]').val() + "&order=" + $("#order").val() + "&provider=" + $('#provider').val() + "&type=" + $('#type').val() + "&fromDate=" + $('#fromDate').val() + "&toDate=" + $('#toDate').val() + "&reportType=" + '@EnumReportType.SAN_PHAM_TRONG_KHO' + "&status=" + $('#nhomquyenid').val());
     }
 </script>
 <script>
@@ -247,57 +249,41 @@
 </script>
 <script>
     function CapNhatTrangThai(obj) {
-        alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
-            if (e) {
-                $.ajax({
-                    url: '@Url.Action("Change_Status", "Inventorys", new { area = "QuanTri" })',
-                    type: 'GET',
-                    dataType: 'json',
-                    mimeType: "multipart/form-data",
-                    contentType: false,
-                    async: false,
-                    cache: false,
-                    data: { id: obj.attr("data-id") },
-                    success: function (data) {
-                        if (data.kq == "ok") {
-                            alertify.success(data.msg);
-                            if (data.data == @EnumStatus.ACTIVE)
-                                obj.html('<i class="fa fa-unlock" style="font-size:22px;"></i>');
-                            else
-                                obj.html('<i class="fa fa-lock" style="font-size:22px;"></i>');
-                        }
-                        else {
-                            alertify.error(data.msg);
-                        }
-                    }
-                });
+        //alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
+        //    if (e) {
+                
+        //    }
+        //});
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Inventorys", new { area = "QuanTri" })',
+            type: 'GET',
+            data: { id: obj.attr("data-id") },
+            success: function (data) {
+                $('#modal-qltaikhoan').html(data);
+                $('#modal-qltaikhoan').modal('show');
             }
         });
     }
 </script>
 <script>
     function CapNhatTrangThaiDuyet(obj) {
-        alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
-            if (e) {
-                $.ajax({
-                    url: '@Url.Action("Change_Status", "Inventorys", new { area = "QuanTri" })',
-                    type: 'GET',
-                    dataType: 'json',
-                    mimeType: "multipart/form-data",
-                    contentType: false,
-                    async: false,
-                    cache: false,
-                    data: { id: obj.attr("data-id") },
-                    success: function (data) {
-                        if (data.kq == "ok") {
-                            alertify.success(data.msg);
-                            DanhSach();
-                        }
-                        else {
-                            alertify.error(data.msg);
-                        }
-                    }
-                });
+        //alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
+        //    if (e) {
+                
+        //    }
+        //});
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Inventorys", new { area = "QuanTri" })',
+            type: 'GET',
+            dataType: 'json',
+            mimeType: "multipart/form-data",
+            contentType: false,
+            async: false,
+            cache: false,
+            data: { id: obj.attr("data-id") },
+            success: function (data) {
+                $('#modal-qltaikhoan').html(data);
+                $('#modal-qltaikhoan').modal('show');
             }
         });
     }

@@ -2,6 +2,7 @@
 @model IEnumerable<CompareProduct>
 @{
     int stt = 0;
+    int Id = (int)ViewBag.Id;
 }
 @if (Model != null && Model.Count() > 0)
 {
@@ -31,25 +32,36 @@
                 <span class="">@(item.OrderDetails.DetailPrice)</span>
             </td>
             <td class="text-center">
-                <span class="red">@item.OrderDetails.DetailNumber</span>
+                <span class="red">@(Id ==0 ? item.OrderDetails.DetailNumber : item.Total)</span>
             </td>
             <td class="text-center">
-                <input name="totalProduct" id="totalProduct" class="form-control" value="" />
+                <input name="totalProduct" id="totalProduct_@stt" class="form-control" value="@item.TotalNow" />
             </td>
             <td class="text-center">
                 <span class="red">@item.TotalRemain</span>
             </td>
             <td class="text-center">
-                <input name="remainProduct" id="remainProduct" class="form-control" value="" />
+                <input name="remainProduct" id="remainProduct_@stt" onkeypress="return validateNumber(event)" class="form-control" value="@item.TotalRemainNow" />
             </td>
             <td class="text-center" width="200">
                 <div>
-                    <a href="#" onclick="ChangeStatus(this)" data-id="@item.Order.OrderCode" data-value="0" title="Cập nhật trạng thái của sản phẩm"><span id="status" class="">Không xác định</span></a>
+                    @*<a class="" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("ChangeStatus", "Inventorys", new { area = "QuanTri",index = stt})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><span id="status_@stt" class="">Không xác định</span></a>*@
+                    <select class="ctr-select" data-live-search="true" id="status_@stt" name="status">
+                        
+                        <option value="">Trạng thái</option>
+                        <option value="@EnumInvetoryStatus.SU_DUNG_DUOC" @((item.InventoryDetails != null && item.InventoryDetails.StatusID == EnumInvetoryStatus.SU_DUNG_DUOC)?"selected":"")>@EnumInvetoryStatus.ToString(EnumInvetoryStatus.SU_DUNG_DUOC)</option>
+                        <option value="@EnumInvetoryStatus.KHONG_SU_DUNG" @((item.InventoryDetails != null && item.InventoryDetails.StatusID == EnumInvetoryStatus.KHONG_SU_DUNG) ?"selected":"")>@EnumInvetoryStatus.ToString(EnumInvetoryStatus.KHONG_SU_DUNG)</option>
+                        <option value="@EnumInvetoryStatus.KHONG_XAC_DINH" @((item.InventoryDetails != null && item.InventoryDetails.StatusID == EnumInvetoryStatus.KHONG_XAC_DINH) ?"selected":"")>@EnumInvetoryStatus.ToString(EnumInvetoryStatus.KHONG_XAC_DINH)</option>
+
+                    </select>
                 </div>
             </td>
             <td class="text-center" width="200">
                 <div>
-                    <a href="#" onclick="ChangeNote(this)" data-id="@item.Order.OrderCode" title="Cập nhật thông tin mô tả"><span id="note" class="">Mô tả</span></a>
+                    @*<a class="" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("ChangeNote", "Inventorys", new { area = "QuanTri", index = stt})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><span id="note_@stt" class="">Mô tả</span></a>*@
+                    <textarea id="description_@stt" name="description" class="form-control" cols="3">
+                       @(item.InventoryDetails != null?!string.IsNullOrEmpty(item.InventoryDetails.Note)?item.InventoryDetails.Note.Trim():"":"" )
+                    </textarea>
                 </div>
             </td>
             
@@ -57,13 +69,10 @@
     }
 }
 <script>
-    function ChangeStatus(evt) {
-        debugger;
-        alert('bat change trang thai');
-
-
-    }
-    function ChangeNote(evt) {
-        alert('bat change thong tin mo ta')
-    }
+   
+    $(".ctr-select").selectpicker({
+        width: '100%',
+        showTick: true,
+    });
+    dataModel=@Html.Raw(Json.Encode(Model));
 </script>

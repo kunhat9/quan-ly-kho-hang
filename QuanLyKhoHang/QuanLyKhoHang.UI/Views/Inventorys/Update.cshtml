@@ -17,12 +17,12 @@
     <div class="x_content">
         <form id="frm-capnhat" method="post" enctype="multipart/form-data" novalidate="novalidate" class="fv-form fv-form-bootstrap">
             @*<button type="submit" class="fv-hidden-submit" style="display: none; width: 0px; height: 0px;"></button>*@
-            <input type="hidden" id="OrderId" name="OrderId" value="@(Model.Inventory != null ? Model.Inventory.Id:0)" />
+            <input type="hidden" id="Id" name="Id" value="@(Model.Inventory != null ? Model.Inventory.Id:0)" />
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                 <div class="form-group col-md-4 col-sm-4 col-xs-12">
                     <label class="control-label" for="first-name">Mã biên bản</label>
                     <div>
-                        <input type="text" class="form-control" id="Note" name="Note" readonly value="@(Model.Inventory != null ? Model.Inventory.Code:"" )" autocomplete="off" )>
+                        <input type="text" class="form-control" id="Code" name="Code" readonly value="@(Model.Inventory != null ? Model.Inventory.Code:"" )" autocomplete="off" )>
                     </div>
                 </div>
                 <div class="form-group col-md-4 col-sm-4 col-xs-12">
@@ -42,11 +42,11 @@
             </div>
 
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
-               
+
                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label" for="first-name">Nội dung biên bản</label>
                     <div>
-                        <textarea class="form-control" id="Note" name="Note">@(Model.Inventory != null ? Model.Inventory.Note:"")</textarea>
+                        <textarea class="form-control" id="Note" name="Note">@(Model.Inventory != null ? Model.Inventory.Note : "")</textarea>
                     </div>
                 </div>
             </div>
@@ -57,14 +57,41 @@
             </div>
 
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
-                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group col-md-4 col-sm-4 col-xs-12">
                     <label class="control-label" for="first-name">Tìm kiếm sản phẩm:</label>
+                    <div>
+                        <select class="ctr-select" data-live-search="true" multiple id="product" name="product">
+                            @Html.Raw(ViewBag.cbxProduct)
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <select class="ctr-select" data-live-search="true" multiple id="product" name="product" >
-                        @Html.Raw(ViewBag.cbxProduct)
-                    </select>
+                <div class="col-md-3 col-sm-4 col-sm-12">
+                    <label class="control-label" for="first-name">Ngày bắt đầu :</label>
+                    <div class='input-group date datetimepicker1 col-md-12' id="FromDate">
+                        <input type='text' class="form-control" name="fromDate" id="fromDate"  value="" placeholder="Từ ngày..." autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                 </div>
+                <div class="col-md-3 col-sm-4 col-sm-12">
+                    <label class="control-label" for="first-name">Ngày kết thúc :</label>
+                    <div class='input-group date datetimepicker1 col-md-12' id="ToDate">
+                        <input type='text' class="form-control" name="toDate" id="toDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" placeholder="Đến ngày..." autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-2 col-sm-12">
+                    <label class="control-label" for="first-name"></label>
+                    <div>
+                        <a class="btn btn-primary" onclick="DanhSach();">Tìm kiếm</a>
+                        <a class="btn btn-primary" onclick="Export_Excel();" download="">Xuất Excel</a>
+                    </div>
+                    
+                </div>
+
             </div>
 
             @* lap o de tim nhap so luong san pham se duoc kiem ke chon ra roi khong can hidden*@
@@ -85,8 +112,8 @@
                             <th class="text-center" width="150">Tổng số còn lại</th>
                             <th class="text-center" width="300">Tổng số sản phẩm còn lại thực tế</th>
                             <th class="text-center" width="150">Trạng thái</th>
-                            <th class="text-center" width="200">Mô tả</th>
-                            
+                            <th class="text-center" width="800">Mô tả</th>
+
                         </tr>
                     </thead>
                     <tbody id="listProduct"></tbody>
@@ -97,6 +124,7 @@
                 <div class="ln_solid"></div>
 
                 <div class="form-group clearfix">
+                  
                     <div class="col-md-12 col-sm-12 col-xs-12 text-right">
                         <a class="btn btn-primary" href="@Url.Action("MainPage","Orders", new { area = "QuanTri"})">Hủy</a>
                         <button id="btn-save" type="button" onclick="saveData()" class="btn btn-success">Lưu thông tin</button>
@@ -122,9 +150,22 @@
         });
         DanhSach();
     });
+    $(function () {
+        $('#FromDate').datetimepicker({ format: 'DD/MM/YYYY' });
+        $('#ToDate').datetimepicker({
+            format: 'DD/MM/YYYY',
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#FromDate").on("dp.change", function (e) {
+            $('#ToDate').data("DateTimePicker").minDate(e.date);
+        });
+        $("#ToDate").on("dp.change", function (e) {
+            $('#FromDate').data("DateTimePicker").maxDate(e.date);
+        });
+    });
     function DanhSach() {
         $("#listProduct").html("<tr><td colspan='19'><img src='/Files/images/system/loading.gif' style='margin: auto auto;display: block;margin-top: 20px;height:80px;' /></td></tr>");
-        $("#listProduct").load("@Url.Action("ListProduct", "Inventorys", new { area = "QuanTri" })?listProduct=" + $('#product').val());
+        $("#listProduct").load("@Url.Action("ListProduct", "Inventorys", new { area = "QuanTri"})?listProduct=" + $('#product').val() + "&Id=" + $('#Id').val() + "&startDate=" + $('#fromDate').val() + "&endDate=" + $('#toDate').val());
     }
 
     $(document).on("change", "[name=product]", function () {
@@ -133,36 +174,37 @@
     })
 </script>
 <script>
-    let dataModel = @Html.Raw(Json.Encode(Model.Inventory));
+    let dataModel = "";
+    let dataTable = "";
     $(function () {
         $('#ValueDate').datetimepicker({ format: 'DD/MM/YYYY' });
         $('#ExpireDate').datetimepicker({
             format: 'DD/MM/YYYY',
         });
     });
-    
-    
+
+
     $(document).on("change", "[name=OrderProviderId]", function () {
         var params = {
-            id : $('#OrderProviderId').val()
+            id: $('#OrderProviderId').val()
         }
 
         $.ajax({
             url: '@Url.Action("GetProductByProvider", "Orders", new { area = "QuanTri" })',
             type: 'POST',
-            async : false,
-            data:params ,
+            async: false,
+            data: params,
             success: function (data) {
                 if (data.kq == "ok") {
-                    renderProductCode = `<option value="">Chọn sản phẩm.......</option>`+data.data;
-                    var htmlDefault = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode"><option value="">Chọn sản phẩm.......</option>`+data.data+`</select>`;
+                    renderProductCode = `<option value="">Chọn sản phẩm.......</option>` + data.data;
+                    var htmlDefault = `<select class="ctr-select" onchange="selectProduct('0')" data-live-search="true" id="ProductCode" name="ProductCode"><option value="">Chọn sản phẩm.......</option>` + data.data + `</select>`;
                     $('#Product').html(htmlDefault);
-                    var orderType =$('#OrderType').val();
+                    var orderType = $('#OrderType').val();
 
-                    if(orderType == '@EnumOrderType.NHAP' || orderType == '@EnumOrderType.XUAT'){
-                        $('#listSanPham').removeAttr("hidden","false");
-                        if(orderType == '@EnumOrderType.XUAT'){
-                            $('#Order').removeAttr("hidden","false");
+                    if (orderType == '@EnumOrderType.NHAP' || orderType == '@EnumOrderType.XUAT') {
+                        $('#listSanPham').removeAttr("hidden", "false");
+                        if (orderType == '@EnumOrderType.XUAT') {
+                            $('#Order').removeAttr("hidden", "false");
                         }
                     }
                     $(".ctr-select").selectpicker({
@@ -177,8 +219,8 @@
         });
 
     });
-    
-    function fomartDate(jsonDate){
+
+    function fomartDate(jsonDate) {
         var currentTime = Date.parse(jsonDate.match(/\d+/)[0]);
         var month = currentTime.getMonth() + 1;
         var day = currentTime.getDate();
@@ -186,32 +228,32 @@
         var date = day + "/" + month + "/" + year;
         return date;
     }
-    var dataProductXuat ="";
-    function selectProduct(index){
+    var dataProductXuat = "";
+    function selectProduct(index) {
         dataProductXuat = "";
-        var productId ="";
-        if(index ==0){
+        var productId = "";
+        if (index == 0) {
             productId = $('#ProductCode').val();
-        }else {
-            productId = $('#ProductCode'+index).val();
+        } else {
+            productId = $('#ProductCode' + index).val();
         }
         var params = {
-            id : productId
+            id: productId
         }
         $.ajax({
             url: '@Url.Action("GetOrderXuatByProduct", "Orders", new { area = "QuanTri" })',
             type: 'POST',
-            async : false,
-            data:params ,
+            async: false,
+            data: params,
             success: function (data) {
                 if (data.kq == "ok") {
                     dataProductXuat = data.data.list;
-                    var htmlDefault = `<select class="ctr-select" onchange="selectOrder('`+index+`')" data-live-search="true" id="OrderCode`+index+`" name="OrderCode`+index+`"><option value="">Chọn hóa đơn.......</option>`+data.data.data+`</select>`;
+                    var htmlDefault = `<select class="ctr-select" onchange="selectOrder('` + index + `')" data-live-search="true" id="OrderCode` + index + `" name="OrderCode` + index + `"><option value="">Chọn hóa đơn.......</option>` + data.data.data + `</select>`;
 
-                    if(index ==0){
+                    if (index == 0) {
                         $('#OrderContent').html(htmlDefault);
-                    }else {
-                        $('#OrderContent'+index).html(htmlDefault);
+                    } else {
+                        $('#OrderContent' + index).html(htmlDefault);
                     }
 
                     $(".ctr-select").selectpicker({
@@ -225,25 +267,25 @@
             }
         });
     }
-    function selectOrder(index){
+    function selectOrder(index) {
         var orderId = "";
-        orderId = $('#OrderCode'+index).val();
-        if(index ==0){
+        orderId = $('#OrderCode' + index).val();
+        if (index == 0) {
             $('#ValueDate').val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
             $('#ExpireDate').val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
             $('#ProductUnit').val((dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailsUnits));
 
-            $('#ValueDate').attr("readonly",true);
-            $('#ExpireDate').attr("readonly",true);
-            $('#ProductUnit').attr("readonly",true);
-        }else {
-            $('#ValueDate'+index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
-            $('#ExpireDate'+index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
-            $('#ProductUnit'+index).val((dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailsUnits));
+            $('#ValueDate').attr("readonly", true);
+            $('#ExpireDate').attr("readonly", true);
+            $('#ProductUnit').attr("readonly", true);
+        } else {
+            $('#ValueDate' + index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ExpireDate' + index).val(fomartDate(dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailExpiredDate));
+            $('#ProductUnit' + index).val((dataProductXuat.filter(x=>x.Order.OrderId == orderId)[0].OrderDetails.DetailsUnits));
 
-            $('#ValueDate'+index).attr("readonly",true);
-            $('#ExpireDate'+index).attr("readonly",true);
-            $('#ProductUnit'+index).attr("readonly",true);
+            $('#ValueDate' + index).attr("readonly", true);
+            $('#ExpireDate' + index).attr("readonly", true);
+            $('#ProductUnit' + index).attr("readonly", true);
 
         }
     }
@@ -297,7 +339,7 @@
 </script>
 
 <script>
-    mnActive = "mn-order";
+    mnActive = "mn-inventory";
     $(document).ready(function () {
         $(".ctr-select").selectpicker({
             width: '100%',
@@ -362,181 +404,106 @@
     });
 </script>
 <script>
-    function validate(){
-        if($('#OrderProviderId').val().length ==0)
-        {
-            alertify.error("Chưa chọn nhà cung cấp");
-            $('#OrderProviderId').focus().select();
-            return false;
-        }
-        var type = $('#OrderType').val();
-        if($('#OrderType').val().length ==0)
-        {
-            alertify.error("Chưa chọn loại hóa đơn");
-            $('#OrderType').focus().select();
-            return false;
-        }
 
+
+
+    function validate() {
+        if ($('#UserId').val().length == 0) {
+            alertify.error("Chưa người lập hóa đơn");
+            $('#UserId').focus().select();
+
+            return false;
+        }
+        if ($('#Note').val().length == 0) {
+            alertify.error("Chưa nhập nội dung");
+            $('#Note').focus().select();
+
+            return false;
+        }
         // neu vao nhap thi kiem tra
-        var a = new FormData(document.getElementById('frm-capnhat'));
-        var arr= [];
-        for(var i=current-1;i>=0;i--){
-            var obj = {};
-            if(i==0){
-                if(a.get("ProductCode").length ==0 ){
-                    alertify.error("Chưa lựa chọn sản phẩm");
-                    $('#ProductCode').focus().select();
-                    return false;
-                }
-                if($("#ProductNumber").val().length ==0 ){
-                    alertify.error("Chưa nhập số lượng");
-                    $('#ProductNumber').focus();
-                    return false;
-                }
-                if($("#ProductPrice").val().length ==0 ){
-                    alertify.error("Chưa nhập giá sản phẩm");
-                    $('#ProductPrice').focus();
-                    return false;
-                }
-                if($("#ValueDate").val().length ==0 ){
-                    alertify.error("Chưa nhập ngày sản xuất");
-                    $('#ValueDate').focus();
-                    return false;
-                }
-                if($("#ExpireDate").val().length ==0 ){
-                    alertify.error("Chưa  nhập ngày hết hạn");
-                    $('#ExpireDate').focus();
-                    return false;
-                }
-                if($("#ProductUnit").val().length ==0 ){
-                    alertify.error("Chưa nhập đơn vị tính");
-                    $('#ProductUnit').focus();
-                    return false;
-                }
-            }else {
-                if(a.get("ProductCode"+i).length ==0 ){
-                    alertify.error("Chưa lựa chọn sản phẩm");
-                    $('#ProductCode').focus().select();
-                    return false;
-                }
-                if($("#ProductNumber"+i).val().length ==0 ){
-                    alertify.error("Chưa nhập số lượng");
-                    $('#ProductNumber').focus();
-                    return false;
-                }
-                if($("#ProductPrice"+i).val().length ==0 ){
-                    alertify.error("Chưa nhập giá sản phẩm");
-                    $('#ProductPrice').focus();
-                    return false;
-                }
-                if($("#ValueDate"+i).val().length ==0 ){
-                    alertify.error("Chưa nhập ngày sản xuất");
-                    $('#ValueDate').focus();
-                    return false;
-                }
-                if($("#ExpireDate"+i).val().length ==0 ){
-                    alertify.error("Chưa  nhập ngày hết hạn");
-                    $('#ExpireDate').focus();
-                    return false;
-                }
-                if($("#ProductUnit"+i).val().length ==0 ){
-                    alertify.error("Chưa nhập đơn vị tính");
-                    $('#ProductUnit').focus();
-                    return false;
-                }
+        var arrRemain = $('[name=remainProduct]');
+        var totalProduct = $('[name=totalProduct]');
+        var arrStatus = $('[name=status]');
+        var arrNote = $('[name=description]');
+        for (var i = 0; i < arrRemain.length; i++) {
+            var remain = arrRemain[i];
+            var product = totalProduct[i];
+            var status = arrStatus[i];
+            var note = arrNote[i + 1];
+
+            if (product.value.length == 0) {
+                alertify.error("Chưa nhập tổng số thực tế");
+                product.focus();
+
+                return false;
+            }
+            if (remain.value.length == 0) {
+                alertify.error("Chưa nhập tổng số sản phẩm còn lại thực tế");
+                remain.focus();
+
+                return false;
+            }
+
+            if (status.value.length == 0) {
+                alertify.error("Chọn trạng thái sản phẩm trong kho");
+                status.focus();
+
+                return false;
+            }
+            if (note.value.length == 0) {
+                alertify.error("Thêm mô tả");
+                note.focus();
+
+                return false;
             }
         }
 
         return true;
     }
-    function CheckTotalProductInOrder(evt){
-        debugger;
-
-        var type = $('#OrderType').val();
-        if(type == '@EnumOrderType.XUAT'){
-            // neu la xuat thy kiem tra so luong hang con lai hay khong
-            //var params = {
-            //    product : product,
-            //    order : order
-            //}
-            @*$.ajax({
-                url: '@Url.Action("Update", "User", new { area = "QuanTri" })',
-                type: 'POST',
-                dataType: 'json',
-                mimeType: "multipart/form-data",
-                contentType: false,
-                processData: false,
-                async: false,
-                cache: false,
-                data: new FormData(document.getElementById('frm-capnhat')),
-                success: function (data) {
-                    if (data.kq == "ok") {
-                        alertify.success(data.msg);
-                        window.location.href = '@Url.Action("MainPage", "User", new { area= "QuanTri" })';
-                    }
-                    else {
-                        alertify.error(data.msg);
-                        document.getElementById("btn-save").disabled = false;
-                        $("#btn-save").removeClass("disabled");
-                    }
-                }
-            });*@
-
-        }
+    function validateNumber(e) {
+        if ((e.keyCode > 47 && e.keyCode < 58) || e.keyCode == 44)
+            return true;
+        else
+            return false;
     }
-    function saveData(){
-        if(validate()){
+    function saveData() {
+        if (validate()) {
             var a = new FormData(document.getElementById('frm-capnhat'));
-            var arr= [];
-            for(var i=current-1;i>=0;i--){
-                var obj = {};
-                if(i==0){
-
-                    obj = {
-                        DetailProductId:a.get("ProductCode"),
-                        DetailsUnits : $("#ProductUnit").val(),
-                        DetailNumber:$("#ProductNumber").val(),
-                        DetailPrice:$("#ProductPrice").val().replace(".",""),
-                        DetailValueDate:$("#ValueDate").val().split('/').reverse().join("-"),
-                        DetailExpiredDate:$("#ExpireDate").val().split('/').reverse().join("-"),
-                        DetailsOrderProductId:$("#OrderCode0").val(),
-                        DetailOrderId:$('#OrderId').val(),
-                    }
-
-                }else {
-                    obj = {
-                        DetailProductId:a.get("ProductCode"+i),
-                        DetailNumber:$("#ProductNumber"+i).val(),
-                        DetailPrice:$("#ProductPrice"+i).val().replace(".",""),
-                        DetailValueDate:$("#ValueDate"+i).val().split('/').reverse().join("-"),
-                        DetailExpiredDate:$("#ExpireDate"+i).val().split('/').reverse().join("-"),
-                        DetailsOrderProductId:$("#OrderCode"+i).val(),
-                        DetailsUnits : $("#ProductUnit"+i).val(),
-                        DetailOrderId:$('#OrderId').val(),
-                    }
+            var arr = [];
+            for (var i = 0; i < dataModel.length; i++) {
+                var item = dataModel[i];
+                var index = i + 1;
+                var obj = {
+                    ProductId: item.Product.ProductId,
+                    OrderId: item.Order.OrderId,
+                    Unit: item.OrderDetails.DetailsUnits,
+                    Total: item.OrderDetails.DetailNumber,
+                    TotalRemaining: item.TotalRemain,
+                    Note: $("#description_" + index).val(),
+                    StatusID: $("#status_" + index).val(),
+                    InventoryId: a.get("Id"),
+                    TotalNow: $("#totalProduct_" + index).val(),
+                    TotalRemainNow: $("#remainProduct_" + index).val(),
+                    TotalUsed: item.TotalUse
                 }
-                if(obj.DetailProductId !=""){
-                    if(obj.DetailsOrderProductId == undefined)
-                        obj.DetailsOrderProductId =0;
-                    arr.push(obj);
-                }
-
+                arr.push(obj);
             }
             var params = {
-                OrderType : a.get("OrderType"),
-                OrderId : $('#OrderId').val(),
-                OrderProviderId : a.get("OrderProviderId"),
-                list : arr
+                UserId: a.get("UserId"),
+                Note: a.get("Note"),
+                Id: a.get("Id"),
+                StatusID: "@EnumInventoryStatus.DAY_DU",
+                list: arr
             }
             console.log(params);
             $.ajax({
-                url: '@Url.Action("Update", "Orders", new { area = "QuanTri" })',
+                url: '@Url.Action("Update", "Inventorys", new { area = "QuanTri" })',
                 type: 'POST',
                 data: params,
                 success: function (data) {
                     if (data.kq == "ok") {
                         alertify.success(data.msg);
-                        window.location.href = '@Url.Action("MainPage", "Orders", new { area= "QuanTri" })';
+                        window.location.href = '@Url.Action("MainPage", "Inventorys", new { area= "QuanTri" })';
                     }
                     else {
                         alertify.error(data.msg);
@@ -565,5 +532,10 @@
     function EnterUserName(evt) {
         var val = evt.value;
         $('#Phone').val(val);
+    }
+</script>
+<script>
+    function Export_Excel() {
+        window.location.href = '@Url.Action("Export_Excel", "Inventorys", new { area = "QuanTri" })?id=' + $('#userId').val() + '&fromDate=' + $('[name = FromDate]').val() + '&toDate=' + $('[name = ToDate]').val() + "&tranType=" + $('#tranType').val();
     }
 </script>

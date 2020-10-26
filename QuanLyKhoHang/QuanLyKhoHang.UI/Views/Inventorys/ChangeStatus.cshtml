@@ -1,4 +1,6 @@
 ﻿@using QuanLyKhoHang.UI.Models
+@model QuanLyKhoHang.MODEL.TB_Inventory
+
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -9,12 +11,13 @@
             <div class="modal-body">
                 <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <input type="hidden" id="id" name="id" value="@(Model != null ? Model.Id:0)" />
                         <label class="control-label" for="first-name">Level:</label>
                         <div>
                             <select class="ctr-select" data-live-search="true" id="status" name="status">
-                                <option value="@EnumInvetoryStatus.SU_DUNG_DUOC" >@EnumInvetoryStatus.ToString(EnumInvetoryStatus.SU_DUNG_DUOC)</option>
-                                <option value="@EnumInvetoryStatus.KHONG_SU_DUNG">@EnumInvetoryStatus.ToString(EnumInvetoryStatus.KHONG_SU_DUNG)</option>
-                                <option value="@EnumInvetoryStatus.KHONG_XAC_DINH" >@EnumInvetoryStatus.ToString(EnumInvetoryStatus.KHONG_XAC_DINH)</option>
+                                <option value="@EnumInventoryStatus.DAY_DU" @(Model.StatusID == EnumInventoryStatus.DAY_DU?"selected":"") >@EnumInventoryStatus.ToString(EnumInventoryStatus.DAY_DU)</option>
+                                <option value="@EnumInventoryStatus.KHONG_DAY_DU" @(Model.StatusID == EnumInventoryStatus.KHONG_DAY_DU ? "selected":"")>@EnumInventoryStatus.ToString(EnumInventoryStatus.KHONG_DAY_DU)</option>
+                                <option value="@EnumInventoryStatus.DU_THUA" @(Model.StatusID == EnumInventoryStatus.DU_THUA ? "selected":"")>@EnumInventoryStatus.ToString(EnumInventoryStatus.DU_THUA)</option>
                                 
                             </select>
                         </div>
@@ -60,6 +63,7 @@
                 success: function (data) {
                     if (data.kq == "ok") {
                         alertify.success(data.msg);
+                        $('#modal-qltaikhoan').modal('hide');
                     }
                     else {
                         alertify.error(data.msg);

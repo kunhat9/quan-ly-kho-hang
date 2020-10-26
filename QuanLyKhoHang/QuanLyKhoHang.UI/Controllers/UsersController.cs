@@ -114,6 +114,7 @@ namespace QuanLyKhoHang.UI.Controllers
                 userOld.UserPhone = users.UserPhone;
                 userOld.UserStatus = users.UserStatus;
                 userOld.UserNote = users.UserNote;
+                userOld.UserType = users.UserType;
                 userOld.Avatar = avatar;
                 db.SaveChanges();
                 return Json(new { kq = "ok", msg = "Success!" }, JsonRequestBehavior.AllowGet);
