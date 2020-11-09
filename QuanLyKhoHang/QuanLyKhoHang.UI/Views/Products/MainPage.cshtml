@@ -206,7 +206,7 @@
         alertify.confirm('Xác nhận xóa?', function (e) {
             if (e) {
                 $.ajax({
-                    url: '@Url.Action("Delete", "Providers", new { area = "QuanTri" })',
+                    url: '@Url.Action("Delete", "Products", new { area = "QuanTri" })',
                     type: 'GET',
                     dataType: 'json',
                     mimeType: "multipart/form-data",
@@ -233,7 +233,7 @@
         alertify.confirm('Xác nhận thay đổi trạng thái?', function (e) {
             if (e) {
                 $.ajax({
-                    url: '@Url.Action("Change_Status", "Providers", new { area = "QuanTri" })',
+                    url: '@Url.Action("Change_Status", "Products", new { area = "QuanTri" })',
                     type: 'GET',
                     dataType: 'json',
                     mimeType: "multipart/form-data",

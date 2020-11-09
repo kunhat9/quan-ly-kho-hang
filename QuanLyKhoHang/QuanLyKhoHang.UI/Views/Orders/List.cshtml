@@ -41,6 +41,9 @@
                         <li>
                             <a class="btn btn-xs btn-danger" data-id="@item.Orders.OrderId" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
                         </li>
+                        <li>
+                            <a class="btn btn-xs btn-success" data-id="@item.Orders.OrderId" onclick="ExportExcel($(this))" ><i class="fa fa-file-excel-o"></i>Xuất Excel</a>
+                        </li>
                     </ul>
                 </div>
             </td>
@@ -55,4 +58,24 @@
         //e.stopPropagation();
         $(".dropdown-toggle").dropdown();
     });
+
+
+    function ExportExcel(obj) {
+        debugger;
+        $.ajax({
+            url: '@Url.Action("ExportExcel", "Orders", new { area = "QuanTri" })',
+            type: 'post',
+            data: { id: obj.attr("data-id") },
+            success: function (data) {
+                if (data.kq == "ok") {
+                    alertify.success(data.msg);
+                }
+                else {
+                    alertify.error(data.msg);
+                    document.getElementById("btn-save1").disabled = false;
+                    $("#btn-save1").removeClass("disabled");
+                }
+            }
+        });
+    }
 </script>
