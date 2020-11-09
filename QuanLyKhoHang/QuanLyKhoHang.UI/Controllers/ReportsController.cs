@@ -67,8 +67,7 @@ namespace QuanLyKhoHang.UI.Controllers
                             (string.IsNullOrEmpty(keyword) ? true : (keyword == "" || (keyword != "" && (c.ProductCode.ToLower().Contains(keyword) || c.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
                             || c.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)
                             || a.OrderCode.BoDauTiengViet().ToLower().Contains(keyword)))))
-                            && (string.IsNullOrEmpty(fromDate) ? true : a.OrderDate >= dateFrom)
-                            && (string.IsNullOrEmpty(toDate) ? true : a.OrderDate <= dateTo)
+                           
                             && (provider == null ? true : d.ProviderId == provider)
                             && (order == null ? true : b.DetailOrderId == order)
                             && (type == null ? true : a.OrderType == type)
@@ -79,7 +78,8 @@ namespace QuanLyKhoHang.UI.Controllers
                                 Product = c,
                                 Provider = d
 
-                            })
+                            }).Where(a => (string.IsNullOrEmpty(fromDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() >= dateFrom)
+                            && (string.IsNullOrEmpty(toDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() <= dateTo))
                   .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
@@ -106,12 +106,13 @@ namespace QuanLyKhoHang.UI.Controllers
                 .Where(item => (string.IsNullOrEmpty(keyword) ? true : (keyword == "" || (keyword != "" && (item.Product.ProductCode.ToLower().Contains(keyword) || item.Product.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
                             || item.Product.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)
                             || item.Order.OrderCode.BoDauTiengViet().ToLower().Contains(keyword)))))
-                            && (string.IsNullOrEmpty(fromDate) ? true : item.Order.OrderDate >= dateFrom)
-                            && (string.IsNullOrEmpty(toDate) ? true : item.Order.OrderDate <= dateTo)
+                           
                             && (provider == null ? true : item.Provider.ProviderId == provider)
                             && (order == null ? true : item.OrderDetails.DetailOrderId == order)
                             && (type == null ? true : item.Order.OrderType == type))
-                .ToList();
+                            .Where(a => (string.IsNullOrEmpty(fromDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() >= dateFrom)
+                            && (string.IsNullOrEmpty(toDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() <= dateTo))
+                .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
                 tongsodong = tongsodong <= 0 ? 10 : tongsodong;
@@ -141,7 +142,7 @@ namespace QuanLyKhoHang.UI.Controllers
                             && (provider == null ? true : item.Provider.ProviderId == provider)
                             && (order == null ? true : item.OrderDetails.DetailOrderId == order)
                             && (type == null ? true : item.Order.OrderType == type))
-                .ToList();
+                .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
                 tongsodong = tongsodong <= 0 ? 10 : tongsodong;
@@ -173,7 +174,7 @@ namespace QuanLyKhoHang.UI.Controllers
                             && (provider == null ? true : item.Provider.ProviderId == provider)
                             && (order == null ? true : item.OrderDetails.DetailOrderId == order)
                             && (type == null ? true : item.Order.OrderType == type))
-                .ToList();
+               .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
                 tongsodong = tongsodong <= 0 ? 10 : tongsodong;
@@ -206,7 +207,7 @@ namespace QuanLyKhoHang.UI.Controllers
                             && (provider == null ? true : item.Provider.ProviderId == provider)
                             && (order == null ? true : item.OrderDetails.DetailOrderId == order)
                             && (type == null ? true : item.Order.OrderType == type))
-                .ToList();
+                .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
                 tongsodong = tongsodong <= 0 ? 10 : tongsodong;
@@ -237,7 +238,7 @@ namespace QuanLyKhoHang.UI.Controllers
                             && (provider == null ? true : item.Provider.ProviderId == provider)
                             && (order == null ? true : item.OrderDetails.DetailOrderId == order)
                             && (type == null ? true : item.Order.OrderType == type))
-                .ToList();
+                .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;
                 tongsodong = tongsodong <= 0 ? 10 : tongsodong;
@@ -262,8 +263,6 @@ namespace QuanLyKhoHang.UI.Controllers
                             (string.IsNullOrEmpty(keyword) ? true : (keyword == "" || (keyword != "" && (c.ProductCode.ToLower().Contains(keyword) || c.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
                             || c.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)
                             || a.OrderCode.BoDauTiengViet().ToLower().Contains(keyword)))))
-                            && (string.IsNullOrEmpty(fromDate) ? true : a.OrderDate >= dateFrom)
-                            && (string.IsNullOrEmpty(toDate) ? true : a.OrderDate <= dateTo)
                             && (provider == null ? true : d.ProviderId == provider)
                             && (order == null ? true : b.DetailOrderId == order)
                             && (type == null ? true : a.OrderType == type)
@@ -274,7 +273,8 @@ namespace QuanLyKhoHang.UI.Controllers
                                 Product = c,
                                 Provider = d
 
-                            })
+                            }).Where(a => (string.IsNullOrEmpty(fromDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() >= dateFrom)
+                            && (string.IsNullOrEmpty(toDate) ? true : a.Order.OrderDate.Value.ToString("dd/MM/yyyy").ToDateTime() <= dateTo))
                   .OrderByDescending(x => x.Order.OrderDate).ToList();
                 int tongso = list.Count();
                 sotrang = sotrang <= 0 ? 1 : sotrang;

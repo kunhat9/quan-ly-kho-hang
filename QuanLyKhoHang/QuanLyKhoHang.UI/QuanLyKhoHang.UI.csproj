@@ -235,6 +235,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CategoriesInfo.cs" />
     <Compile Include="Models\CompareProduct.cs" />
     <Compile Include="Models\EnumConst.cs" />
     <Compile Include="Models\ExcelHelper.cs" />

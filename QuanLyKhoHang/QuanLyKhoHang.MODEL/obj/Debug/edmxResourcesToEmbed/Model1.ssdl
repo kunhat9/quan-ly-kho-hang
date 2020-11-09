@@ -71,6 +71,7 @@
     <Property Name="OrderUserId" Type="int" />
     <Property Name="OrderStatus" Type="int" />
     <Property Name="OrderPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Location" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="TB_Products">
     <Key>

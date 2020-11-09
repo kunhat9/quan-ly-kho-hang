@@ -56,6 +56,7 @@ namespace QuanLyKhoHang.UI.Controllers
                         || e.CategoriesName.BoDauTiengViet().ToLower().Contains(keyword)
                         || d.ProviderName.BoDauTiengViet().ToLower().Contains(keyword)
                         || d.ProviderNote.BoDauTiengViet().ToLower().Contains(keyword)
+                        || a.OrderCode.ToLower().Contains(keyword)
                         )
                         && a.OrderStatus == status
                         && product == null ? true : b.DetailProductId == product

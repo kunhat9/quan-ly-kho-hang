@@ -22,5 +22,6 @@ namespace QuanLyKhoHang.MODEL
         public Nullable<int> OrderUserId { get; set; }
         public Nullable<int> OrderStatus { get; set; }
         public Nullable<decimal> OrderPrice { get; set; }
+        public string Location { get; set; }
     }
 }

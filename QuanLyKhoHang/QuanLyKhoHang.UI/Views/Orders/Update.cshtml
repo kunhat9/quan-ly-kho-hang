@@ -59,6 +59,15 @@
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <label class="control-label" for="first-name">Vị trí lô hàng : </label>
+                    <div>
+                        <input type="text" class="form-control" id="Location" name="Location" value="@(Model.Orders != null ?Model.Orders.Location:"" )" autocomplete="off" )>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 clearfix">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
                     <label class="control-label" for="first-name">Danh sách sản phẩm :</label>
                 </div>
             </div>
@@ -240,6 +249,7 @@
                     $('#Order').removeAttr("hidden","false");
                     var htmlDefault = `<select class="ctr-select" onchange="selectOrder('0')" data-live-search="true" id="DetailsOrderProductId" name="DetailsOrderProductId"><option value="">Chọn lô hàng nhập......</option></select>`;
                     $('#OrderContent').html(htmlDefault);
+                   
                 }
                 $(".ctr-select").selectpicker({
                     width: '100%',
@@ -487,9 +497,6 @@
         $('.subElement')[$pos].remove();
         current = current - 1;
     }
-
-
-
     function formatCurrency(target) {
         const pat = /(\,[0-9]{0,3})$/gm;
 
@@ -724,7 +731,7 @@
                         DetailProductId:a.get("ProductCode"),
                         DetailsUnits : $("#ProductUnit").val(),
                         DetailNumber:$("#ProductNumber").val(),
-                        DetailPrice:$("#ProductPrice").val().replace(".",""),
+                        DetailPrice:$("#ProductPrice").val().replaceAll(".",""),
                         DetailValueDate:$("#ValueDate").val().split('/').reverse().join("-"),
                         DetailExpiredDate:$("#ExpireDate").val().split('/').reverse().join("-"),
                         DetailsOrderProductId:$("#OrderCode0").val(),
@@ -735,7 +742,7 @@
                     obj = {
                         DetailProductId:a.get("ProductCode"+i),
                         DetailNumber:$("#ProductNumber"+i).val(),
-                        DetailPrice:$("#ProductPrice"+i).val().replace(".",""),
+                        DetailPrice:$("#ProductPrice"+i).val().replaceAll(".",""),
                         DetailValueDate:$("#ValueDate"+i).val().split('/').reverse().join("-"),
                         DetailExpiredDate:$("#ExpireDate"+i).val().split('/').reverse().join("-"),
                         DetailsOrderProductId:$("#OrderCode"+i).val(),
@@ -754,6 +761,7 @@
                 OrderType : a.get("OrderType"),
                 OrderId : $('#OrderId').val(),
                 OrderProviderId : a.get("OrderProviderId"),
+                Location : $('#Location').val(),
                 list : arr
             }
             console.log(params);

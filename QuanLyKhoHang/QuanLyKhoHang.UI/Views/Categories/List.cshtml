@@ -1,5 +1,5 @@
 ﻿@using QuanLyKhoHang.UI.Models
-@model IEnumerable<QuanLyKhoHang.MODEL.TB_Categories>
+@model IEnumerable<CategoriesInfo>
 @{
     /**/
     UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
@@ -13,14 +13,17 @@
         <tr>
             <td class="text-center">@(++stt)</td>
             <td class="text-center">
-                <span class="">@item.CategoriesName</span>
+                <span class="">@item.Categories.CategoriesName</span>
             </td>
             <td class="text-center">
-                <span class="red">@item.CategoriesNote</span>
+                <span class="">@item.Categories.CategoriesNote</span>
             </td>
             <td class="text-center">
-                <span data-id="@item.CategoriesId" onclick="CapNhatTrangThai($(this))" style="cursor: pointer" title="Cập nhật trạng thái">
-                    <i class="fa @(item.CategoriesStatus == EnumStatus.ACTIVE? "fa-unlock":"fa-lock")" style="font-size:22px;"></i>
+                <span class="red">@item.Total</span>
+            </td>
+            <td class="text-center">
+                <span data-id="@item.Categories.CategoriesId" onclick="CapNhatTrangThai($(this))" style="cursor: pointer" title="Cập nhật trạng thái">
+                    <i class="fa @(item.Categories.CategoriesStatus == EnumStatus.ACTIVE? "fa-unlock":"fa-lock")" style="font-size:22px;"></i>
                 </span>
             </td>
             <td class="text-center clickable-td">
@@ -30,9 +33,9 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="btn btn-xs btn-warning" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Update","Categories", new { area = "QuanTri", id = item.CategoriesId})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><i class="fa fa-pencil"></i> Sửa</a></li>
+                        <li><a class="btn btn-xs btn-warning" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Update","Categories", new { area = "QuanTri", id = item.Categories.CategoriesId})', function (e) { $('#modal-qltaikhoan').modal('show'); });"><i class="fa fa-pencil"></i> Sửa</a></li>
                         <li>
-                            <a class="btn btn-xs btn-danger" data-id="@item.CategoriesId" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
+                            <a class="btn btn-xs btn-danger" data-id="@item.Categories.CategoriesId" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
                         </li>
                     </ul>
                 </div>

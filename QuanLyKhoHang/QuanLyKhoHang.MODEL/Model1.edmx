@@ -76,6 +76,7 @@
           <Property Name="OrderUserId" Type="int" />
           <Property Name="OrderStatus" Type="int" />
           <Property Name="OrderPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Location" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TB_Products">
           <Key>
@@ -189,6 +190,7 @@
           <Property Name="OrderUserId" Type="Int32" />
           <Property Name="OrderStatus" Type="Int32" />
           <Property Name="OrderPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TB_Products">
           <Key>
@@ -316,6 +318,7 @@
           <EntitySetMapping Name="TB_Orders">
             <EntityTypeMapping TypeName="DB_STORAGESModel.TB_Orders">
               <MappingFragment StoreEntitySet="TB_Orders">
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="OrderPrice" ColumnName="OrderPrice" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />

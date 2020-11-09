@@ -33,7 +33,7 @@ namespace QuanLyKhoHang.UI.Controllers
             if (keyword != "")
                 keyword = keyword.BoDauTiengViet().ToLower();
 
-            var list = (from a in db.TB_Categories.ToList()
+            var listCate = (from a in db.TB_Categories.ToList()
                         where (keyword == "" || (keyword != "" && (a.CategoriesName.BoDauTiengViet().ToLower().Contains(keyword) || a.CategoriesNote.BoDauTiengViet().ToLower().Contains(keyword)
                        )))
 
@@ -41,6 +41,36 @@ namespace QuanLyKhoHang.UI.Controllers
                         select a)
                         .OrderBy(x => x.CategoriesId).ToList();
 
+
+
+            var test = CompareProduct().Where(x => x.TotalRemain > 0).ToList();
+            test.ForEach(x => x.OrderDetails.DetailNumber = x.TotalRemain);
+            var listTemp= test.Select(x => new ProductInfoOrder()
+            {
+                Order = x.Order,
+                OrderDetails = x.OrderDetails,
+                Product = x.Product,
+                Provider = x.Provider
+            })
+            .Where(item => (string.IsNullOrEmpty(keyword) ? true : (keyword == "" || (keyword != "" && (item.Product.ProductCode.ToLower().Contains(keyword) || item.Product.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
+                        || item.Product.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)
+                        || item.Order.OrderCode.BoDauTiengViet().ToLower().Contains(keyword))))))
+            .ToList();
+            List<CategoriesInfo> list = new List<CategoriesInfo>();
+            foreach(var item in listCate)
+            {
+                CategoriesInfo info = new CategoriesInfo();
+                   var total = listTemp.Where(x => x.Product.ProductCategoriesId == item.CategoriesId).Sum(x => x.OrderDetails.DetailNumber);
+                info.Categories = item;
+                if (total == null)
+                {                  
+                    info.Total = 0;
+                }else
+                {
+                    info.Total = total.Value;
+                }
+                list.Add(info);
+            }
             int tongso = list.Count();
 
             sotrang = sotrang <= 0 ? 1 : sotrang;
@@ -73,7 +103,7 @@ namespace QuanLyKhoHang.UI.Controllers
             if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
-           
+
             if (categories.CategoriesId == 0)
             {
                 db.TB_Categories.Add(categories);

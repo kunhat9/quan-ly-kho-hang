@@ -54,6 +54,7 @@
     <Property Name="OrderUserId" Type="Int32" />
     <Property Name="OrderStatus" Type="Int32" />
     <Property Name="OrderPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TB_Products">
     <Key>

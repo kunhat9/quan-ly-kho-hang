@@ -61,3 +61,9 @@ C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODE
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.pdb
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.xml
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.pdb
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.xml
