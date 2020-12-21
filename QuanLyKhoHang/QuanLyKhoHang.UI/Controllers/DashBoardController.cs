@@ -19,7 +19,7 @@ namespace QuanLyKhoHang.UI.Areas.QuanTri.Controller
         public ActionResult MainPage()
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null)
                 return RedirectToAction("Index", "Home", new { area = "" });
 
           
@@ -68,7 +68,7 @@ namespace QuanLyKhoHang.UI.Areas.QuanTri.Controller
         public ActionResult List(string keyword = "", int status = EnumStatus.ACTIVE, int? product = null, int? type = null, int sotrang = 1, int tongsodong = 10)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null)
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             if (keyword != "")

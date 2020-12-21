@@ -19,7 +19,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult MainPage()
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             string cbxProduct = "<option value=\"\">Chọn nhà sản phẩm...</option>";
@@ -35,7 +35,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult List(string keyword = "", int status = EnumStatus.ACTIVE, int? product = null, int? type = null, int sotrang = 1, int tongsodong = 10)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             if (keyword != "")
@@ -51,6 +51,8 @@ namespace QuanLyKhoHang.UI.Controllers
                         from d in d1.DefaultIfEmpty()
                         join e in db.TB_Categories on c.ProductCategoriesId equals e.CategoriesId into e1
                         from e in e1.DefaultIfEmpty()
+                        join f in db.TB_Users on a.OrderUserId equals f.UserId into f1
+                        from f in f1.DefaultIfEmpty()
                         where (keyword == "" || (keyword != "" && (c.ProductCode.ToLower().Contains(keyword) || c.ProductName.BoDauTiengViet().ToLower().Contains(keyword)
                         || c.ProductNote.BoDauTiengViet().ToLower().Contains(keyword)))
                         || d.ProviderName.BoDauTiengViet().ToLower().Contains(keyword)
@@ -66,6 +68,7 @@ namespace QuanLyKhoHang.UI.Controllers
                         {
                             Orders = a,
                             OrderDetails = b,
+                            User = f,
                             ProductInfo = new ProductInfo()
                             {
                                 Product = c,
@@ -77,6 +80,7 @@ namespace QuanLyKhoHang.UI.Controllers
             var list = test.GroupBy(x => x.Orders.OrderId).Select(t => new OrderInfoView
             {
                 Orders = t.FirstOrDefault(y => y.Orders.OrderId == t.Key).Orders,
+                Users = t.FirstOrDefault(y => y.Orders.OrderId == t.Key).User,
                 OrderDetails = t.Where(y => y.Orders.OrderId == t.Key).Select(k => new OrderDetailsInfo
                 {
                     OrderDetails = k.OrderDetails,
@@ -99,7 +103,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Update(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             var test = (from a in db.TB_Orders.ToList()
                         join b in db.TB_OrderDetails on a.OrderId equals b.DetailOrderId into b1
@@ -147,7 +151,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Update(TB_Orders order, List<TB_OrderDetails> list)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             if (order.OrderType == EnumOrderType.XUAT)
             {
@@ -173,6 +177,7 @@ namespace QuanLyKhoHang.UI.Controllers
                 order.OrderDate = DateTime.Now;
                 order.OrderStatus = EnumOrderStatus.DANG_SU_DUNG;
                 order.OrderPrice = list.Sum(x => x.DetailPrice * x.DetailNumber);
+                order.OrderUserId = nd_dv.User.UserId;
                 int orderId = 0;
                 using (var context = new QuanLyKhoHangEntities())
                 {
@@ -191,16 +196,14 @@ namespace QuanLyKhoHang.UI.Controllers
 
                 // up date
                 var orderOld = db.TB_Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
+                
                 if (orderOld == null)
                     return Json(new { kq = "err", msg = "Thông tin không xác định!" }, JsonRequestBehavior.AllowGet);
+                orderOld.OrderUserId = nd_dv.User.UserId;
                 // tim thang order details cua thang kia roi remove di
                 var orderDetailsOld = db.TB_OrderDetails.Where(x => x.DetailOrderId == orderOld.OrderId).ToList();
                 db.TB_OrderDetails.RemoveRange(orderDetailsOld);
                 // check so luong san pham con lai trong kho xem co du khong
-
-
-
-
 
                 list.ForEach(x => x.DetailOrderId = orderOld.OrderId);
                 db.TB_OrderDetails.AddRange(list);
@@ -214,7 +217,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Change_Status(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             var product = db.TB_Products.FirstOrDefault(x => x.ProductId == id);
@@ -238,7 +241,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Delete(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             var checkProduct = db.TB_OrderDetails.Where(x => x.DetailProductId == id).ToList();
             if (checkProduct.Count > 0)
@@ -256,7 +259,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult GetProductByProvider(int? id)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null)
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             string cbxProduct = "";
             var product = db.TB_Products.Where(x => x.ProductProviderId == id).ToList();
@@ -271,7 +274,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult GetOrderXuatByProduct(int? id)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             string cbxProvider = "";
             var orderNhap = (from a in db.TB_OrderDetails
@@ -314,7 +317,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult CheckProductInOrder(int? product = null, int? order = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             if (product == null)
@@ -337,7 +340,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ExportExcel(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.ACCOUNTANT))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             Application xlApp = new Application();
             if (xlApp == null)
@@ -458,12 +461,12 @@ namespace QuanLyKhoHang.UI.Controllers
                     var product = db.TB_Products.FirstOrDefault(x => x.ProductId == item.ProductInfo.Product.ProductId);
                     if (data.Orders.OrderType == EnumOrderType.NHAP)
                     {
-                        dynamic[] val = { stt, product.ProductCode, product.ProductName, item.OrderDetails.DetailValueDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailNumber.Value, item.OrderDetails.DetailsUnits, item.OrderDetails.DetailPrice.Value };
+                        dynamic[] val = { stt, product.ProductCode, product.ProductName, item.OrderDetails.DetailValueDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailNumber.Value, item.OrderDetails.DetailsUnits, item.OrderDetails.DetailPrice.Value.ToString("#,###") };
                         ws.AddValue("A" + rowIndex, "H" + rowIndex, val, fontSizeNoiDung, false, XlHAlign.xlHAlignLeft, false);
                     }
                     else
                     {
-                        dynamic[] val = { stt, product.ProductCode, product.ProductName, data.Orders.OrderCode, item.OrderDetails.DetailValueDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailNumber.Value, item.OrderDetails.DetailsUnits, item.OrderDetails.DetailPrice.Value };
+                        dynamic[] val = { stt, product.ProductCode, product.ProductName, data.Orders.OrderCode, item.OrderDetails.DetailValueDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailExpiredDate.Value.ToString("dd/MM/yyyy"), item.OrderDetails.DetailNumber.Value, item.OrderDetails.DetailsUnits, item.OrderDetails.DetailPrice.Value.ToString("#,###") };
                         ws.AddValue("A" + rowIndex, "I" + rowIndex, val, fontSizeNoiDung, false, XlHAlign.xlHAlignLeft, false);
                     }
                    

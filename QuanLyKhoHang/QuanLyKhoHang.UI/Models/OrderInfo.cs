@@ -11,5 +11,6 @@ namespace QuanLyKhoHang.UI.Models
         public TB_Orders Orders { get; set; }
         public TB_OrderDetails OrderDetails { get; set; }
         public ProductInfo ProductInfo { get; set; }
+        public TB_Users User { get; set; }
     }
 }

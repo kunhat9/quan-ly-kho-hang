@@ -49,25 +49,27 @@
                             </ul>
                         </li>
                     }
-                    else
+                    else if (nd_dv.User.UserType == EnumUserType.MEMBER)
                     {
-                        <li class="mn-users"><a href="@Url.Action("MainPage","User", new { area="QuanTri"})"><i class="fa fa-users"></i> Người dùng</a></li>
-                        <li class="mn-provider"><a href="@Url.Action("MainPage","Provider", new { area="QuanTri"})"><i class="fa fa-line-chart"></i> Nhà cung cấp</a></li>
-                        <li class="mn-category"><a href="@Url.Action("MainPage","Category", new { area="QuanTri"})"><i class="fa fa-level-up"></i> Danh mục sản phẩm</a></li>
-                        <li class="mn-product"><a href="@Url.Action("MainPage","Product", new { area="QuanTri"})"><i class="fa fa-usd"></i>Sản phẩm</a></li>
-                        <li class="mn-order"><a href="@Url.Action("MainPage","Order", new { area="QuanTri"})"><i class="fa fa-refresh"></i>Hóa đơn</a></li>
-                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventory", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>
                         <li class="mn-homepage mn-services mn-banks mn-bank-branch mn-notifications mn-config">
                             <a><i class="fa fa-cogs"></i> Báo cáo thống kê<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                <li class="mn-homepage"><a href="@Url.Action("Update","Report", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
-                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
-                                <li class="mn-services"><a href="@Url.Action("Mainpage","Services", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
-                                <li class="mn-banks"><a href="@Url.Action("Mainpage","Banks", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
-                                <li class="mn-bank-branch"><a href="@Url.Action("Mainpage","Bank_Branch", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
-                                <li class="mn-notifications"><a href="@Url.Action("Mainpage","Notifications", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
+                                <li class="mn-product-transaction"><a href="@Url.Action("ProductTransaction","Reports", new { area="QuanTri"})">Giao dịch sản phẩm</a></li>
+                                <li class="mn-product-remain"><a href="@Url.Action("ProductRemain","Reports", new { area="QuanTri"})">Sản phẩm trong kho </a></li>
+                                <li class="mn-product-expired"><a href="@Url.Action("ProductExpired","Reports", new { area="QuanTri"})">Sản phẩm hết hạn </a></li>
+                                <li class="mn-product-not-have"><a href="@Url.Action("ProductNotHave","Reports", new { area="QuanTri"})"> Sản phẩm hết hàng</a></li>
+                                <li class="mn-product-about-expired"><a href="@Url.Action("ProductAboutExpired","Reports", new { area="QuanTri"})">Sản phẩm sắp hết hạn</a></li>
+                                <li class="mn-product-about-not-have"><a href="@Url.Action("ProductAboutNotHave","Reports", new { area="QuanTri"})">Sản phẩm sắp hết hàng</a></li>
                             </ul>
                         </li>
+                    }
+                    else if (nd_dv.User.UserType == EnumUserType.ACCOUNTANT)
+                    {
+                        <li class="mn-order"><a href="@Url.Action("MainPage","Orders", new { area="QuanTri"})"><i class="fa fa-refresh"></i>Hóa đơn</a></li>
+                    }
+                    else if (nd_dv.User.UserType == EnumUserType.INVENTORY)
+                    {
+                        <li class="mn-inventory"><a href="@Url.Action("MainPage","Inventorys", new { area="QuanTri"})"><i class="fa fa-history"></i> Kiểm kê hàng hóa </a></li>                      
                     }
 
                 </ul>
@@ -98,30 +100,30 @@
                         <li>
                             <a class="" style="cursor:pointer;padding-right:10px;" onclick="javascript: $('#modal-qltaikhoan').load('@Url.Action("Config","Home",new { area="" })', function (e) { $('#modal-qltaikhoan').modal('show'); });">Cấu hình</a>
                         </li>
-                        
+
                         <li><a href="@Url.Action("Logout","Account", new { area = ""})"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
                     </ul>
                 </li>
                 @*<li role="presentation" class="nav-item dropdown">
-                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        <span class="badge bg-green">0</span>
-                    </a>
-                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-138px, 17px, 0px);">
-                        <li class="nav-item">
-                            <a class="dropdown-item">
-                                <span class="image"><img src="images/img.jpg" alt="Profile Image"></span>
-                                <span>
-                                    <span>John Smith</span>
-                                    <span class="time">3 mins ago</span>
-                                </span>
-                                <span class="message">
-                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>*@
+                        <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="badge bg-green">0</span>
+                        </a>
+                        <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-138px, 17px, 0px);">
+                            <li class="nav-item">
+                                <a class="dropdown-item">
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image"></span>
+                                    <span>
+                                        <span>John Smith</span>
+                                        <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>*@
             </ul>
         </nav>
     </div>

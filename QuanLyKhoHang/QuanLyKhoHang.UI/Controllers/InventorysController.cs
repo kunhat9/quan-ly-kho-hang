@@ -19,7 +19,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult MainPage()
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             string cbxProduct = "<option value=\"\">Chọn sản phẩm...</option>";
@@ -35,7 +35,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult List(int ?status = EnumInventoryStatus.DAY_DU, int? product = null, string startDate = "", string endDate = "", int sotrang = 1, int tongsodong = 10)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             DateTime? dateFrom, dateTo;
@@ -87,7 +87,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Update(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             var inventory = (from a in db.TB_Inventory.ToList()
                         join b in db.TB_InventoryDetails on a.Id equals b.InventoryId into b1
@@ -135,7 +135,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Update(TB_Inventory inventory, List<TB_InventoryDetails> list)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             if (inventory.Id == 0)
             {
@@ -180,7 +180,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ListProduct(List<int> listProduct, int? Id = null, string startDate ="", string endDate ="")
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             List<CompareProduct> listCompare = new List<Models.CompareProduct>();
             List<CompareProduct> list = new List<CompareProduct>();
@@ -245,7 +245,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Change_Status(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
 
             var product = db.TB_Products.FirstOrDefault(x => x.ProductId == id);
@@ -270,8 +270,8 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ChangeStatus(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
             var inventory = db.TB_Inventory.FirstOrDefault(x => x.Id == id);
             if(inventory == null)
                 return Json(new { kq = "err", msg = "Kiểm kê không hợp lệ" }, JsonRequestBehavior.AllowGet);
@@ -283,8 +283,8 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ChangeStatus(int? status = null, int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
             var inventory = db.TB_Inventory.FirstOrDefault(x => x.Id == id);
             if (inventory == null)
                 return Json(new { kq = "err", msg = "Kiểm kê không hợp lệ" }, JsonRequestBehavior.AllowGet);
@@ -298,8 +298,8 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ChangeNote(int index)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
             ViewBag.Index = index;
             return PartialView();
         }
@@ -309,8 +309,8 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ChangeNote(string descriptiopn = "")
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
 
             return Json(new { kq = "ok", data = descriptiopn, msg = "Success!" }, JsonRequestBehavior.AllowGet);
         }
@@ -320,7 +320,7 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult Delete(int? id = null)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
                 return RedirectToAction("MainPage", "Account", new { area = "" });
             var checkProduct = db.TB_OrderDetails.Where(x => x.DetailProductId == id).ToList();
             if (checkProduct.Count > 0)
@@ -336,7 +336,9 @@ namespace QuanLyKhoHang.UI.Controllers
         [Route("inventory/export-excel")]
         public ActionResult ExportExcel(int? id = null)
         {
-          
+            UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.INVENTORY))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
             Application xlApp = new Application();
             if (xlApp == null)
             {
@@ -390,8 +392,8 @@ namespace QuanLyKhoHang.UI.Controllers
                 int fontSizeTenTruong = 14;
                 int fontSizeNoiDung = 12;
                 //Info
-                ws.AddValue("A1", "B1", "Đơn vị :", fontSizeTieuDe, false, XlHAlign.xlHAlignCenter, false, 20);
-                ws.AddValue("A2", "B2", "Bộ phận :", fontSizeTenTruong, false, XlHAlign.xlHAlignCenter, false);
+                ws.AddValue("A1", "B1", "Đơn vị :", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
+                ws.AddValue("A2", "B2", "Bộ phận :", fontSizeTenTruong, true, XlHAlign.xlHAlignCenter, false);
 
                 ws.AddValue("E5", "K5", "BIÊN BẢN KIỂM KÊ HÀNG HÓA, SẢN PHẨM", fontSizeTieuDe, true, XlHAlign.xlHAlignCenter, false, 20);
                 ws.AddValue("A7", "E7", "Thời điểm kiểm kê :"+ data.Inventory.CreatedDate.Value.ToString("dd/MM/yyyy HH:ss:mm"), fontSizeTieuDe, true, XlHAlign.xlHAlignLeft, false, 20);
@@ -454,7 +456,7 @@ namespace QuanLyKhoHang.UI.Controllers
                 ws.AddValue("L" + rowIndex, "L" + rowIndex, totalRemain.ToString("#,###.###"), fontSizeTenTruong);
                 ws.AddValue("M" + rowIndex, "M" + rowIndex, totalRemainNow.ToString("#,###.###"), fontSizeTenTruong);
                 //Border
-                ws.get_Range("D" + rowStart, "U" + rowIndex).SetBorderAround();
+                ws.get_Range("A" + rowStart, "U" + rowIndex).SetBorderAround();
 
                 //Save
                 wb.SaveAs(filePath);
@@ -469,7 +471,7 @@ namespace QuanLyKhoHang.UI.Controllers
                 ws.ReleaseObject();
                 wb.ReleaseObject();
 
-                return Json(new { kq = "ok", msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
+                return Json(new { kq = "ok",data =filePath , msg = "Thành công!" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

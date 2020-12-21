@@ -1,45 +1,3 @@
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ApplicationInsights.config
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\csc.exe
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CSharp.Core.targets
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.VisualBasic.Core.targets
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Collections.Immutable.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Reflection.Metadata.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\vbc.exe
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe.config
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll.config
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.pdb
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.pdb
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
-E:\DoAn\Rent\Kho Hang\Source\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ApplicationInsights.config
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\csc.exe
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\vbc.exe
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll.config
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.pdb
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.pdb
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
-C:\Users\ADMIN\Desktop\quan-ly-kho-hang-pro\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ApplicationInsights.config
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\csc.exe
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -56,44 +14,14 @@ C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompile
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll.config
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.pdb
-C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.dll
-C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.pdb
-C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
-C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
-C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb
-<<<<<<< HEAD
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.dll
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.pdb
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.pdb
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.xml
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.pdb
 C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.xml
-=======
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ApplicationInsights.config
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\csc.exe
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Collections.Immutable.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\System.Reflection.Metadata.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\vbc.exe
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\roslyn\VBCSCompiler.exe.config
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll.config
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.UI.pdb
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\QuanLyKhoHang.MODEL.pdb
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.pdb
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.xml
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.pdb
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\bin\ExcelDataReader.DataSet.xml
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
-C:\Users\Admin\Desktop\Rent\Quan ly kho hang\quan-ly-kho-hang\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb
->>>>>>> 6ce38daac7fcae41b28da5bc1447edcbe9f51ae5
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.dll
+C:\Users\Admin\Desktop\Kho\QuanLyKhoHang\QuanLyKhoHang.UI\obj\Debug\QuanLyKhoHang.UI.pdb

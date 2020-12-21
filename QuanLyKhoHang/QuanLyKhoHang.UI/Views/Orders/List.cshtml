@@ -18,6 +18,9 @@
             <td class="text-center">
                 <span class="red">@item.Orders.OrderDate.Value.ToString("dd/MM/yyyy")</span>
             </td>
+            <td class="text-center">
+                <span class="red">@(item.Users != null ? item.Users.UserFullName : "ADMINSTRATOR")</span>
+            </td>
             <td class="text-center">@item.Orders.OrderPrice.Value.ToString("#,###.###")</td>
             <td class="text-center">@item.OrderDetails.FirstOrDefault().ProductInfo.Provider.ProviderName</td>
            

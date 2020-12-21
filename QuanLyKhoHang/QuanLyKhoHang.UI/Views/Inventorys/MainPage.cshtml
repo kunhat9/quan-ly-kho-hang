@@ -246,6 +246,27 @@
             }
         });
     }
+    function ExportExcel(obj) {
+        $.ajax({
+            url: '@Url.Action("ExportExcel", "Inventorys", new { area = "QuanTri" })',
+            type: 'GET',
+            dataType: 'json',
+            mimeType: "multipart/form-data",
+            contentType: false,
+            async: false,
+            cache: false,
+            data: { id: obj.attr("data-id") },
+            success: function (data) {
+                if (data.kq == "ok") {
+                    alertify.success(data.msg);                    
+                    DanhSach();
+                }
+                else {
+                    alertify.error(data.msg);
+                }
+            }
+        });
+    }
 </script>
 <script>
     function CapNhatTrangThai(obj) {

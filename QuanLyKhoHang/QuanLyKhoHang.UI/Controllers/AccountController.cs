@@ -35,7 +35,7 @@ namespace QuanLyKhoHang.UI.Controllers
         {
             p = p.Encode();
             var nd_dv = (from a in db.TB_Users
-                         where (a.Username == u) && a.UserPassword == p && a.UserStatus == EnumStatus.ACTIVE && (a.UserType == EnumUserType.ADMIN || a.UserType == EnumUserType.SUB_ADMIN)
+                         where (a.Username == u) && a.UserPassword == p && a.UserStatus == EnumStatus.ACTIVE
                          select new UserInfo()
                          {
                              User = a,

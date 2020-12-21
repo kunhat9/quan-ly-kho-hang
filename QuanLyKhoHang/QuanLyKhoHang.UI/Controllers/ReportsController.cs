@@ -19,8 +19,8 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductTransaction()
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();
@@ -46,8 +46,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductTransaction_List(string keyword = "", int? order = null, int? provider = null, int? type = null, string fromDate = "", string toDate = "", int sotrang = 1, int tongsodong = 10, int reportType = EnumReportType.GIAO_DICH_SAN_PHAM)
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             if (keyword != "")
                 keyword = keyword.BoDauTiengViet().ToLower();
@@ -296,8 +297,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductRemain()
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();
@@ -322,8 +324,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductExpired() // het han
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();
@@ -347,8 +350,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductAboutExpired() // sap het han
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();
@@ -371,8 +375,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductNotHave() // het hang
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();
@@ -396,8 +401,9 @@ namespace QuanLyKhoHang.UI.Controllers
         public ActionResult ProductAboutNotHave() // sap het hang
         {
             UserInfo nd_dv = (UserInfo)Session["NguoiDung"];
-            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN))
-                return RedirectToAction("Index", "Home", new { area = "" });
+            if (nd_dv == null || (nd_dv.User.UserType != EnumUserType.ADMIN && nd_dv.User.UserType != EnumUserType.SUB_ADMIN && nd_dv.User.UserType != EnumUserType.MEMBER))
+                return RedirectToAction("MainPage", "Account", new { area = "" });
+
 
             string cbxOrder = "<option value=''>Chọn hóa đơn ..........</option>";
             var order = db.TB_Orders.ToList();

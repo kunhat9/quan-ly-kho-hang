@@ -53,7 +53,7 @@
                             <a class="btn btn-xs btn-danger" data-id="@item.Inventory.Id" onclick="Xoa($(this))"><i class="fa fa-trash"></i> Xóa</a>
                         </li>
                         <li>
-                            <a class="btn btn-xs btn-success" href="@Url.Action("ExportExcel", "Inventorys", new { area = "QuanTri" , id = item.Inventory.Id})"><i class="fa fa-file-excel-o"></i>Xuất Excel</a>
+                            <a class="btn btn-xs btn-success" data-id="@item.Inventory.Id" onclick="ExportExcel($(this))"><i class="fa fa-file-excel-o"></i>Xuất Excel</a>
                         </li>
                     </ul>
                 </div>
